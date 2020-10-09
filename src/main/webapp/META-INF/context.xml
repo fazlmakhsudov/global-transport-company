@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/gtc" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" username="mfh" password="111111"
+		driverClassName="com.mysql.cj.jdbc.Driver" defaultAutoCommit="false"
+		defaultTransactionIsolation="READ_COMMITTED" url="jdbc:mysql://localhost:3306/epamdb" />
+</Context>

@@ -1,0 +1,124 @@
+		<!-- footer -->
+    	<footer class="py-md-5 py-4">
+    		<div class="container">
+    			<div class="row w3ls_footer_grid text-lg-left text-center pb-lg-5 pb-4 mt-xl-4 mt-1 mb-xl-5 mb-4">
+    				<div class="col-lg-5 footer-w3l">
+    			        <h5>World wide Transport with in 24 hours</h5>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="col-lg-3 col-6 w3ls_footer_grid_right">
+    					<h1>
+    						<a href="/gtc">
+    							<i class="fas fa-truck mr-2"></i>GTC<h6>The Transport Company</h6>
+    						</a>
+    					</h1>
+    				</div>
+    				<div class="col-lg-3 col-6 w3ls_footer_grid_left1_pos mt-2 text-lg-left text-sm-right text-center">
+    					<ul>
+    						<li class="mr-3">
+    							<a href="https://www.facebook.com" class="facebook">
+    								<i class="fab fa-facebook-f mr-2"></i>Facebook</a>
+    						</li>
+    						<li>
+    							<a href="https://twitter.com" class="twitter">
+    								<i class="fab fa-twitter mr-2"></i>Twitter
+    							</a>
+    						</li>
+    					</ul>
+    				</div>
+    				<div class="col-lg-6 w3ls_footer_grid1_left mt-lg-2 mt-4 text-lg-right text-center">
+    					<p>&copy; <span id="year"></span> GTC. All rights reserved</p>
+    				</div>
+    			</div>
+    		</div>
+    	</footer>
+    	<!-- //footer -->
+
+    	<!-- Js files -->
+        	<!-- JavaScript -->
+        	<script src="js/jquery-3.3.1.min.js"></script>
+        	<!-- Default-JavaScript-File -->
+
+        	<script src="js/bootstrap.js"></script>
+        	<!-- Necessary-JavaScript-File-For-Bootstrap -->
+
+        	<!-- search -->
+        	<script src="js/search.js"></script>
+
+        	<!-- Owl-Carousel-JavaScript -->
+        	<script src="js/owl.carousel.js"></script>
+        	<script>
+        		var owl = $('.owl-carousel');
+        		owl.owlCarousel({
+        			items: 3,
+        			loop: true,
+        			margin: 10,
+        			autoplay: true,
+        			autoplayTimeout: 1000,
+        			autoplayHoverPause: true,
+        			responsive: {
+        				0: {
+        					items: 1
+        				},
+        				600: {
+        					items: 2
+        				},
+        				1000: {
+        					items: 3
+        				}
+        			}
+        		});
+        		$('.play').on('click', function () {
+        			owl.trigger('play.owl.autoplay', [1000])
+        		})
+        		$('.stop').on('click', function () {
+        			owl.trigger('stop.owl.autoplay')
+        		})
+        	</script>
+        	<!-- //Owl-Carousel-JavaScript -->
+
+        	<!-- smooth scrolling -->
+        	<script src="js/SmoothScroll.min.js"></script>
+        	<!-- //smooth scrolling -->
+
+        	<!-- start-smoth-scrolling -->
+        	<script src="js/move-top.js"></script>
+        	<script src="js/easing.js"></script>
+        	<script>
+        		jQuery(document).ready(function ($) {
+        			$(".scroll").click(function (event) {
+        				event.preventDefault();
+        				$('html,body').animate({
+        					scrollTop: $(this.hash).offset().top
+        				}, 1000);
+        			});
+        		});
+        	</script>
+        	<!-- start-smoth-scrolling -->
+
+        	<!-- smooth scrolling-bottom-to-top -->
+        	<script>
+        		$(document).ready(function () {
+        			/*
+        				var defaults = {
+        				containerID: 'toTop', // fading element id
+        				containerHoverID: 'toTopHover', // fading element hover id
+        				scrollSpeed: 1200,
+        				easingType: 'linear'
+        				};
+        			*/
+        			$().UItoTop({
+        				easingType: 'easeOutQuart'
+        			});
+        		});
+        	</script>
+        	<a href="#" id="toTop" style="display: block;">
+        		<span id="toTopHover" style="opacity: 1;"> </span>
+        	</a>
+	<script>
+        document.getElementById("year").innerHTML = new Date().getFullYear();
+    </script>
+	<script src="js/main.js"></script>
+
+
