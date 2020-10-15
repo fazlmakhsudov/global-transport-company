@@ -2,15 +2,12 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.ContentType;
-import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.utils.CostCounter;
 import com.epam.gtc.web.models.RequestModel;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

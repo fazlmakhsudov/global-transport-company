@@ -12,6 +12,7 @@ import com.epam.gtc.services.domains.InvoiceDomain;
 import com.epam.gtc.utils.builders.Builder;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InvoiceServiceImpl implements InvoiceService {
@@ -47,12 +48,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         InvoiceEntity invoice;
         try {
             invoice = invoiceDAO.read(id);
+            return invoiceDomainBuilder.create(invoice);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_INVOICE_BY_ID, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_INVOICE_BY_ID, e);
-        }
-        try {
-            return invoiceDomainBuilder.create(invoice);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_INVOICE, e);
@@ -91,12 +90,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<InvoiceEntity> invoiceList;
         try {
             invoiceList = invoiceDAO.readAll();
+            return invoiceDomainBuilder.create(invoiceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_INVOICES, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_INVOICES, e);
-        }
-        try {
-            return invoiceDomainBuilder.create(invoiceList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_INVOICE, e);
@@ -121,35 +118,31 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDomain> findAll(int page, int itemsPerPage) {
         int offset = (page - 1) * itemsPerPage;
-        List<InvoiceEntity> invoiceList = null;
+        List<InvoiceEntity> invoiceList;
         try {
             invoiceList = invoiceDAO.readInvoices(offset, itemsPerPage);
+            return invoiceDomainBuilder.create(invoiceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
-        }
-        try {
-            return invoiceDomainBuilder.create(invoiceList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public List<InvoiceDomain> findAll(int page, int itemsPerPage, int userId) {
         int offset = (page - 1) * itemsPerPage;
-        List<InvoiceEntity> invoiceList = null;
+        List<InvoiceEntity> invoiceList;
         try {
             invoiceList = invoiceDAO.readInvoices(offset, itemsPerPage, userId);
+            return invoiceDomainBuilder.create(invoiceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
-        }
-        try {
-            return invoiceDomainBuilder.create(invoiceList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
 }

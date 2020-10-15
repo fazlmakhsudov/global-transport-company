@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface RateService extends BaseService<RateDomain> {
     int countAllRates();
+
     RateDomain find(String name) throws ServiceException;
+
     List<RateDomain> findAll(int page, int itemsPerPage);
 }
 

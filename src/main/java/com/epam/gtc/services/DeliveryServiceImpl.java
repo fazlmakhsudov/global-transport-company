@@ -11,6 +11,7 @@ import com.epam.gtc.services.domains.DeliveryDomain;
 import com.epam.gtc.utils.builders.Builder;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryServiceImpl implements DeliveryService {
@@ -46,12 +47,10 @@ public class DeliveryServiceImpl implements DeliveryService {
         DeliveryEntity delivery;
         try {
             delivery = deliveryDAO.read(id);
+            return deliveryDomainBuilder.create(delivery);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_DELIVERY_BY_ID, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_DELIVERY_BY_ID, e);
-        }
-        try {
-            return deliveryDomainBuilder.create(delivery);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_DELIVERY, e);
@@ -87,15 +86,13 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public List<DeliveryDomain> findAll() throws ServiceException {
-        List<DeliveryEntity> DeliveryList;
+        List<DeliveryEntity> deliveryList;
         try {
-            DeliveryList = deliveryDAO.readAll();
+            deliveryList = deliveryDAO.readAll();
+            return deliveryDomainBuilder.create(deliveryList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_DELIVERIES, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_DELIVERIES, e);
-        }
-        try {
-            return deliveryDomainBuilder.create(DeliveryList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_DELIVERY, e);
@@ -123,15 +120,13 @@ public class DeliveryServiceImpl implements DeliveryService {
         List<DeliveryEntity> deliveryList = null;
         try {
             deliveryList = deliveryDAO.readDeliveries(offset, itemsPerPage);
+            return deliveryDomainBuilder.create(deliveryList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
-        }
-        try {
-            return deliveryDomainBuilder.create(deliveryList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -140,14 +135,12 @@ public class DeliveryServiceImpl implements DeliveryService {
         List<DeliveryEntity> deliveryList = null;
         try {
             deliveryList = deliveryDAO.readDeliveries(offset, itemsPerPage, userId);
+            return deliveryDomainBuilder.create(deliveryList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
-        }
-        try {
-            return deliveryDomainBuilder.create(deliveryList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

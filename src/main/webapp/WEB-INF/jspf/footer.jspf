@@ -136,34 +136,7 @@
 
         	<!-- Owl-Carousel-JavaScript -->
         	<script src="js/owl.carousel.js"></script>
-        	<script>
-        		var owl = $('.owl-carousel');
-        		owl.owlCarousel({
-        			items: 3,
-        			loop: true,
-        			margin: 10,
-        			autoplay: true,
-        			autoplayTimeout: 1000,
-        			autoplayHoverPause: true,
-        			responsive: {
-        				0: {
-        					items: 1
-        				},
-        				600: {
-        					items: 2
-        				},
-        				1000: {
-        					items: 3
-        				}
-        			}
-        		});
-        		$('.play').on('click', function () {
-        			owl.trigger('play.owl.autoplay', [1000])
-        		})
-        		$('.stop').on('click', function () {
-        			owl.trigger('stop.owl.autoplay')
-        		})
-        	</script>
+
         	<!-- //Owl-Carousel-JavaScript -->
 
         	<!-- smooth scrolling -->
@@ -173,36 +146,9 @@
         	<!-- start-smoth-scrolling -->
         	<script src="js/move-top.js"></script>
         	<script src="js/easing.js"></script>
-        	<script>
-        		jQuery(document).ready(function ($) {
-        			$(".scroll").click(function (event) {
-        				event.preventDefault();
-        				$('html,body').animate({
-        					scrollTop: $(this.hash).offset().top
-        				}, 1000);
-        			});
-        		});
-        	</script>
-        	<!-- start-smoth-scrolling -->
 
-        	<!-- smooth scrolling-bottom-to-top -->
-        	<script>
-        		$(document).ready(function () {
-        			/*
-        				var defaults = {
-        				containerID: 'toTop', // fading element id
-        				containerHoverID: 'toTopHover', // fading element hover id
-        				scrollSpeed: 1200,
-        				easingType: 'linear'
-        				};
-        			*/
-        			$().UItoTop({
-        				easingType: 'easeOutQuart'
-        			});
-        		});
-        	</script>
         	<a href="#" id="toTop" style="display: block;">
         		<span id="toTopHover" style="opacity: 1;"> </span>
         	</a>
 
-	<script src="js/main.js"></script>
+	        <script src="js/main.js"></script>

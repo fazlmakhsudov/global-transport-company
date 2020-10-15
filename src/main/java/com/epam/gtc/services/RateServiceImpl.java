@@ -11,6 +11,7 @@ import com.epam.gtc.services.domains.RateDomain;
 import com.epam.gtc.utils.builders.Builder;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RateServiceImpl implements RateService {
@@ -46,12 +47,10 @@ public class RateServiceImpl implements RateService {
         RateEntity rate;
         try {
             rate = rateDAO.read(id);
+            return rateDomainBuilder.create(rate);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_RATE_BY_ID, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_RATE_BY_ID, e);
-        }
-        try {
-            return rateDomainBuilder.create(rate);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
@@ -63,12 +62,10 @@ public class RateServiceImpl implements RateService {
         RateEntity rate;
         try {
             rate = rateDAO.read(name);
+            return rateDomainBuilder.create(rate);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_RATE_BY_NAME, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_RATE_BY_NAME, e);
-        }
-        try {
-            return rateDomainBuilder.create(rate);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
@@ -107,12 +104,10 @@ public class RateServiceImpl implements RateService {
         List<RateEntity> rateList;
         try {
             rateList = rateDAO.readAll();
+            return rateDomainBuilder.create(rateList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_RATES, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_RATES, e);
-        }
-        try {
-            return rateDomainBuilder.create(rateList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
@@ -125,21 +120,18 @@ public class RateServiceImpl implements RateService {
     }
 
 
-
     @Override
     public List<RateDomain> findAll(int page, int itemsPerPage) {
         int offset = (page - 1) * itemsPerPage;
-        List<RateEntity> rateList = null;
+        List<RateEntity> rateList;
         try {
             rateList = rateDAO.readRates(offset, itemsPerPage);
+            return rateDomainBuilder.create(rateList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_RATES_WITH_LIMITATION, e);
-        }
-        try {
-            return rateDomainBuilder.create(rateList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

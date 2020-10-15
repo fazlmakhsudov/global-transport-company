@@ -324,7 +324,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
 
     /**
      * Reads d  deliveries from start row till row number
-     *of certain user
+     * of certain user
      *
      * @param offset row from which starts reading
      * @param limit  number

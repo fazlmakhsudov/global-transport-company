@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -69,7 +68,7 @@ public class IndexCommand implements Command {
     }
 
     private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService( ServiceType.CITY_SERVICE);
+        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

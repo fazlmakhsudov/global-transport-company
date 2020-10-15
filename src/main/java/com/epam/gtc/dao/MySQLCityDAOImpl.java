@@ -261,7 +261,7 @@ public class MySQLCityDAOImpl implements CityDAO {
      *
      * @param offset row from which starts reading
      * @param limit  number
-     * @return
+     * @return list of city entities
      */
     @Override
     public List<CityEntity> readCities(int offset, int limit) throws DAOException {

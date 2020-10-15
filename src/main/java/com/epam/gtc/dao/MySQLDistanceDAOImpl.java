@@ -288,7 +288,7 @@ public class MySQLDistanceDAOImpl implements DistanceDAO {
      * Read distance between two cities
      *
      * @param fromCityId city from
-     * @param toCityId city to
+     * @param toCityId   city to
      * @return Distance entity
      */
     @Override
@@ -321,6 +321,7 @@ public class MySQLDistanceDAOImpl implements DistanceDAO {
         }
         return distance;
     }
+
     /**
      * Reads distances less or equal given distance
      *

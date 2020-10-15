@@ -166,7 +166,53 @@
                                             }
                                          });
 
+                                        // Owl-Carousel-JavaScript
+                                        var owl = $('.owl-carousel');
+                                  		owl.owlCarousel({
+                                  			items: 3,
+                                  			loop: true,
+                                  			margin: 10,
+                                  			autoplay: true,
+                                  			autoplayTimeout: 1000,
+                                  			autoplayHoverPause: true,
+                                  			responsive: {
+                                  				0: {
+                                  					items: 1
+                                  				},
+                                  				600: {
+                                  					items: 2
+                                  				},
+                                  				1000: {
+                                  					items: 3
+                                  				}
+                                  			}
+                                  		});
+                                  		$('.play').on('click', function () {
+                                  			owl.trigger('play.owl.autoplay', [1000])
+                                  		});
+                                  		$('.stop').on('click', function () {
+                                  			owl.trigger('stop.owl.autoplay')
+                                  		});
 
+                                        // smooth scrolling-bottom-to-top
+                                            $(".scroll").click(function (event) {
+                                                event.preventDefault();
+                                                $('html,body').animate({
+                                                    scrollTop: $(this.hash).offset().top
+                                                }, 1000);
+                                            });
+
+                                         /*
+                                            var defaults = {
+                                            containerID: 'toTop', // fading element id
+                                            containerHoverID: 'toTopHover', // fading element hover id
+                                            scrollSpeed: 1200,
+                                            easingType: 'linear'
+                                            };
+                                        */
+                                        $().UItoTop({
+                                            easingType: 'easeOutQuart'
+                                        });
 
 
                     }
@@ -195,8 +241,6 @@
                                             }
                                             return data;
                                         }
-
-
 
 
 

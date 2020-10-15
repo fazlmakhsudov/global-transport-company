@@ -117,7 +117,7 @@ public class AdminDistancesPageCommand implements Command {
     }
 
     private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService( ServiceType.CITY_SERVICE);
+        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

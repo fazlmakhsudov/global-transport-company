@@ -4,7 +4,6 @@ import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.DeliveryStatus;
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
 import com.epam.gtc.dao.entities.constants.RequestStatus;
-import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.service_factory.ServiceFactory;
 import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.DeliveryService;

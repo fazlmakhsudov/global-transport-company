@@ -6,11 +6,11 @@ import com.epam.gtc.dao.entities.UserEntity;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.UserDomain;
 import com.epam.gtc.utils.builders.Builder;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int add(UserDomain user) throws ServiceException {
+    public int add(UserDomain user) {
         int inserted = -1;
         try {
             inserted = userDAO.create(userEntitybuilder.create(user));
@@ -40,15 +40,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDomain find(int id) throws ServiceException {
-        UserEntity user = null;
+    public UserDomain find(int id) {
+        UserEntity user;
         try {
             user = userDAO.read(id);
+            return userDomainBuilder.create(user);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_USER_BY_ID, e);
-        }
-        try {
-            return userDomainBuilder.create(user);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_USER, e);
         }
@@ -56,15 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDomain find(String email) throws ServiceException {
-        UserEntity user = null;
+    public UserDomain find(String email) {
+        UserEntity user;
         try {
             user = userDAO.read(email);
+            return userDomainBuilder.create(user);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_USER_BY_EMAIL, e);
-        }
-        try {
-            return userDomainBuilder.create(user);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_USER, e);
         }
@@ -72,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean save(UserDomain user) throws ServiceException {
+    public boolean save(UserDomain user) {
         boolean updatedFlag = false;
         try {
             updatedFlag = userDAO.update(userEntitybuilder.create(user));
@@ -85,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean remove(int id) throws ServiceException {
+    public boolean remove(int id) {
         boolean deletedFlag = false;
         try {
             deletedFlag = userDAO.delete(id);
@@ -96,19 +92,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDomain> findAll() throws ServiceException {
-        List<UserEntity> userList = null;
+    public List<UserDomain> findAll() {
+        List<UserEntity> userList;
         try {
             userList = userDAO.readAll();
+            return userDomainBuilder.create(userList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_USERS, e);
-        }
-        try {
-            return userDomainBuilder.create(userList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_USER, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
@@ -119,14 +113,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDomain> findAll(int page, int itemsPerPage) {
         int offset = (page - 1) * itemsPerPage;
-        List<UserEntity> userList = null;
+        List<UserEntity> userList;
         try {
             userList = userDAO.readUsers(offset, itemsPerPage);
+            return userDomainBuilder.create(userList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_USERS_WITH_LIMITATION, e);
-        }
-        try {
-            return userDomainBuilder.create(userList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_USER, e);
         }

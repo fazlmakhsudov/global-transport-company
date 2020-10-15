@@ -12,6 +12,7 @@ import com.epam.gtc.services.domains.RequestDomain;
 import com.epam.gtc.utils.builders.Builder;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestServiceImpl implements RequestService {
@@ -47,12 +48,10 @@ public class RequestServiceImpl implements RequestService {
         RequestEntity request;
         try {
             request = requestDAO.read(id);
+            return requestDomainBuilder.create(request);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_REQUEST_BY_ID, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_REQUEST_BY_ID, e);
-        }
-        try {
-            return requestDomainBuilder.create(request);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_REQUEST, e);
@@ -91,12 +90,10 @@ public class RequestServiceImpl implements RequestService {
         List<RequestEntity> requestList;
         try {
             requestList = requestDAO.readAll();
+            return requestDomainBuilder.create(requestList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_REQUESTS, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_REQUESTS, e);
-        }
-        try {
-            return requestDomainBuilder.create(requestList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_REQUEST, e);
@@ -121,34 +118,30 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<RequestDomain> findAll(int page, int itemsPerPage) {
         int offset = (page - 1) * itemsPerPage;
-        List<RequestEntity> requestList = null;
+        List<RequestEntity> requestList;
         try {
             requestList = requestDAO.readRequests(offset, itemsPerPage);
+            return requestDomainBuilder.create(requestList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
-        }
-        try {
-            return requestDomainBuilder.create(requestList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public List<RequestDomain> findAll(int page, int itemsPerPage, int userId) {
         int offset = (page - 1) * itemsPerPage;
-        List<RequestEntity> requestList = null;
+        List<RequestEntity> requestList;
         try {
             requestList = requestDAO.readRequests(offset, itemsPerPage, userId);
+            return requestDomainBuilder.create(requestList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
-        }
-        try {
-            return requestDomainBuilder.create(requestList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

@@ -64,7 +64,6 @@ public class ContextListener implements ServletContextListener {
     }
 
 
-
     private void log(final String msg) {
         System.out.println("[ContextListener] " + msg);
     }

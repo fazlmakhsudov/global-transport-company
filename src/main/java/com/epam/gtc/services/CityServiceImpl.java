@@ -10,6 +10,7 @@ import com.epam.gtc.services.domains.CityDomain;
 import com.epam.gtc.utils.builders.Builder;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CityServiceImpl implements CityService {
@@ -45,12 +46,10 @@ public class CityServiceImpl implements CityService {
         CityEntity city;
         try {
             city = cityDAO.read(id);
+            return cityDomainBuilder.create(city);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_CITY_BY_ID, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_CITY_BY_ID, e);
-        }
-        try {
-            return cityDomainBuilder.create(city);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_CITY, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_CITY, e);
@@ -62,12 +61,10 @@ public class CityServiceImpl implements CityService {
         CityEntity city;
         try {
             city = cityDAO.read(name);
+            return cityDomainBuilder.create(city);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_CITY_BY_NAME, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_CITY_BY_NAME, e);
-        }
-        try {
-            return cityDomainBuilder.create(city);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_CITY, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_CITY, e);
@@ -106,12 +103,10 @@ public class CityServiceImpl implements CityService {
         List<CityEntity> cityList;
         try {
             cityList = cityDAO.readAll();
+            return cityDomainBuilder.create(cityList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_CITIES, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_ALL_CITIES, e);
-        }
-        try {
-            return cityDomainBuilder.create(cityList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_CITY, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_CITY, e);
@@ -127,17 +122,15 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<CityDomain> findAll(int page, int itemsPerPage) {
         int offset = (page - 1) * itemsPerPage;
-        List<CityEntity> cityList = null;
+        List<CityEntity> cityList;
         try {
             cityList = cityDAO.readCities(offset, itemsPerPage);
+            return cityDomainBuilder.create(cityList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
-        }
-        try {
-            return cityDomainBuilder.create(cityList);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_CITY, e);
         }
-        return null;
+        return new ArrayList<>();
     }
 }

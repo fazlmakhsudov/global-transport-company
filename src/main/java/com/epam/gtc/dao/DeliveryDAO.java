@@ -8,9 +8,12 @@ import java.util.List;
 
 public interface DeliveryDAO extends BaseDAO<DeliveryEntity> {
     int countAllDeliveries();
+
     int countUserDeliveries(int userId);
+
     int countDeliveries(int deliveryStatusId);
 
     List<DeliveryEntity> readDeliveries(int offset, int limit) throws DAOException;
+
     List<DeliveryEntity> readDeliveries(int offset, int limit, int userId) throws DAOException;
 }
