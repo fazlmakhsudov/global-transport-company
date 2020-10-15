@@ -20,11 +20,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final Builder<InvoiceDomain, InvoiceEntity> invoiceEntitybuilder;
     private final Builder<InvoiceEntity, InvoiceDomain> invoiceDomainBuilder;
 
-    public InvoiceServiceImpl(InvoiceDAO invoiceDAO, Builder<InvoiceDomain, InvoiceEntity> builder1,
-                              Builder<InvoiceEntity, InvoiceDomain> builder2) {
+    public InvoiceServiceImpl(InvoiceDAO invoiceDAO, Builder<InvoiceDomain, InvoiceEntity> invoiceEntitybuilder,
+                              Builder<InvoiceEntity, InvoiceDomain> invoiceDomainBuilder) {
         this.invoiceDAO = invoiceDAO;
-        this.invoiceEntitybuilder = builder1;
-        this.invoiceDomainBuilder = builder2;
+        this.invoiceEntitybuilder = invoiceEntitybuilder;
+        this.invoiceDomainBuilder = invoiceDomainBuilder;
     }
 
     @Override

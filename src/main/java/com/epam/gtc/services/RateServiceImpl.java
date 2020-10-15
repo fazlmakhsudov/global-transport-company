@@ -19,11 +19,11 @@ public class RateServiceImpl implements RateService {
     private final Builder<RateDomain, RateEntity> rateEntitybuilder;
     private final Builder<RateEntity, RateDomain> rateDomainBuilder;
 
-    public RateServiceImpl(RateDAO rateDAO, Builder<RateDomain, RateEntity> builder1,
-                           Builder<RateEntity, RateDomain> builder2) {
+    public RateServiceImpl(RateDAO rateDAO, Builder<RateDomain, RateEntity> rateEntitybuilder,
+                           Builder<RateEntity, RateDomain> rateDomainBuilder) {
         this.rateDAO = rateDAO;
-        this.rateEntitybuilder = builder1;
-        this.rateDomainBuilder = builder2;
+        this.rateEntitybuilder = rateEntitybuilder;
+        this.rateDomainBuilder = rateDomainBuilder;
     }
 
     @Override

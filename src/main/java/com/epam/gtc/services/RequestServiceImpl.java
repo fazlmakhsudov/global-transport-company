@@ -20,11 +20,11 @@ public class RequestServiceImpl implements RequestService {
     private final Builder<RequestDomain, RequestEntity> requestEntitybuilder;
     private final Builder<RequestEntity, RequestDomain> requestDomainBuilder;
 
-    public RequestServiceImpl(RequestDAO requestDAO, Builder<RequestDomain, RequestEntity> builder1,
-                              Builder<RequestEntity, RequestDomain> builder2) {
+    public RequestServiceImpl(RequestDAO requestDAO, Builder<RequestDomain, RequestEntity> requestEntitybuilder,
+                              Builder<RequestEntity, RequestDomain> requestDomainBuilder) {
         this.requestDAO = requestDAO;
-        this.requestEntitybuilder = builder1;
-        this.requestDomainBuilder = builder2;
+        this.requestEntitybuilder = requestEntitybuilder;
+        this.requestDomainBuilder = requestDomainBuilder;
     }
 
     @Override

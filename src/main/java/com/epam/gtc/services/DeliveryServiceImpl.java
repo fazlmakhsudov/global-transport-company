@@ -19,11 +19,11 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final Builder<DeliveryDomain, DeliveryEntity> deliveryEntitybuilder;
     private final Builder<DeliveryEntity, DeliveryDomain> deliveryDomainBuilder;
 
-    public DeliveryServiceImpl(DeliveryDAO deliveryDAO, Builder<DeliveryDomain, DeliveryEntity> builder1,
-                               Builder<DeliveryEntity, DeliveryDomain> builder2) {
+    public DeliveryServiceImpl(DeliveryDAO deliveryDAO, Builder<DeliveryDomain, DeliveryEntity> deliveryEntitybuilder,
+                               Builder<DeliveryEntity, DeliveryDomain> deliveryDomainBuilder) {
         this.deliveryDAO = deliveryDAO;
-        this.deliveryEntitybuilder = builder1;
-        this.deliveryDomainBuilder = builder2;
+        this.deliveryEntitybuilder = deliveryEntitybuilder;
+        this.deliveryDomainBuilder = deliveryDomainBuilder;
     }
 
     @Override

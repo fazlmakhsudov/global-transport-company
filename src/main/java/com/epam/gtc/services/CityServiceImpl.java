@@ -18,11 +18,11 @@ public class CityServiceImpl implements CityService {
     private final Builder<CityDomain, CityEntity> cityEntitybuilder;
     private final Builder<CityEntity, CityDomain> cityDomainBuilder;
 
-    public CityServiceImpl(CityDAO cityDAO, Builder<CityDomain, CityEntity> builder1,
-                           Builder<CityEntity, CityDomain> builder2) {
+    public CityServiceImpl(CityDAO cityDAO, Builder<CityDomain, CityEntity> cityEntitybuilder,
+                           Builder<CityEntity, CityDomain> cityDomainBuilder) {
         this.cityDAO = cityDAO;
-        this.cityEntitybuilder = builder1;
-        this.cityDomainBuilder = builder2;
+        this.cityEntitybuilder = cityEntitybuilder;
+        this.cityDomainBuilder = cityDomainBuilder;
     }
 
     @Override

@@ -19,11 +19,11 @@ public class UserServiceImpl implements UserService {
     private final Builder<UserDomain, UserEntity> userEntitybuilder;
     private final Builder<UserEntity, UserDomain> userDomainBuilder;
 
-    public UserServiceImpl(UserDAO userDAO, Builder<UserDomain, UserEntity> builder1,
-                           Builder<UserEntity, UserDomain> builder2) {
+    public UserServiceImpl(UserDAO userDAO, Builder<UserDomain, UserEntity> userEntitybuilder,
+                           Builder<UserEntity, UserDomain> userDomainBuilder) {
         this.userDAO = userDAO;
-        this.userEntitybuilder = builder1;
-        this.userDomainBuilder = builder2;
+        this.userEntitybuilder = userEntitybuilder;
+        this.userDomainBuilder = userDomainBuilder;
     }
 
     @Override

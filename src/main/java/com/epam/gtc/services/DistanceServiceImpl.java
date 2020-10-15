@@ -19,11 +19,11 @@ public class DistanceServiceImpl implements DistanceService {
     private final Builder<DistanceDomain, DistanceEntity> distanceEntitybuilder;
     private final Builder<DistanceEntity, DistanceDomain> distanceDomainBuilder;
 
-    public DistanceServiceImpl(DistanceDAO distanceDAO, Builder<DistanceDomain, DistanceEntity> builder1,
-                               Builder<DistanceEntity, DistanceDomain> builder2) {
+    public DistanceServiceImpl(DistanceDAO distanceDAO, Builder<DistanceDomain, DistanceEntity> distanceEntitybuilder,
+                               Builder<DistanceEntity, DistanceDomain> distanceDomainBuilder) {
         this.distanceDAO = distanceDAO;
-        this.distanceEntitybuilder = builder1;
-        this.distanceDomainBuilder = builder2;
+        this.distanceEntitybuilder = distanceEntitybuilder;
+        this.distanceDomainBuilder = distanceDomainBuilder;
     }
 
     @Override
