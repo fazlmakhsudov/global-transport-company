@@ -82,11 +82,4 @@ public class AdminUsersPageCommand implements Command {
         request.setAttribute("adminusers", userModels);
         return forward;
     }
-
-
-    private int defineCurrentPage(int startRow, int rowNumber) {
-        int currentPage = (startRow + 1) / rowNumber;
-        currentPage = currentPage == 0 ? 1 : currentPage + 1;
-        return currentPage;
-    }
 }

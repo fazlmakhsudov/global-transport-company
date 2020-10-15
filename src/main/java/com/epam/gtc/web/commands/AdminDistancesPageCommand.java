@@ -2,6 +2,7 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
+import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.service_factory.ServiceFactory;
 import com.epam.gtc.service_factory.ServiceType;
@@ -133,6 +134,7 @@ public class AdminDistancesPageCommand implements Command {
             LOG.trace("all cities has been downloaded to context");
         } catch (AppException e) {
             LOG.trace("city downloading is failed", e);
+            throw new CommandException(e.getMessage(), e);
         }
     }
 

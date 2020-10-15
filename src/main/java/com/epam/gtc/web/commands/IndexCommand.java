@@ -5,6 +5,7 @@ import com.epam.gtc.dao.MySQLRateDAOImpl;
 import com.epam.gtc.dao.entities.builders.RateEntityBuilder;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.BuilderException;
+import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.service_factory.ServiceFactory;
 import com.epam.gtc.service_factory.ServiceType;
@@ -56,11 +57,12 @@ public class IndexCommand implements Command {
     }
 
     private void getRates(HttpServletRequest request) {
-        List<RateModel> rates = new ArrayList<>();
+        List<RateModel> rates;
         try {
             rates = new RateModelBuilder().create(rateService.findAll());
         } catch (ServiceException | BuilderException e) {
-            LOG.error(e.getMessage()); // TODO throw exception Message.exception
+            LOG.error(e.getMessage());
+            throw new CommandException(e.getMessage(), e);
         }
         request.setAttribute("command", "index");
         request.setAttribute("ratesList", rates);
@@ -71,11 +73,11 @@ public class IndexCommand implements Command {
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()
-                    .map(cityModel -> cityModel.getName())
+                    .map(CityModel::getName)
                     .collect(Collectors.toList());
             Map<Integer, String> citiesMap = cityModels.stream()
-                    .collect(Collectors.toMap(cityModel -> cityModel.getId(),
-                            cityModel -> cityModel.getName()));
+                    .collect(Collectors.toMap(CityModel::getId,
+                            CityModel::getName));
             request.setAttribute("citiesNames", cityNames);
             request.setAttribute("citiesMap", citiesMap);
 
@@ -84,6 +86,7 @@ public class IndexCommand implements Command {
             LOG.trace("all cities has been downloaded to context");
         } catch (AppException e) {
             LOG.trace("city downloading is failed", e);
+            throw new CommandException(e.getMessage(), e);
         }
     }
 }

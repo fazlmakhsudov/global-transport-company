@@ -163,4 +163,6 @@ public final class Messages {
     public static final String ERR_CANNOT_MAP_REQUEST = "Cannot map request";
     public static final String ERR_CANNOT_MAP_RATE = "Cannot map rate";
 
+    // Command exception
+
 }

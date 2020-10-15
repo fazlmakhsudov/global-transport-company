@@ -27,8 +27,7 @@ public class AdminMainPageCommand implements Command {
     private static final Logger LOG = Logger.getLogger(AdminMainPageCommand.class);
 
     @Override
-    public final String execute(final HttpServletRequest request, final HttpServletResponse response)
-            throws AppException {
+    public final String execute(final HttpServletRequest request, final HttpServletResponse response) {
         LOG.debug("AdminMainPageCommand starts");
         String forward = Path.PAGE_ADMIN_HOME;
         handleRequest(request);
@@ -36,7 +35,7 @@ public class AdminMainPageCommand implements Command {
         return forward;
     }
 
-    private void handleRequest(final HttpServletRequest request) throws AppException {
+    private void handleRequest(final HttpServletRequest request) {
 
         RequestService requestService = (RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE);
         InvoiceService invoiceService = (InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE);

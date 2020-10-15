@@ -2,6 +2,7 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.BuilderException;
+import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.service_factory.ServiceFactory;
 import com.epam.gtc.service_factory.ServiceType;
@@ -53,10 +54,10 @@ public class RatesCommand implements Command {
         CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
         DistanceService distanceService = (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE);
         RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
-        List<RateModel> rates = new ArrayList<>();
-        List<DistanceModel> distances = new ArrayList<>();
-        List<CityModel> cityModels = new ArrayList<>();
-        RateModel rateModel = null;
+        List<RateModel> rates;
+        List<DistanceModel> distances;
+        List<CityModel> cityModels;
+        RateModel rateModel;
         try {
             RateModelBuilder rateModelBuilder = new RateModelBuilder();
             rateModel = rateModelBuilder.create(rateService.find(rateName));
@@ -66,12 +67,13 @@ public class RatesCommand implements Command {
             cityModels = new CityModelBuilder().create(cityService.findAll());
         } catch (BuilderException | ServiceException e) {
             LOG.error(e.getMessage());
+            throw new CommandException(e.getMessage(), e);
         }
         Map<Integer, DistanceModel> distancesMap = distances.stream()
-                .collect(Collectors.toMap(distance -> distance.getId(), distance -> distance));
+                .collect(Collectors.toMap(DistanceModel::getId, distance -> distance));
         Map<Integer, String> citiesMap = cityModels.stream()
-                .collect(Collectors.toMap(cityModel -> cityModel.getId(),
-                        cityModel -> cityModel.getName()));
+                .collect(Collectors.toMap(CityModel::getId,
+                        CityModel::getName));
 
         request.setAttribute("myRate", rateModel);
         LOG.debug(String.format("My rate --> %s", rateModel));
@@ -86,17 +88,18 @@ public class RatesCommand implements Command {
     private void handleRequest(HttpServletRequest request) {
         CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
         RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
-        List<RateModel> rates = new ArrayList<>();
-        List<CityModel> cityModels = new ArrayList<>();
+        List<RateModel> rates;
+        List<CityModel> cityModels;
         try {
             rates = new RateModelBuilder().create(rateService.findAll());
             cityModels = new CityModelBuilder().create(cityService.findAll());
         } catch (BuilderException | ServiceException e) {
             LOG.error(e.getMessage());
+            throw new CommandException(e.getMessage(), e);
         }
         Map<Integer, String> citiesMap = cityModels.stream()
-                .collect(Collectors.toMap(cityModel -> cityModel.getId(),
-                        cityModel -> cityModel.getName()));
+                .collect(Collectors.toMap(CityModel::getId,
+                        CityModel::getName));
 
         request.setAttribute("citiesMap", citiesMap);
         LOG.debug(String.format("Cities map --> %s", citiesMap.toString()));

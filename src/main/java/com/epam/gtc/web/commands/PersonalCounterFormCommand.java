@@ -27,8 +27,7 @@ public class PersonalCounterFormCommand implements Command {
     private static final Logger LOG = Logger.getLogger(PersonalCounterFormCommand.class);
 
     @Override
-    public final String execute(final HttpServletRequest request, final HttpServletResponse response)
-            throws AppException {
+    public final String execute(final HttpServletRequest request, final HttpServletResponse response) {
         LOG.debug("PersonalCounterFormCommand starts");
         String forward = handleRequest(request);
         LOG.debug("PersonalCounterFormCommand finished");
@@ -36,15 +35,6 @@ public class PersonalCounterFormCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) {
-        try {
-            String forward = new URI(request.getHeader("referer")).getPath();
-            System.out.println("path: " + new URI(request.getHeader("referer")).getPath());
-            System.out.println("query : " + new URI(request.getHeader("referer")).getQuery());
-            System.out.println("4 : " + new URI(request.getHeader("referer")).getRawPath());
-            System.out.println("d : " + new URI(request.getHeader("referer")).getRawQuery());
-        } catch (URISyntaxException e) {
-            LOG.error(e.getMessage());
-        }
         int cityFromId = request.getParameter("requestcityfromid") != null ?
                 Integer.parseInt(request.getParameter("requestcityfromid")) : -1;
         LOG.trace("City from id --> " + cityFromId);

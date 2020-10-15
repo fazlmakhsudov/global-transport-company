@@ -4,6 +4,7 @@ import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.ContentType;
 import com.epam.gtc.dao.entities.constants.RequestStatus;
 import com.epam.gtc.exceptions.AppException;
+import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.service_factory.ServiceFactory;
 import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.CityService;
@@ -151,11 +152,11 @@ public class AdminRequestsPageCommand implements Command {
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()
-                    .map(cityModel -> cityModel.getName())
+                    .map(CityModel::getName)
                     .collect(Collectors.toList());
             Map<Integer, String> citiesMap = cityModels.stream()
-                    .collect(Collectors.toMap(cityModel -> cityModel.getId(),
-                            cityModel -> cityModel.getName()));
+                    .collect(Collectors.toMap(CityModel::getId,
+                            CityModel::getName));
             request.setAttribute("citiesNames", cityNames);
             request.setAttribute("citiesMap", citiesMap);
 
@@ -164,6 +165,7 @@ public class AdminRequestsPageCommand implements Command {
             LOG.trace("all cities has been downloaded to context");
         } catch (AppException e) {
             LOG.trace("city downloading is failed", e);
+            throw new CommandException(e.getMessage(), e);
         }
     }
 
