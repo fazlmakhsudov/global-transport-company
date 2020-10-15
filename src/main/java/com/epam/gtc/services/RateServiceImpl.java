@@ -59,6 +59,23 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
+    public RateDomain find(String name) throws ServiceException {
+        RateEntity rate;
+        try {
+            rate = rateDAO.read(name);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_RATE_BY_NAME, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_RATE_BY_NAME, e);
+        }
+        try {
+            return rateDomainBuilder.create(rate);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
+        }
+    }
+
+    @Override
     public boolean save(RateDomain rate) throws ServiceException {
         boolean updatedFlag;
         try {
@@ -100,5 +117,29 @@ public class RateServiceImpl implements RateService {
             LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
             throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
         }
+    }
+
+    @Override
+    public int countAllRates() {
+        return rateDAO.countAllRates();
+    }
+
+
+
+    @Override
+    public List<RateDomain> findAll(int page, int itemsPerPage) {
+        int offset = (page - 1) * itemsPerPage;
+        List<RateEntity> rateList = null;
+        try {
+            rateList = rateDAO.readRates(offset, itemsPerPage);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_RATES_WITH_LIMITATION, e);
+        }
+        try {
+            return rateDomainBuilder.create(rateList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
+        }
+        return null;
     }
 }

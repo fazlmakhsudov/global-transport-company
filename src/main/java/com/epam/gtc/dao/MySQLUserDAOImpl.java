@@ -14,9 +14,6 @@ public class MySQLUserDAOImpl implements UserDAO {
     private static final Logger LOG = Logger.getLogger(MySQLUserDAOImpl.class);
     private final Extractor<UserEntity> userExtractor = new UserExtractor();
 
-    // Queries
-    private static final String COUNT_ALL_USERS = "select count(*) from users;";
-
     /**
      * Adds new user.
      *
@@ -31,6 +28,7 @@ public class MySQLUserDAOImpl implements UserDAO {
         if (user.getId() != 0 && user.getId() > 0) {
             return 0;
         }
+        final String query = "INSERT INTO users (name, surname, email, password, role_id) VALUES (?, ?, ?, ?, ?);";
         DBManager dbm;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -38,17 +36,14 @@ public class MySQLUserDAOImpl implements UserDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            boolean shortQueryFlag = user.getRoleId() == 0;
-            pstmt = con.prepareStatement(shortQueryFlag ? Queries.SQL__CREATE_USER_SHORT.getQuery() : Queries.SQL__CREATE_USER.getQuery(),
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             int k = 1;
             pstmt.setString(k++, user.getName());
             pstmt.setString(k++, user.getSurname());
             pstmt.setString(k++, user.getEmail());
             pstmt.setString(k++, user.getPassword());
-            if (!shortQueryFlag) {
-                pstmt.setInt(k, user.getRoleId());
-            }
+            pstmt.setInt(k, user.getRoleId());
+
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
             if (rs != null && rs.next()) {
@@ -75,6 +70,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public UserEntity read(int id) throws DAOException {
+        final String query = "SELECT * FROM users WHERE id = ?;";
         UserEntity user = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -83,7 +79,7 @@ public class MySQLUserDAOImpl implements UserDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_USER_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -110,6 +106,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public UserEntity read(String email) throws DAOException {
+        final String query = "SELECT * FROM users WHERE email = ?;";
         UserEntity user = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -118,7 +115,7 @@ public class MySQLUserDAOImpl implements UserDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_USER_BY_EMAIL.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setString(1, email);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -143,7 +140,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public boolean update(UserEntity user) throws DAOException {
-        final String query = "UPDATE users SET name = ?, surname = ?, email = ?, role_id = ? WHERE id = ?;";
+        final String query = "UPDATE users SET name = ?, surname = ?, email = ?, password=?, role_id = ? WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -155,9 +152,9 @@ public class MySQLUserDAOImpl implements UserDAO {
             pstmt.setString(k++, user.getName());
             pstmt.setString(k++, user.getSurname());
             pstmt.setString(k++, user.getEmail());
+            pstmt.setString(k++, user.getPassword());
             pstmt.setInt(k++, user.getRoleId());
             pstmt.setInt(k, user.getId());
-            System.out.println("Psmt ***:  " + pstmt);
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
@@ -183,13 +180,14 @@ public class MySQLUserDAOImpl implements UserDAO {
         if (id <= 0) {
             return false;
         }
+        final String query = "DELETE FROM users where id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(Queries.SQL__DELETE_USER_BY_ID.getQuery());
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, id);
             psmt.executeUpdate();
             con.commit();
@@ -212,6 +210,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public List<UserEntity> readAll() throws DAOException {
+        final String query = "SELECT * FROM users;";
         List<UserEntity> userList = new ArrayList<>();
         DBManager dbm;
         Statement stmt = null;
@@ -221,7 +220,7 @@ public class MySQLUserDAOImpl implements UserDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(Queries.SQL__READ_ALL_USERS.getQuery());
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 userList.add(userExtractor.extract(rs));
             }
@@ -243,6 +242,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public int countAllUsers() {
+        final String query = "select count(*) from users;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
@@ -252,7 +252,7 @@ public class MySQLUserDAOImpl implements UserDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             smt = con.createStatement();
-            rs = smt.executeQuery(COUNT_ALL_USERS);
+            rs = smt.executeQuery(query);
             rs.next();
             usersNumber = rs.getInt(1);
             con.commit();
@@ -270,7 +270,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      *
      * @param offset row from which starts reading
      * @param limit  number
-     * @return
+     * @return list of UserEntities
      */
     @Override
     public List<UserEntity> readUsers(int offset, int limit) throws DAOException {

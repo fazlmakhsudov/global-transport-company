@@ -12,11 +12,7 @@ import java.util.List;
 
 public class MySQLDeliveryDAOImpl implements DeliveryDAO {
     private static final Logger LOG = Logger.getLogger(MySQLDeliveryDAOImpl.class);
-    private final Extractor<DeliveryEntity> DeliveryExtractor = new DeliveryExtractor();
-    // Queries
-    private static final String COUNT_ALL_DELIVERIES = "select count(*) from deliveries;";
-    private static final String COUNT_DELIVERIES_CONDITION_IS_STATUS = "select count(*) from deliveries where delivery_status_id = ?;";
-
+    private final Extractor<DeliveryEntity> deliveryExtractor = new DeliveryExtractor();
 
     /**
      * Adds new delivery.
@@ -28,6 +24,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      */
     @Override
     public int create(final DeliveryEntity delivery) throws DAOException {
+        final String query = "INSERT INTO deliveries (delivery_status_id, request_id) VALUES (?, ?);";
         int cond = -1;
         if (delivery.getId() != 0 && delivery.getId() > 0) {
             return 0;
@@ -39,13 +36,10 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__CREATE_DELIVERY.getQuery(),
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             int k = 1;
             pstmt.setInt(k++, delivery.getDeliveryStatusId());
-            pstmt.setInt(k++, delivery.getRequestId());
-            pstmt.setTimestamp(k++, delivery.getCreatedDate());
-            pstmt.setTimestamp(k, delivery.getUpdatedDate());
+            pstmt.setInt(k, delivery.getRequestId());
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
             if (rs != null && rs.next()) {
@@ -72,6 +66,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      */
     @Override
     public DeliveryEntity read(int id) throws DAOException {
+        final String query = "SELECT * FROM deliveries WHERE id = ?;";
         DeliveryEntity delivery = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -80,11 +75,11 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_DELIVERY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                delivery = DeliveryExtractor.extract(rs);
+                delivery = deliveryExtractor.extract(rs);
             }
             con.commit();
         } catch (SQLException ex) {
@@ -105,18 +100,17 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      */
     @Override
     public boolean update(DeliveryEntity delivery) throws DAOException {
+        final String query = "UPDATE deliveries SET delivery_status_id = ?, request_id = ? WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__UPDATE_DELIVERY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             int k = 1;
             pstmt.setInt(k++, delivery.getDeliveryStatusId());
             pstmt.setInt(k++, delivery.getRequestId());
-            pstmt.setTimestamp(k++, delivery.getCreatedDate());
-            pstmt.setTimestamp(k++, delivery.getUpdatedDate());
             pstmt.setInt(k, delivery.getId());
             pstmt.executeUpdate();
             con.commit();
@@ -140,6 +134,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      */
     @Override
     public boolean delete(int id) throws DAOException {
+        final String query = "DELETE FROM deliveries where id = ?;";
         if (id <= 0) {
             return false;
         }
@@ -149,7 +144,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(Queries.SQL__DELETE_DELIVERY_BY_ID.getQuery());
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, id);
             psmt.executeUpdate();
             con.commit();
@@ -172,6 +167,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      */
     @Override
     public List<DeliveryEntity> readAll() throws DAOException {
+        final String query = "SELECT * FROM deliveries;";
         List<DeliveryEntity> deliveryList = new ArrayList<>();
         DBManager dbm;
         Statement stmt = null;
@@ -181,9 +177,9 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(Queries.SQL__READ_ALL_DELIVERIES.getQuery());
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
-                deliveryList.add(DeliveryExtractor.extract(rs));
+                deliveryList.add(deliveryExtractor.extract(rs));
             }
             con.commit();
         } catch (SQLException ex) {
@@ -203,6 +199,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      */
     @Override
     public int countAllDeliveries() {
+        final String query = "select count(*) from deliveries;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
@@ -212,7 +209,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             smt = con.createStatement();
-            rs = smt.executeQuery(COUNT_ALL_DELIVERIES);
+            rs = smt.executeQuery(query);
             rs.next();
             deliveriesNumber = rs.getInt(1);
             con.commit();
@@ -226,13 +223,14 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
     }
 
     /**
-     * Counts deliveries with certain status id
+     * Counts user deliveries
      *
-     * @param deliveryStatusId order of status
-     * @return number of deliverys
+     * @param userId user id
+     * @return number of deliveries
      */
     @Override
-    public int countDeliveries(int deliveryStatusId) {
+    public int countUserDeliveries(int userId) {
+        final String query = "SELECT count(*) FROM deliveries as d inner join requests as r on r.id=d.request_id WHERE r.user_id=?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
@@ -241,7 +239,39 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(COUNT_DELIVERIES_CONDITION_IS_STATUS);
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, userId);
+            rs = psmt.executeQuery();
+            rs.next();
+            deliveriesNumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return deliveriesNumber;
+    }
+
+    /**
+     * Counts deliveries with certain status id
+     *
+     * @param deliveryStatusId order of status
+     * @return number of deliveries
+     */
+    @Override
+    public int countDeliveries(int deliveryStatusId) {
+        final String query = "select count(*) from deliveries where delivery_status_id = ?;";
+        DBManager dbm;
+        Connection con = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int deliveriesNumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, deliveryStatusId);
             rs = psmt.executeQuery();
             rs.next();
@@ -254,6 +284,83 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
             DBManager.close(con, psmt, rs);
         }
         return deliveriesNumber;
+    }
+
+    /**
+     * Reads d  deliveries from start row till row number
+     *
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return list of DeliveryEntities
+     */
+    @Override
+    public List<DeliveryEntity> readDeliveries(int offset, int limit) throws DAOException {
+        final String query = "SELECT * FROM deliveries LIMIT ?,?;";
+        List<DeliveryEntity> deliveryList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, offset);
+            psmt.setInt(2, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                deliveryList.add(deliveryExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_DELIVERIES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_DELIVERIES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return deliveryList;
+    }
+
+    /**
+     * Reads d  deliveries from start row till row number
+     *of certain user
+     *
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @param userId user id
+     * @return list of DeliveryEntities
+     */
+    @Override
+    public List<DeliveryEntity> readDeliveries(int offset, int limit, int userId) throws DAOException {
+        final String query = "SELECT d.id, d.delivery_status_id, d.request_id, d.created_date, " +
+                "d.updated_date FROM deliveries as d inner join requests as r on r.id=d.request_id WHERE r.user_id=? LIMIT ?,?;";
+        List<DeliveryEntity> deliveryList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            int k = 1;
+            psmt.setInt(k++, userId);
+            psmt.setInt(k++, offset);
+            psmt.setInt(k, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                deliveryList.add(deliveryExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_DELIVERIES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_DELIVERIES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return deliveryList;
     }
 
     /**

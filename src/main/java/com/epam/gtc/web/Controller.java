@@ -46,6 +46,13 @@ public class Controller extends HttpServlet {
 
         if (forward.contains("controller?command")) {
             response.sendRedirect(forward);
+        } else if (forward.contains("ajax")) {
+            String result = (String) request.getAttribute("result");
+            response.setContentType("application/json");  // Set content type of the response so that jQuery knows what it can expect.
+            response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
+            System.out.println(result);
+            response.getWriter().write(result);
+
         } else {
             request.getRequestDispatcher(forward).forward(request, response);
         }

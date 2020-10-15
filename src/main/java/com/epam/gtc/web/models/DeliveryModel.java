@@ -21,4 +21,43 @@ public class DeliveryModel implements Serializable {
     @BuilderField(transferTo = BuilderFieldConstant.LOCALDATE_FROM_DATE)
     private Date updatedDate;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDeliveryStatusName() {
+        return deliveryStatusName;
+    }
+
+    public void setDeliveryStatusName(String deliveryStatusName) {
+        this.deliveryStatusName = deliveryStatusName;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
 }

@@ -1,26 +1,106 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
+import com.epam.gtc.exceptions.BuilderException;
+import com.epam.gtc.exceptions.ServiceException;
+import com.epam.gtc.service_factory.ServiceFactory;
+import com.epam.gtc.service_factory.ServiceType;
+import com.epam.gtc.services.CityService;
+import com.epam.gtc.services.DistanceService;
+import com.epam.gtc.services.RateService;
+import com.epam.gtc.web.models.CityModel;
+import com.epam.gtc.web.models.DistanceModel;
+import com.epam.gtc.web.models.RateModel;
+import com.epam.gtc.web.models.builders.CityModelBuilder;
+import com.epam.gtc.web.models.builders.DistanceModelBuilder;
+import com.epam.gtc.web.models.builders.RateModelBuilder;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Rates command.
  */
 public class RatesCommand implements Command {
 
-	private static final long serialVersionUID = 2735976616686657267L;
-	private static final Logger LOG = Logger.getLogger(RatesCommand.class);
+    private static final long serialVersionUID = 2735976616686657267L;
+    private static final Logger LOG = Logger.getLogger(RatesCommand.class);
 
-	@Override
-	public final String execute(final HttpServletRequest request, 
-			final HttpServletResponse response) {
-		LOG.debug("Command starts");
-		LOG.debug("Command finished");
-		return Path.PAGE_RATES;
-	}
+    @Override
+    public final String execute(final HttpServletRequest request,
+                                final HttpServletResponse response) {
+        LOG.debug("Command starts");
 
+        String rateName = request.getParameter(FormRequestParameter.RATE_NAME);
+        boolean rateNameFlag = !Objects.isNull(rateName) && !rateName.isEmpty();
+        if (rateNameFlag) {
+            handleRequest(request, rateName);
+        } else {
+            handleRequest(request);
+        }
+        LOG.debug(String.format("forward --> %s", Path.PAGE_RATES));
+        LOG.debug("Command finished");
+        return Path.PAGE_RATES;
+    }
+
+    private void handleRequest(HttpServletRequest request, String rateName) {
+        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
+        DistanceService distanceService = (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE);
+        RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
+        List<RateModel> rates = new ArrayList<>();
+        List<DistanceModel> distances = new ArrayList<>();
+        List<CityModel> cityModels = new ArrayList<>();
+        RateModel rateModel = null;
+        try {
+            RateModelBuilder rateModelBuilder = new RateModelBuilder();
+            rateModel = rateModelBuilder.create(rateService.find(rateName));
+            distances = new DistanceModelBuilder().create(rateModel.getMaxDistance() <= 0d ?
+                    distanceService.findAll() : distanceService.findAll(rateModel.getMaxDistance()));
+            rates = rateModelBuilder.create(rateService.findAll());
+            cityModels = new CityModelBuilder().create(cityService.findAll());
+        } catch (BuilderException | ServiceException e) {
+            LOG.error(e.getMessage());
+        }
+        Map<Integer, DistanceModel> distancesMap = distances.stream()
+                .collect(Collectors.toMap(distance -> distance.getId(), distance -> distance));
+        Map<Integer, String> citiesMap = cityModels.stream()
+                .collect(Collectors.toMap(cityModel -> cityModel.getId(),
+                        cityModel -> cityModel.getName()));
+
+        request.setAttribute("myRate", rateModel);
+        LOG.debug(String.format("My rate --> %s", rateModel));
+        request.setAttribute("citiesMap", citiesMap);
+        LOG.debug(String.format("Cities map --> %s", citiesMap.toString()));
+        request.setAttribute("distancesMap", distancesMap);
+        LOG.debug(String.format("Distance map --> %s", distancesMap.toString()));
+        request.setAttribute("ratesList", rates);
+        LOG.debug(String.format("Rates list --> %s", rates.toString()));
+    }
+
+    private void handleRequest(HttpServletRequest request) {
+        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
+        RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
+        List<RateModel> rates = new ArrayList<>();
+        List<CityModel> cityModels = new ArrayList<>();
+        try {
+            rates = new RateModelBuilder().create(rateService.findAll());
+            cityModels = new CityModelBuilder().create(cityService.findAll());
+        } catch (BuilderException | ServiceException e) {
+            LOG.error(e.getMessage());
+        }
+        Map<Integer, String> citiesMap = cityModels.stream()
+                .collect(Collectors.toMap(cityModel -> cityModel.getId(),
+                        cityModel -> cityModel.getName()));
+
+        request.setAttribute("citiesMap", citiesMap);
+        LOG.debug(String.format("Cities map --> %s", citiesMap.toString()));
+        request.setAttribute("ratesList", rates);
+        LOG.debug(String.format("Rates list --> %s", rates.toString()));
+    }
 }

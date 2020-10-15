@@ -49,7 +49,8 @@ public final class Fields {
     }
 
     public static String findAndMapField(String name) {
-        String pattern = "([A-z]+_)?" + name.toUpperCase();
+
+        String pattern = "(ENTITY_)?(USER_)?(CARGO_)?" + name.toUpperCase();
         String beanName = null;
         try {
             beanName = (String) Arrays.stream(Fields.class.getDeclaredFields())
@@ -64,4 +65,5 @@ public final class Fields {
         beanName = Character.toLowerCase(beanName.charAt(0)) + beanName.substring(1);
         return beanName;
     }
+
 }

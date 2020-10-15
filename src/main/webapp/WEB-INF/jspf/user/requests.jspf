@@ -1,0 +1,160 @@
+                          <div class="container-fluid">
+                                  <div class="card mb-4">
+                                    <div class="card-header py-3 row">
+                                      <h5 class="m-0 font-weight-bold text-primary ml-3 col">Requests</h5>
+                                      <div class='col'>
+                                                  <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
+                                                    <button type="button" class="btn btn-outline-primary mr-5" id="addnewbutton">Add</button>
+                                                    <input type='text' name='command' value='userRequestsTab' style='display:none;'/>
+                                                    <input type='text' name='page' value='${page}' style='display:none;'/>
+                                                    <div class="form-group">
+                                                      <label class='mr-3' for="itemsperpage">Items per page</label>
+                                                      <input type="number" class="form-control text-center" id="itemsperpage"
+                                                        value='${itemsPerPage}' name='itemsPerPage' min='2' max='20'
+                                                        data-previous='${itemsPerPage}'/>
+                                                    </div>
+                                                    <div class="form-group" id='filtersubmit' style='display:none;'>
+                                                       <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                                    </div>
+                                                  </form>
+                                      </div>
+                                    </div>
+                                    <div class="card-body">
+                                      <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                          <thead>
+                                            <tr class='text-center align-middle'>
+                                              <th>#</th>
+                                              <th>ID</th>
+                                              <th>City From</th>
+                                              <th>City To</th>
+                                              <th>Weight</th>
+                                              <th>Length</th>
+                                              <th>Width</th>
+                                              <th>Height</th>
+                                              <th>Delivery date</th>
+
+                                              <th>Content type</th>
+                                              <th>Request status</th>
+                                              <th>Created date</th>
+                                              <th>Updated date</th>
+                                              <th>Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tfoot>
+                                            <tr class='text-center align-middle'>
+                                              <th>#</th>
+                                              <th>ID</th>
+                                              <th>City From</th>
+                                              <th>City To</th>
+                                              <th>Weight</th>
+                                              <th>Length</th>
+                                              <th>Width</th>
+                                              <th>Height</th>
+                                              <th>Delivery date</th>
+
+                                              <th>Content type</th>
+                                              <th>Request status</th>
+                                              <th>Created date</th>
+                                              <th>Updated date</th>
+                                              <th>Actions</th>
+                                            </tr>
+                                          </tfoot>
+
+                                          <tbody>
+                                          <c:set var='order' value='1'/>
+                                           <c:forEach var="request" items="${userRequests}">
+                                            <tr>
+                                              <td class='align-middle text-center request${request.id}'>
+                                                ${order}<c:set var='order' value='${order + 1}'/>
+                                              </td>
+                                              <td class='align-middle text-center request${request.id}'>${request.id}</td>
+                                              <td class='align-middle text-center request${request.id}'>${applicationScope['citiesMap'].get(request.cityFromId)}</td>
+                                              <td class='align-middle text-center request${request.id}'>${applicationScope['citiesMap'].get(request.cityToId)}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.weight}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.length}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.width}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.height}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.deliveryDate}</td>
+
+                                              <td class='align-middle text-center request${request.id}'>${request.contentTypeName}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.requestStatusName}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.createdDate}</td>
+                                              <td class='align-middle text-center request${request.id}'>${request.updatedDate}</td>
+
+                                              <td>
+                                                  <form action="${urlForPage}" method='POST'>
+                                                    <input type='text' name='command' value='userRequestsPage' style='display:none;'/>
+                                                    <input type='text' name='page' value='${page}' style='display:none;'/>
+                                                    <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
+                                                    <input type='text' name='requestid' value="${request.id}" style='display:none;'/>
+                                                    <div class="input-group form-group">
+                                                      <div class="input-group-prepend" id='removeSubmit${request.id}'
+                                                        style='display:none'>
+                                                        <button type="submit" class="btn btn-outline-danger">Do</button>
+                                                      </div>
+                                                      <select class="requests custom-select form-control" name='action' data-requestid='${request.id}'
+                                                            data-requestcontenttypename='${request.contentTypeName}'
+                                                            data-requestStatusName='${request.requestStatusName}'>
+                                                        <option selected>Choose...</option>
+                                                        <option value="save"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Save</option>
+                                                      </select>
+                                                    </div>
+                                                  </form>
+                                              </td>
+                                            </tr>
+                                           </c:forEach>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                      <!-- Pagination -->
+                                        <mytags:pagination allItems='${requestsNumber}' itemsNumber='${userRequests.size()}'
+                                            itemsPerPage='${itemsPerPage}' currentPage='${currentPage}' url='${urlForPage}?command=userRequestsTab' itemName='requests'/>
+                                      <!--End of Pagination -->
+
+                                  </div>
+                              </div>
+<!-- Modal HTML -->
+      <div id="myModalUpdateRequest" class="modal fade" tabindex="-1">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Save changes</h5>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                   <form action='${urlForPage}'  method='POST'>
+                  <div class="modal-body">
+                         <input type='text' name='command' value='userRequestsTab' style='display:none;'/>
+                         <input type='text' name='page' value='${page}' style='display:none;'/>
+                         <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
+                         <input type='text' id="requestid" name='requestid' value="${request.id}" style='display:none;'/>
+                         <input type='text' name='action' value='save' style='display:none;'/>
+                           <div class='form-group'>
+                                <label for='requestcontenttypename'>Content type</label>
+                                <select class="form-control" id='requestcontenttypename' name='requestcontenttypename'>
+                                        <option value='cargo'>cargo</option>
+                                        <option value='parcel_post'>parcel_post</option>
+                                        <option value='document' style='display:none;'>document</option>
+                                        <option value='jewelery' style='display:none;'>jewelery</option>
+                                </select>
+                           </div>
+
+                            <div class='form-group'>
+                                <label for='requeststatusname'>Request status</label>
+                                <select class="form-control" id='requeststatusname' name='requeststatusname'>
+                                        <option value='waiting_for_manager_review' style='display:none;'>waiting_for_manager_review</option>
+                                        <option value='waiting_for_payment' style='display:none;'>waiting_for_payment</option>
+                                        <option value='processed' style='display:none;'>processed</option>
+                                        <option value='cancelled'>cancelled</option>
+                                </select>
+                           </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+

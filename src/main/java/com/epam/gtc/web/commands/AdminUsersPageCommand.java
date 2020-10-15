@@ -1,16 +1,13 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
-import com.epam.gtc.dao.MySQLUserDAOImpl;
-import com.epam.gtc.dao.entities.builders.UserEntityBuilder;
 import com.epam.gtc.dao.entities.constants.Role;
 import com.epam.gtc.exceptions.AppException;
+import com.epam.gtc.service_factory.ServiceFactory;
+import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.UserService;
-import com.epam.gtc.services.UserServiceImpl;
 import com.epam.gtc.services.domains.UserDomain;
-import com.epam.gtc.services.domains.builders.UserDomainBuilderFromEntity;
 import com.epam.gtc.utils.Method;
-import com.epam.gtc.web.HTMLRequestParameter;
 import com.epam.gtc.web.models.UserModel;
 import com.epam.gtc.web.models.builders.UserModelBuilder;
 import org.apache.log4j.Logger;
@@ -22,7 +19,7 @@ import java.util.Optional;
 
 
 /**
- * Login command.
+ * Admin users page command.
  */
 public class AdminUsersPageCommand implements Command {
 
@@ -40,8 +37,7 @@ public class AdminUsersPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        UserService userService = new UserServiceImpl(new MySQLUserDAOImpl(), new UserEntityBuilder(),
-                new UserDomainBuilderFromEntity());
+        UserService userService = (UserService) ServiceFactory.createService(ServiceType.USER_SERVICE);
         int usersNumber = userService.countAllUsers();
         LOG.trace("Number of users : " + usersNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
@@ -53,17 +49,17 @@ public class AdminUsersPageCommand implements Command {
         String forward = Path.PAGE_ADMIN_USERS;
         if (Method.isPost(request)) {
             LOG.trace("Method is Post");
-            String action = request.getParameter(HTMLRequestParameter.ACTION);
+            String action = request.getParameter(FormRequestParameter.ACTION);
             LOG.trace("Action --> " + action);
-            int userId = Integer.parseInt(request.getParameter(HTMLRequestParameter.USER_ID));
+            int userId = Integer.parseInt(request.getParameter(FormRequestParameter.USER_ID));
             if (action.equalsIgnoreCase("update")) {
                 UserDomain userDomain = userService.find(userId);
-                String name = request.getParameter(HTMLRequestParameter.USER_NAME);
+                String name = request.getParameter(FormRequestParameter.USER_NAME);
                 LOG.trace("User name --> " + name);
                 userDomain.setName(name);
-                String surname = request.getParameter(HTMLRequestParameter.USER_SURNAME);
+                String surname = request.getParameter(FormRequestParameter.USER_SURNAME);
                 LOG.trace("User surname --> " + surname);
-                String roleName = request.getParameter(HTMLRequestParameter.USER_ROLE_NAME);
+                String roleName = request.getParameter(FormRequestParameter.USER_ROLE_NAME);
                 LOG.trace("User rolename --> " + roleName);
                 userDomain.setRole(Role.getEnumFromName(roleName));
                 userDomain.setSurname(surname);

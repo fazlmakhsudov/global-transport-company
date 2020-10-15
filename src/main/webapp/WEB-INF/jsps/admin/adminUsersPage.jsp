@@ -2,8 +2,8 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 
 <html lang="en">
-<c:set var="title" value="Admin Main page" />
-<%@ include file="/WEB-INF/jspf/head.jspf"%>
+<c:set var="title" value="Admin Users page" />
+<%@ include file="/WEB-INF/jspf/admin/head.jspf"%>
 <body id="page-top">
 <c:set var="urlForPage" value="/gtc/controller?command=adminUsersPage" scope="page"/>
   <!-- Page Wrapper -->

@@ -40,7 +40,4 @@
     	<link rel="stylesheet" type="text/css" href="css/util.css">
     	<link rel="stylesheet" type="text/css" href="css/main.css">
     	<!-- Registaration / login -->
-
-      <!-- Admin pages -->
-      <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>

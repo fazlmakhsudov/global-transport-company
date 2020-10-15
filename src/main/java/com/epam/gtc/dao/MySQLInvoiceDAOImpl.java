@@ -13,9 +13,6 @@ import java.util.List;
 public class MySQLInvoiceDAOImpl implements InvoiceDAO {
     private static final Logger LOG = Logger.getLogger(MySQLInvoiceDAOImpl.class);
     private final Extractor<InvoiceEntity> invoiceExtractor = new InvoiceExtractor();
-    // Queries
-    private static final String COUNT_ALL_INVOICES = "select count(*) from invoices;";
-    private static final String COUNT_INVOICES_CONDITION_IS_STATUS = "select count(*) from invoices where invoice_status_id = ?;";
 
     /**
      * Adds new invoice.
@@ -31,6 +28,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         if (invoice.getId() != 0 && invoice.getId() > 0) {
             return 0;
         }
+        final String query = "INSERT INTO invoices (cost, invoice_status_id, request_id) VALUES (?, ?, ?);";
         DBManager dbm;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -38,14 +36,11 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__CREATE_INVOICE.getQuery(),
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             int k = 1;
             pstmt.setDouble(k++, invoice.getCost());
             pstmt.setInt(k++, invoice.getInvoiceStatusId());
-            pstmt.setInt(k++, invoice.getRequestId());
-            pstmt.setTimestamp(k++, invoice.getCreatedDate());
-            pstmt.setTimestamp(k, invoice.getUpdatedDate());
+            pstmt.setInt(k, invoice.getRequestId());
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
             if (rs != null && rs.next()) {
@@ -72,6 +67,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      */
     @Override
     public InvoiceEntity read(int id) throws DAOException {
+        final String query = "SELECT * FROM invoices WHERE id = ?;";
         InvoiceEntity invoice = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -80,7 +76,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_INVOICE_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -105,19 +101,18 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      */
     @Override
     public boolean update(InvoiceEntity invoice) throws DAOException {
+        final String query = "UPDATE invoices SET cost = ?, invoice_status_id = ?, request_id = ? WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__UPDATE_DELIVERY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             int k = 1;
             pstmt.setDouble(k++, invoice.getCost());
             pstmt.setInt(k++, invoice.getInvoiceStatusId());
             pstmt.setInt(k++, invoice.getRequestId());
-            pstmt.setTimestamp(k++, invoice.getCreatedDate());
-            pstmt.setTimestamp(k++, invoice.getUpdatedDate());
             pstmt.setInt(k, invoice.getId());
             pstmt.executeUpdate();
             con.commit();
@@ -144,13 +139,14 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         if (id <= 0) {
             return false;
         }
+        final String query = "DELETE FROM invoices where id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(Queries.SQL__DELETE_INVOICE_BY_ID.getQuery());
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, id);
             psmt.executeUpdate();
             con.commit();
@@ -173,6 +169,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      */
     @Override
     public List<InvoiceEntity> readAll() throws DAOException {
+        final String query = "SELECT * FROM invoices;";
         List<InvoiceEntity> invoiceList = new ArrayList<>();
         DBManager dbm;
         Statement stmt = null;
@@ -182,7 +179,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(Queries.SQL__READ_ALL_INVOICES.getQuery());
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 invoiceList.add(invoiceExtractor.extract(rs));
             }
@@ -204,6 +201,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      */
     @Override
     public int countAllInvoices() {
+        final String query = "select count(*) from invoices;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
@@ -213,7 +211,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             smt = con.createStatement();
-            rs = smt.executeQuery(COUNT_ALL_INVOICES);
+            rs = smt.executeQuery(query);
             rs.next();
             invoicesNumber = rs.getInt(1);
             con.commit();
@@ -227,13 +225,14 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
     }
 
     /**
-     * Counts Invoices with certain status id
+     * Counts Invoices of certain user
      *
-     * @param InvoiceStatusId order
+     * @param userId user id
      * @return number of invoices
      */
     @Override
-    public int countInvoices(int InvoiceStatusId) {
+    public int countUserInvoices(int userId) {
+        final String query = "SELECT count(*) FROM invoices as i inner join requests as r on r.id=i.request_id WHERE r.user_id=?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
@@ -242,8 +241,8 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(COUNT_INVOICES_CONDITION_IS_STATUS);
-            psmt.setInt(1, InvoiceStatusId);
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, userId);
             rs = psmt.executeQuery();
             rs.next();
             invoicesnumber = rs.getInt(1);
@@ -255,6 +254,115 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
             DBManager.close(con, psmt, rs);
         }
         return invoicesnumber;
+    }
+
+    /**
+     * Counts Invoices with certain status id
+     *
+     * @param invoiceStatusId order
+     * @return number of invoices
+     */
+    @Override
+    public int countInvoices(int invoiceStatusId) {
+        final String query = "select count(*) from invoices where invoice_status_id = ?;";
+        DBManager dbm;
+        Connection con = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int invoicesnumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, invoiceStatusId);
+            rs = psmt.executeQuery();
+            rs.next();
+            invoicesnumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return invoicesnumber;
+    }
+
+    /**
+     * Reads invoices from start row till row number
+     *
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return list of InvoiceEntities
+     */
+    @Override
+    public List<InvoiceEntity> readInvoices(int offset, int limit) throws DAOException {
+        final String query = "SELECT * FROM invoices LIMIT ?,?;";
+        List<InvoiceEntity> invoiceList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, offset);
+            psmt.setInt(2, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                invoiceList.add(invoiceExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_INVOICES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_INVOICES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return invoiceList;
+    }
+
+    /**
+     * Reads invoices from start row till row number
+     * of certain user
+     *
+     * @param userId user id
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return list of InvoiceEntities
+     */
+    @Override
+    public List<InvoiceEntity> readInvoices(int offset, int limit, int userId) throws DAOException {
+        final String query = "SELECT i.id, i.cost, i.invoice_status_id, i.request_id, i.created_date, " +
+                "i.updated_date FROM invoices as i inner join requests as r on r.id=i.request_id WHERE r.user_id=? LIMIT ?,?;";
+        List<InvoiceEntity> invoiceList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            int k = 1;
+            psmt.setInt(k++, userId);
+            psmt.setInt(k++, offset);
+            psmt.setInt(k, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                invoiceList.add(invoiceExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_INVOICES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_INVOICES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return invoiceList;
     }
 
     /**

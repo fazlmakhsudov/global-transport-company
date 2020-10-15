@@ -9,7 +9,13 @@
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
-	<%@ include file="/WEB-INF/jspf/header.jspf"%>
+	<!-- header -->
+       	<header>
+            <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
+            <c:set var="navmenu" value="About Us" />
+            <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
+        </header>
+        <!-- header -->
 
 	<div class="main_bg">
 		<div class="wrap">
@@ -45,7 +51,9 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
+	    <!-- footer section -->
+        <%@ include file="/WEB-INF/jspf/footer.jspf"%>
+        <!-- /footer section -->
 
 </body>
 </html>

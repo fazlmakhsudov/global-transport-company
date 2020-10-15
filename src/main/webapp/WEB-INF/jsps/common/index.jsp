@@ -6,11 +6,12 @@
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
-  <%@ include file="/WEB-INF/jspf/header.jspf"%>
-  <%@ include file="/WEB-INF/jspf/service-carusel.jspf"%>
-<ctg:safe-mail>blinov@gmail.com</ctg:safe-mail>
-<br/>
-<ctg:safe-mail>blinov@gmail..com</ctg:safe-mail>
+<!-- header -->
+	<header>
+      <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
+      <%@ include file="/WEB-INF/jspf/service-carusel.jspf"%>
+  </header>
+<!-- header -->
 
   <div class="container mt-5">
     <h3 class="title text-center mb-lg-5 mb-sm-4 mb-3">
@@ -18,7 +19,7 @@
       <span>S</span>uggest
       <span>R</span>ates</h3>
     <div class="card-deck mb-3 text-center">
-    ${ctg:showrates(applicationScope['rates'], 4)}
+    ${ctg:showrates(ratesList, 4)}
     </div>
   </div>
 

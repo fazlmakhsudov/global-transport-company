@@ -108,7 +108,46 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    public int countUserDeliveries(int userId) {
+        return deliveryDAO.countUserDeliveries(userId);
+    }
+
+    @Override
     public int countDeliveries(DeliveryStatus deliveryStatus) {
         return deliveryDAO.countDeliveries(DeliveryStatus.getId(deliveryStatus));
+    }
+
+    @Override
+    public List<DeliveryDomain> findAll(int page, int itemsPerPage) {
+        int offset = (page - 1) * itemsPerPage;
+        List<DeliveryEntity> deliveryList = null;
+        try {
+            deliveryList = deliveryDAO.readDeliveries(offset, itemsPerPage);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
+        }
+        try {
+            return deliveryDomainBuilder.create(deliveryList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<DeliveryDomain> findAll(int page, int itemsPerPage, int userId) {
+        int offset = (page - 1) * itemsPerPage;
+        List<DeliveryEntity> deliveryList = null;
+        try {
+            deliveryList = deliveryDAO.readDeliveries(offset, itemsPerPage, userId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
+        }
+        try {
+            return deliveryDomainBuilder.create(deliveryList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
+        }
+        return null;
     }
 }

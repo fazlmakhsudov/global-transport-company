@@ -1,0 +1,75 @@
+     <!-- Begin Page Content -->
+                <div class="container-fluid">
+                  <div class="card shadow mb-4">
+                    <div class="card-header py-3 row">
+                      <h5 class="m-0 font-weight-bold text-primary ml-3 col">Deliveries</h5>
+                      <div class='col'>
+                                  <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
+
+                                    <input type='text' name='command' value='userDeliveriesTab' style='display:none;'/>
+                                    <input type='text' name='page' value='${page}' style='display:none;'/>
+                                    <div class="form-group">
+                                      <label class='mr-3' for="itemsperpage">Items per page</label>
+                                      <input type="number" class="form-control text-center" id="itemsperpage"
+                                        value='${itemsPerPage}' name='itemsPerPage' min='2' max='20'
+                                        data-previous='${itemsPerPage}'/>
+                                    </div>
+                                    <div class="form-group" id='filtersubmit' style='display:none;'>
+                                       <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                    </div>
+                                  </form>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr class='text-center align-middle'>
+                              <th>#</th>
+                              <th>ID</th>
+                              <th>Delivery status</th>
+                              <th>Request id</th>
+                              <th>Created date</th>
+                              <th>Updated date</th>
+
+                            </tr>
+                          </thead>
+                          <tfoot>
+                            <tr class='text-center align-middle'>
+                              <th>#</th>
+                              <th>ID</th>
+                              <th>Delivery status</th>
+                              <th>Request id</th>
+                              <th>Created date</th>
+                              <th>Updated date</th>
+
+                            </tr>
+                          </tfoot>
+
+                          <tbody>
+                          <c:set var='order' value='1'/>
+                           <c:forEach var="delivery" items="${userDeliveries}">
+                            <tr>
+                              <td class='align-middle text-center delivery${delivery.id}'>
+                                ${order}<c:set var='order' value='${order + 1}'/>
+                              </td>
+                              <td class='align-middle text-center delivery${delivery.id}'>${delivery.id}</td>
+                              <td class='align-middle text-center delivery${delivery.id}'>${delivery.deliveryStatusName}</td>
+                              <td class='align-middle text-center delivery${delivery.id}'>${delivery.requestId}</td>
+                              <td class='align-middle text-center delivery${delivery.id}'>${delivery.createdDate}</td>
+                              <td class='align-middle text-center delivery${delivery.id}'>${delivery.updatedDate}</td>
+
+                            </tr>
+                           </c:forEach>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Pagination -->
+                        <mytags:pagination allItems='${deliveriesNumber}' itemsNumber='${userDeliveries.size()}'
+                            itemsPerPage='${itemsPerPage}' currentPage='${currentPage}' url='${urlForPage}?command=userDeliveriesTab' itemName='deliveries'/>
+                      <!--End of Pagination -->
+                  </div>
+
+                </div>
+                <!-- /.container-fluid -->
+

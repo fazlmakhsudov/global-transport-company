@@ -8,9 +8,8 @@
 				<div class="large-12 columns">
 					<!-- Owl-Carousel -->
 					<div id="owl-demo" class="owl-carousel owl-theme text-center agileinfo-gallery-row">
-                        <c:forEach var="city" items="${applicationScope['cities']}">
+                        <c:forEach var="city" items="${citiesNames}">
                             <mytags:city name = "${city}" />
-
                         </c:forEach>
 					</div>
 					<a class="button secondary btn py-2 px-4 play">Play</a>

@@ -117,4 +117,27 @@ public class CityServiceImpl implements CityService {
             throw new ServiceException(Messages.ERR_CANNOT_MAP_CITY, e);
         }
     }
+
+
+    @Override
+    public int countAllCities() {
+        return cityDAO.countAllCities();
+    }
+
+    @Override
+    public List<CityDomain> findAll(int page, int itemsPerPage) {
+        int offset = (page - 1) * itemsPerPage;
+        List<CityEntity> cityList = null;
+        try {
+            cityList = cityDAO.readCities(offset, itemsPerPage);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+        }
+        try {
+            return cityDomainBuilder.create(cityList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_CITY, e);
+        }
+        return null;
+    }
 }

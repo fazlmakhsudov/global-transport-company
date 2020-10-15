@@ -131,6 +131,7 @@ public abstract class Builder<F, T> {
                 try {
                     methodGetId = enumClass.getDeclaredMethod(BuilderFieldConstant.GET_ID.getName(), String.class);
                     methodGetName = enumClass.getDeclaredMethod(BuilderFieldConstant.GET_NAME.getName());
+                    System.out.println(methodGetName);
                     String name = (String) methodGetName.invoke(obj);
                     value = methodGetId.invoke(obj, name);
                 } catch (NoSuchMethodException | InvocationTargetException e) {

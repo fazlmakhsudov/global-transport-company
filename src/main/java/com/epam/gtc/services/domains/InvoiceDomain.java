@@ -16,8 +16,8 @@ public class InvoiceDomain implements Serializable {
 
     private int id;
     private double cost;
-    @BuilderField(transferTo = BuilderFieldConstant.ID, crossQueryName = "invoiceStatus")
-    @BuilderField(transferTo = BuilderFieldConstant.NAME, crossQueryName = "invoiceStatus")
+    @BuilderField(transferTo = BuilderFieldConstant.ID, crossQueryName = "invoiceStatus", enumClass = InvoiceStatus.class)
+    @BuilderField(transferTo = BuilderFieldConstant.NAME, crossQueryName = "invoiceStatus", enumClass = InvoiceStatus.class)
     private InvoiceStatus invoiceStatus;
     private int requestId;
     @BuilderField(transferTo = BuilderFieldConstant.TIMESTAMP)

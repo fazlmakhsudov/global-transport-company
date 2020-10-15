@@ -3,7 +3,7 @@
 
 <html lang="en">
 <c:set var="title" value="Admin Main page" />
-<%@ include file="/WEB-INF/jspf/head.jspf"%>
+<%@ include file="/WEB-INF/jspf/admin/head.jspf"%>
 <body id="page-top">
 
   <!-- Page Wrapper -->

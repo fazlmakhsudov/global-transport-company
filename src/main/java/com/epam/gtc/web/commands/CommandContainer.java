@@ -15,7 +15,7 @@ public final class CommandContainer {
      * Commands.
      */
     private static final Map<String, Command> commands =
-            new TreeMap<String, Command>();
+            new TreeMap<>();
 
     static {
         // common commands
@@ -24,9 +24,27 @@ public final class CommandContainer {
         commands.put("logout", new LogoutCommand());
         commands.put("signup", new SignupCommand());
         commands.put("rates", new RatesCommand());
+        commands.put("gallery", new GalleryCommand());
+        commands.put("aboutUs", new AboutUsCommand());
+        commands.put("contactUs", new ContactUsCommand());
+
+        commands.put("userCabinet", new UserCabinetCommand());
+        commands.put("userProfileTab", new UserProfileTabCommand());
+        commands.put("userRequestsTab", new UserRequestsTabCommand());
+        commands.put("userInvoicesTab", new UserInvoicesTabCommand());
+        commands.put("userDeliveriesTab", new UserDeliveriesTabCommand());
+
+        commands.put("personalCounterForm", new PersonalCounterFormCommand());
+
         commands.put("noCommand", new NoCommand());
         commands.put("adminMainPage", new AdminMainPageCommand());
         commands.put("adminUsersPage", new AdminUsersPageCommand());
+        commands.put("adminCitiesPage", new AdminCitiesPageCommand());
+        commands.put("adminDeliveriesPage", new AdminDeliveriesPageCommand());
+        commands.put("adminDistancesPage", new AdminDistancesPageCommand());
+        commands.put("adminInvoicesPage", new AdminInvoicesPageCommand());
+        commands.put("adminRatesPage", new AdminRatesPageCommand());
+        commands.put("adminRequestsPage", new AdminRequestsPageCommand());
 
         LOG.debug("Command container was successfully initialized");
         LOG.trace("Number of commands --> " + commands.size());
@@ -49,5 +67,4 @@ public final class CommandContainer {
     private CommandContainer() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
-
 }

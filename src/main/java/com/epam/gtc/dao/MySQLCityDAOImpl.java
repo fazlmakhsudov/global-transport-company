@@ -24,6 +24,7 @@ public class MySQLCityDAOImpl implements CityDAO {
      */
     @Override
     public int create(final CityEntity city) throws DAOException {
+        final String query = "INSERT INTO cities (name) VALUES(?);";
         int cond = -1;
         if (city.getId() != 0 && city.getId() > 0) {
             return 0;
@@ -35,8 +36,7 @@ public class MySQLCityDAOImpl implements CityDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__CREATE_CITY.getQuery(),
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             int k = 1;
             pstmt.setString(k, city.getName());
             pstmt.executeUpdate();
@@ -65,6 +65,7 @@ public class MySQLCityDAOImpl implements CityDAO {
      */
     @Override
     public CityEntity read(int id) throws DAOException {
+        final String query = "SELECT * FROM cities WHERE id=?;";
         CityEntity city = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -73,7 +74,7 @@ public class MySQLCityDAOImpl implements CityDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_CITY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -100,6 +101,7 @@ public class MySQLCityDAOImpl implements CityDAO {
      */
     @Override
     public CityEntity read(String name) throws DAOException {
+        final String query = "SELECT * FROM cities WHERE name=?;";
         CityEntity city = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -108,7 +110,7 @@ public class MySQLCityDAOImpl implements CityDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_CITY_BY_NAME.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setString(1, name);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -133,13 +135,14 @@ public class MySQLCityDAOImpl implements CityDAO {
      */
     @Override
     public boolean update(CityEntity city) throws DAOException {
+        final String query = "UPDATE cities SET name = ? WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__UPDATE_CITY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             int k = 1;
             pstmt.setString(k++, city.getName());
             pstmt.setInt(k, city.getId());
@@ -168,13 +171,14 @@ public class MySQLCityDAOImpl implements CityDAO {
         if (id <= 0) {
             return false;
         }
+        final String query = "DELETE FROM cities where id=?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(Queries.SQL__DELETE_CITY_BY_ID.getQuery());
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, id);
             psmt.executeUpdate();
             con.commit();
@@ -197,6 +201,7 @@ public class MySQLCityDAOImpl implements CityDAO {
      */
     @Override
     public List<CityEntity> readAll() throws DAOException {
+        final String query = "SELECT * FROM cities;";
         List<CityEntity> cityList = new ArrayList<>();
         DBManager dbm;
         Statement stmt = null;
@@ -206,7 +211,7 @@ public class MySQLCityDAOImpl implements CityDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(Queries.SQL__READ_ALL_CITIES.getQuery());
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 cityList.add(cityExtractor.extract(rs));
             }
@@ -217,6 +222,72 @@ public class MySQLCityDAOImpl implements CityDAO {
             throw new DAOException(Messages.ERR_CANNOT_READ_ALL_CITIES, ex);
         } finally {
             DBManager.close(con, stmt, rs);
+        }
+        return cityList;
+    }
+
+    /**
+     * Counts number of cities
+     *
+     * @return number of cities
+     */
+    @Override
+    public int countAllCities() {
+        final String query = "select count(*) from cities;";
+        DBManager dbm;
+        Connection con = null;
+        Statement smt = null;
+        ResultSet rs = null;
+        int citiesNumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            smt = con.createStatement();
+            rs = smt.executeQuery(query);
+            rs.next();
+            citiesNumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_ALL_CITIES);
+        } finally {
+            DBManager.close(con, smt, rs);
+        }
+        return citiesNumber;
+    }
+
+    /**
+     * Reads cities from start row till row number
+     *
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return
+     */
+    @Override
+    public List<CityEntity> readCities(int offset, int limit) throws DAOException {
+        final String query = "SELECT * FROM cities LIMIT ?,?;";
+        List<CityEntity> cityList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, offset);
+            psmt.setInt(2, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                cityList.add(cityExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_CITIES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_CITIES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
         }
         return cityList;
     }

@@ -28,6 +28,8 @@ public class MySQLRateDAOImpl implements RateDAO {
         if (rate.getId() != 0 && rate.getId() > 0) {
             return 0;
         }
+        final String query = "INSERT INTO rates (name, max_weight, max_length, max_width, max_height, " +
+                "max_distance, cost) VALUES (?, ?, ?, ?, ?, ?, ?);";
         DBManager dbm;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -35,9 +37,9 @@ public class MySQLRateDAOImpl implements RateDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__CREATE_RATE.getQuery(),
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             int k = 1;
+            pstmt.setString(k++, rate.getName());
             pstmt.setDouble(k++, rate.getMaxWeight());
             pstmt.setDouble(k++, rate.getMaxLength());
             pstmt.setDouble(k++, rate.getMaxWidth());
@@ -70,6 +72,7 @@ public class MySQLRateDAOImpl implements RateDAO {
      */
     @Override
     public RateEntity read(int id) throws DAOException {
+        final String query = "SELECT * FROM rates WHERE id = ?;";
         RateEntity rate = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -78,7 +81,7 @@ public class MySQLRateDAOImpl implements RateDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_RATE_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -96,6 +99,42 @@ public class MySQLRateDAOImpl implements RateDAO {
     }
 
     /**
+     * Returns a rate with the given name.
+     *
+     * @param name rate name
+     * @return Rate object
+     *
+     * @throws DAOException db exception
+     */
+    @Override
+    public RateEntity read(String name) throws DAOException {
+        final String query = "SELECT * FROM rates WHERE name = ?;";
+        RateEntity rate = null;
+        DBManager dbm;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rate = RateExtractor.extract(rs);
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_OBTAIN_RATE_BY_NAME, ex);
+            throw new DAOException(Messages.ERR_CANNOT_OBTAIN_RATE_BY_NAME, ex);
+        } finally {
+            DBManager.close(con, pstmt, rs);
+        }
+        return rate;
+    }
+
+    /**
      * Updates rate.
      *
      * @param rate rate to update.
@@ -103,14 +142,17 @@ public class MySQLRateDAOImpl implements RateDAO {
      */
     @Override
     public boolean update(RateEntity rate) throws DAOException {
+        final String query = "UPDATE rates SET name = ?, max_weight = ?, max_length = ?, max_width = ?, max_height = ?, " +
+                "max_distance = ?, cost = ? WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__UPDATE_DELIVERY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             int k = 1;
+            pstmt.setString(k++, rate.getName());
             pstmt.setDouble(k++, rate.getMaxWeight());
             pstmt.setDouble(k++, rate.getMaxLength());
             pstmt.setDouble(k++, rate.getMaxWidth());
@@ -143,13 +185,14 @@ public class MySQLRateDAOImpl implements RateDAO {
         if (id <= 0) {
             return false;
         }
+        final String query = "DELETE FROM rates where id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(Queries.SQL__DELETE_RATE_BY_ID.getQuery());
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, id);
             psmt.executeUpdate();
             con.commit();
@@ -172,6 +215,7 @@ public class MySQLRateDAOImpl implements RateDAO {
      */
     @Override
     public List<RateEntity> readAll() throws DAOException {
+        final String query = "SELECT * FROM rates;";
         List<RateEntity> rateList = new ArrayList<>();
         DBManager dbm;
         Statement stmt = null;
@@ -181,7 +225,7 @@ public class MySQLRateDAOImpl implements RateDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(Queries.SQL__READ_ALL_RATES.getQuery());
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 rateList.add(RateExtractor.extract(rs));
             }
@@ -192,6 +236,72 @@ public class MySQLRateDAOImpl implements RateDAO {
             throw new DAOException(Messages.ERR_CANNOT_READ_ALL_RATES, ex);
         } finally {
             DBManager.close(con, stmt, rs);
+        }
+        return rateList;
+    }
+
+    /**
+     * Counts number of rates
+     *
+     * @return number of rates
+     */
+    @Override
+    public int countAllRates() {
+        final String query = "select count(*) from rates;";
+        DBManager dbm;
+        Connection con = null;
+        Statement smt = null;
+        ResultSet rs = null;
+        int ratesNumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            smt = con.createStatement();
+            rs = smt.executeQuery(query);
+            rs.next();
+            ratesNumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_ALL_RATES);
+        } finally {
+            DBManager.close(con, smt, rs);
+        }
+        return ratesNumber;
+    }
+
+    /**
+     * Reads rates from start row till row number
+     *
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return list of RateEntities
+     */
+    @Override
+    public List<RateEntity> readRates(int offset, int limit) throws DAOException {
+        final String query = "SELECT * FROM rates LIMIT ?,?;";
+        List<RateEntity> rateList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, offset);
+            psmt.setInt(2, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                rateList.add(RateExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_RATES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_RATES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
         }
         return rateList;
     }

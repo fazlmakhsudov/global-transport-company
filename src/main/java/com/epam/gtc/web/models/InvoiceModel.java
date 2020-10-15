@@ -5,7 +5,7 @@ import com.epam.gtc.utils.builders.BuilderField;
 import com.epam.gtc.utils.builders.BuilderFieldConstant;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 
 public class InvoiceModel implements Serializable {
@@ -14,14 +14,13 @@ public class InvoiceModel implements Serializable {
 
     private int id;
     private double cost;
-    @BuilderField(transferTo = BuilderFieldConstant.ID, crossQueryName = "invoiceStatus")
-    @BuilderField(transferTo = BuilderFieldConstant.NAME, crossQueryName = "invoiceStatus")
-    private InvoiceStatus invoiceStatus;
+    @BuilderField(transferTo = BuilderFieldConstant.ENUM_FROM_NAME, crossQueryName = "invoiceStatus", enumClass = InvoiceStatus.class)
+    private String invoiceStatusName;
     private int requestId;
-    @BuilderField(transferTo = BuilderFieldConstant.TIMESTAMP)
-    private LocalDateTime createdDate;
-    @BuilderField(transferTo = BuilderFieldConstant.TIMESTAMP)
-    private LocalDateTime updatedDate;
+    @BuilderField(transferTo = BuilderFieldConstant.LOCALDATE_FROM_DATE)
+    private Date createdDate;
+    @BuilderField(transferTo = BuilderFieldConstant.LOCALDATE_FROM_DATE)
+    private Date updatedDate;
 
     public int getId() {
         return id;
@@ -39,12 +38,12 @@ public class InvoiceModel implements Serializable {
         this.cost = cost;
     }
 
-    public InvoiceStatus getInvoiceStatus() {
-        return invoiceStatus;
+    public String getInvoiceStatusName() {
+        return invoiceStatusName;
     }
 
-    public void setInvoiceStatus(InvoiceStatus invoiceStatus) {
-        this.invoiceStatus = invoiceStatus;
+    public void setInvoiceStatusName(String invoiceStatusName) {
+        this.invoiceStatusName = invoiceStatusName;
     }
 
     public int getRequestId() {
@@ -55,19 +54,19 @@ public class InvoiceModel implements Serializable {
         this.requestId = requestId;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDateTime getUpdatedDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
+    public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
 }

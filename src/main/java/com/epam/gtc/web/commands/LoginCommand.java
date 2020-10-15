@@ -71,7 +71,7 @@ public class LoginCommand implements Command {
                 throw new AppException(Messages.ERR_CANNOT_HANDLE_POST_REQUEST, e);
             }
             if (foundUser.getPassword().equals(encryptPassword(password))) {
-                forward = Path.COMMAND_INDEX;
+                forward = Path.COMMAND_USER_CABINET;
                 session.setAttribute("user", new UserModelBuilder().create(foundUser));
                 System.out.println("password is correct");
             } else {

@@ -109,7 +109,47 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public int countUserInvoices(int userId) {
+        return invoiceDAO.countUserInvoices(userId);
+    }
+
+    @Override
     public int countInvoices(InvoiceStatus invoiceStatus) {
         return invoiceDAO.countInvoices(InvoiceStatus.getId(invoiceStatus));
     }
+
+    @Override
+    public List<InvoiceDomain> findAll(int page, int itemsPerPage) {
+        int offset = (page - 1) * itemsPerPage;
+        List<InvoiceEntity> invoiceList = null;
+        try {
+            invoiceList = invoiceDAO.readInvoices(offset, itemsPerPage);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
+        }
+        try {
+            return invoiceDomainBuilder.create(invoiceList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<InvoiceDomain> findAll(int page, int itemsPerPage, int userId) {
+        int offset = (page - 1) * itemsPerPage;
+        List<InvoiceEntity> invoiceList = null;
+        try {
+            invoiceList = invoiceDAO.readInvoices(offset, itemsPerPage, userId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
+        }
+        try {
+            return invoiceDomainBuilder.create(invoiceList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
+        }
+        return null;
+    }
+
 }

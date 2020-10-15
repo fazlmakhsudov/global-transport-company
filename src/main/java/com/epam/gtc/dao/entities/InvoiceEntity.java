@@ -67,4 +67,16 @@ public class InvoiceEntity implements Serializable {
     public void setUpdatedDate(Timestamp updatedDate) {
         this.updatedDate = updatedDate;
     }
+
+    @Override
+    public String toString() {
+        return "InvoiceEntity{" +
+                "id=" + id +
+                ", cost=" + cost +
+                ", invoiceStatusId=" + invoiceStatusId +
+                ", requestId=" + requestId +
+                ", createdDate=" + createdDate +
+                ", updatedDate=" + updatedDate +
+                '}';
+    }
 }

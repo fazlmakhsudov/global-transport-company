@@ -109,7 +109,46 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public int countUserRequests(int userId) {
+        return requestDAO.countUserRequests(userId);
+    }
+
+    @Override
     public int countRequests(RequestStatus requestStatus) {
         return requestDAO.countRequests(RequestStatus.getId(requestStatus));
+    }
+
+    @Override
+    public List<RequestDomain> findAll(int page, int itemsPerPage) {
+        int offset = (page - 1) * itemsPerPage;
+        List<RequestEntity> requestList = null;
+        try {
+            requestList = requestDAO.readRequests(offset, itemsPerPage);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+        }
+        try {
+            return requestDomainBuilder.create(requestList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<RequestDomain> findAll(int page, int itemsPerPage, int userId) {
+        int offset = (page - 1) * itemsPerPage;
+        List<RequestEntity> requestList = null;
+        try {
+            requestList = requestDAO.readRequests(offset, itemsPerPage, userId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+        }
+        try {
+            return requestDomainBuilder.create(requestList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
+        }
+        return null;
     }
 }

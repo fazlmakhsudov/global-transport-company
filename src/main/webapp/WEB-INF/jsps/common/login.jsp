@@ -5,7 +5,11 @@
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body style="background-color: #666666;">
-	<%@ include file="/WEB-INF/jspf/header.jspf"%>
+	<!-- header -->
+       	<header>
+            <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
+        </header>
+        <!-- header -->
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">

@@ -14,11 +14,6 @@ public class MySQLRequestDAOImpl implements RequestDAO {
     private static final Logger LOG = Logger.getLogger(MySQLRequestDAOImpl.class);
     private final Extractor<RequestEntity> RequestExtractor = new RequestExtractor();
 
-    // Queries
-    private static final String COUNT_ALL_REQUESTS = "select count(*) from requests;";
-    private static final String COUNT_REQUESTS_CONDITION_IS_STATUS = "select count(*) from requests where request_status_id = ?;";
-
-
     /**
      * Adds new request.
      *
@@ -33,6 +28,8 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         if (request.getId() != 0 && request.getId() > 0) {
             return 0;
         }
+        final String query = "INSERT INTO requests (city_from_id, city_to_id, weight, length, width, height," +
+                " delivery_date, user_id, content_type_id, request_status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         DBManager dbm;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -40,8 +37,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__CREATE_REQUEST.getQuery(),
-                    PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             int k = 1;
             pstmt.setInt(k++, request.getCityFromId());
             pstmt.setInt(k++, request.getCityToId());
@@ -52,9 +48,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
             pstmt.setTimestamp(k++, request.getDeliveryDate());
             pstmt.setInt(k++, request.getUserId());
             pstmt.setInt(k++, request.getContentTypeId());
-            pstmt.setInt(k++, request.getRequestStatusId());
-            pstmt.setTimestamp(k++, request.getCreatedDate());
-            pstmt.setTimestamp(k, request.getUpdatedDate());
+            pstmt.setInt(k, request.getRequestStatusId());
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
             if (rs != null && rs.next()) {
@@ -81,6 +75,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      */
     @Override
     public RequestEntity read(int id) throws DAOException {
+        final String query = "SELECT * FROM requests WHERE id = ?;";
         RequestEntity request = null;
         DBManager dbm;
         PreparedStatement pstmt = null;
@@ -89,7 +84,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__READ_REQUEST_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -114,13 +109,16 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      */
     @Override
     public boolean update(RequestEntity request) throws DAOException {
+        final String query = "UPDATE requests SET city_from_id = ?, city_to_id = ?, weight = ?, length = ?, width = ?, " +
+                "height = ?, delivery_date = ?, user_id = ?, content_type_id = ?, request_status_id = ? " +
+                "WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            pstmt = con.prepareStatement(Queries.SQL__UPDATE_DELIVERY_BY_ID.getQuery());
+            pstmt = con.prepareStatement(query);
             int k = 1;
             pstmt.setInt(k++, request.getCityFromId());
             pstmt.setInt(k++, request.getCityToId());
@@ -132,8 +130,6 @@ public class MySQLRequestDAOImpl implements RequestDAO {
             pstmt.setInt(k++, request.getUserId());
             pstmt.setInt(k++, request.getContentTypeId());
             pstmt.setInt(k++, request.getRequestStatusId());
-            pstmt.setTimestamp(k++, request.getCreatedDate());
-            pstmt.setTimestamp(k++, request.getUpdatedDate());
             pstmt.setInt(k, request.getId());
             pstmt.executeUpdate();
             con.commit();
@@ -160,13 +156,14 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         if (id <= 0) {
             return false;
         }
+        final String query = "DELETE FROM requests where id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(Queries.SQL__DELETE_REQUEST_BY_ID.getQuery());
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, id);
             psmt.executeUpdate();
             con.commit();
@@ -189,6 +186,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      */
     @Override
     public List<RequestEntity> readAll() throws DAOException {
+        final String query = "SELECT * FROM requests;";
         List<RequestEntity> requestList = new ArrayList<>();
         DBManager dbm;
         Statement stmt = null;
@@ -198,7 +196,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(Queries.SQL__READ_ALL_REQUESTS.getQuery());
+            rs = stmt.executeQuery(query);
             while (rs.next()) {
                 requestList.add(RequestExtractor.extract(rs));
             }
@@ -220,6 +218,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      */
     @Override
     public int countAllRequests() {
+        final String query = "select count(*) from requests;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
@@ -229,7 +228,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
             smt = con.createStatement();
-            rs = smt.executeQuery(COUNT_ALL_REQUESTS);
+            rs = smt.executeQuery(query);
             rs.next();
             requestsNumber = rs.getInt(1);
             con.commit();
@@ -243,13 +242,15 @@ public class MySQLRequestDAOImpl implements RequestDAO {
     }
 
     /**
-     * Counts requests with certain status id
+     * Count all user requests
      *
-     * @param requestStatusId order of status
+     * @param userId user id
      * @return number of requests
      */
+
     @Override
-    public int countRequests(int requestStatusId) {
+    public int countUserRequests(int userId) {
+        final String query = "select count(*) from requests where user_id=?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
@@ -258,7 +259,39 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
-            psmt = con.prepareStatement(COUNT_REQUESTS_CONDITION_IS_STATUS);
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, userId);
+            rs = psmt.executeQuery();
+            rs.next();
+            requestsNumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return requestsNumber;
+    }
+
+    /**
+     * Counts requests with certain status id
+     *
+     * @param requestStatusId order of status
+     * @return number of requests
+     */
+    @Override
+    public int countRequests(int requestStatusId) {
+        final String query = "select count(*) from requests where request_status_id = ?;";
+        DBManager dbm;
+        Connection con = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int requestsNumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
             psmt.setInt(1, requestStatusId);
             rs = psmt.executeQuery();
             rs.next();
@@ -271,6 +304,82 @@ public class MySQLRequestDAOImpl implements RequestDAO {
             DBManager.close(con, psmt, rs);
         }
         return requestsNumber;
+    }
+
+    /**
+     * Reads requests from start row till row number
+     *
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return list of RequestEntities
+     */
+    @Override
+    public List<RequestEntity> readRequests(int offset, int limit) throws DAOException {
+        final String query = "SELECT * FROM requests LIMIT ?,?;";
+        List<RequestEntity> requestList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, offset);
+            psmt.setInt(2, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                requestList.add(RequestExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_REQUESTS_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_REQUESTS_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return requestList;
+    }
+
+    /**
+     * Reads requests from start row till row number
+     * of certain user
+     *
+     * @param userId user id
+     * @param offset row from which starts reading
+     * @param limit  number
+     * @return list of RequestEntities
+     */
+    @Override
+    public List<RequestEntity> readRequests(int offset, int limit, int userId) throws DAOException {
+        final String query = "SELECT * FROM requests where user_id=? LIMIT ?,?;";
+        List<RequestEntity> requestList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            int k = 1;
+            psmt.setInt(k++, userId);
+            psmt.setInt(k++, offset);
+            psmt.setInt(k, limit);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                requestList.add(RequestExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_REQUESTS_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_REQUESTS_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return requestList;
     }
 
     /**

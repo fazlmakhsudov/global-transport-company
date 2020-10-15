@@ -1,11 +1,11 @@
+// Personal modal form
 
-  // Pagination
 
+
+//registation, login
   $("a.page-link").on('click', function(){
     $(this).css({"border": "1px solid red",  "border-radius": "3%"});
   });
-
-
 
 
   $( "#repeat-password" ).change(function() {
@@ -94,8 +94,109 @@
 
         function hideValidate(input) {
             var thisAlert = $(input).parent();
-
             $(thisAlert).removeClass('alert-validate');
         }
+
+
+
+                // Personal form
+                $(document).ready(
+                    function() {
+                         $("#year").text(new Date().getFullYear());
+                         // Personal counter
+                                        let inputs = $('.requestfield');
+                                        $('#pricecounternav').on('click', function(){
+                                           let check = true;
+                                           for(let i=0; i<inputs.length; i++) {
+                                               $(inputs[i]).val('');
+                                           }
+                                            $('#showrequestcost').css({'display':'none'});
+                                           $("#myModalPersonalCounter").modal('show');
+                                        });
+
+
+
+
+                                         $('.requestfield').on('change',function(e){
+
+                                             let check = true;
+                                             for(let i=0; i<inputs.length; i++)
+                                             {
+                                                 if(validate(inputs[i]) == false){
+                                                     $(inputs[i]).css({"border": "1px solid red",  "border-radius": "5%"});
+                                                     check=false;
+                                                 } else {
+                                                    $(inputs[i]).css({"border": "none"});
+                                                 }
+                                             }
+                                             if ($('#requestcityfromid').val().trim()==$('#requestcitytoid').val().trim()) {
+                                                $('#requestcityfromid').css({"border": "1px solid yellow",  "border-radius": "5%"});
+                                                $('#requestcitytoid').css({"border": "1px solid yellow",  "border-radius": "5%"});
+                                             }
+
+                                             let values = getData(inputs);
+                                             let i = 0;
+                                            if (check) {
+
+                                              $.ajax({url: "/gtc/controller?command=personalCounterForm",
+                                              data: {
+                                                'requestcityfromid' : values[i++],
+                                                'requestcitytoid' : values[i++],
+                                                'requestweight' : values[i++],
+                                                'requestlength' : values[i++],
+                                                'requestwidth' : values[i++],
+                                                'requestheight' : values[i++],
+                                                'requestdeliverydate' : values[i++],
+                                                'requestcontenttypename' : values[i++],
+                                              },
+                                              success: function(result){
+                                                 console.log('result', result);
+                                                 $('#requestcost').text(result.requestcost);
+                                                 check = true;
+                                              },
+                                              error: function(result) {
+                                                    check = false;
+                                                }
+                                              });
+                                            }
+                                            if (check) {
+                                                $('#showrequestcost').css({'display':'inherit'});
+                                            } else {
+                                                $('#showrequestcost').css({'display':'none'});
+                                            }
+                                         });
+
+
+
+
+                    }
+                );
+                                      function validate (input) {
+
+                                             if($(input).attr('type') == 'select') {
+                                                 if($(input).val() == 'Choose...') {
+                                                    return false;
+                                                 }
+                                             }
+                                             else {
+                                                 if($(input).val() == ''){
+                                                     return false;
+                                                 }
+                                             }
+                                         }
+
+
+                                        function getData(inputs) {
+                                            let data = [];
+                                            for(let i=0; i<inputs.length; i++) {
+                                                let key = $(inputs[i]).prop('id');
+                                                let value = $(inputs[i]).val();
+                                                data.push(value);
+                                            }
+                                            return data;
+                                        }
+
+
+
 
 

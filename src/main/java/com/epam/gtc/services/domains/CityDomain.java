@@ -1,9 +1,5 @@
 package com.epam.gtc.services.domains;
 
-import com.epam.gtc.dao.entities.CityEntity;
-import com.epam.gtc.exceptions.BuilderException;
-import com.epam.gtc.services.domains.builders.CityDomainBuilderFromEntity;
-
 import java.io.Serializable;
 
 
@@ -32,10 +28,4 @@ public class CityDomain implements Serializable {
         this.name = name;
     }
 
-    public static void main(String[] args) throws BuilderException {
-        CityEntity cityEntity = new CityEntity();
-        cityEntity.setId(1);
-        cityEntity.setName("Nfsd");
-        CityDomain c = new CityDomainBuilderFromEntity().create(cityEntity);
-    }
 }

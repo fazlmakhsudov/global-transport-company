@@ -12,6 +12,5 @@ public interface UserService extends BaseService<UserDomain> {
     int countAllUsers();
 
     List<UserDomain> findAll(int page, int itemsPerPage);
-//    List<UserDomain> findAll(int startRow, int rowNumber);
 }
 

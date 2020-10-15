@@ -48,7 +48,12 @@
         </init-param>
         <init-param>
             <param-name>out-of-control</param-name>
-            <param-value>index logout signup noCommand login rates adminMainPage adminUsersPage</param-value>
+            <param-value>index logout signup noCommand login rates gallery aboutUs contactUs adminMainPage
+                adminUsersPage adminCitiesPage adminDeliveriesPage
+                adminDistancesPage adminInvoicesPage adminRatesPage adminRequestsPage
+                userCabinet userProfileTab userRequestsTab userInvoicesTab userDeliveriesTab
+                personalCounterForm
+            </param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -69,10 +74,10 @@
     </resource-ref>
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/WEB-INF/jsp/error_page.jsp</location>
+        <location>/WEB-INF/jsps/common/error_page.jsp</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/jsp/error_page.jsp</location>
+        <location>/WEB-INF/jsps/common/error_page.jsp</location>
     </error-page>
 </web-app>

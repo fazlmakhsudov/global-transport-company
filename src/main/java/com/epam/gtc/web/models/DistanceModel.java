@@ -43,4 +43,14 @@ public class DistanceModel implements Serializable {
     public void setDistance(double distance) {
         this.distance = distance;
     }
+
+    @Override
+    public String toString() {
+        return "DistanceModel{" +
+                "id=" + id +
+                ", fromCityId=" + fromCityId +
+                ", toCityId=" + toCityId +
+                ", distance=" + distance +
+                '}';
+    }
 }

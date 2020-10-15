@@ -101,4 +101,59 @@ public class DistanceServiceImpl implements DistanceService {
             throw new ServiceException(Messages.ERR_CANNOT_MAP_DISTANCE, e);
         }
     }
+
+    @Override
+    public int countAllDistances() {
+        return distanceDAO.countAllDistances();
+    }
+
+    @Override
+    public List<DistanceDomain> findAll(int page, int itemsPerPage) {
+        int offset = (page - 1) * itemsPerPage;
+        List<DistanceEntity> distanceList = null;
+        try {
+            distanceList = distanceDAO.readDistances(offset, itemsPerPage);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
+        }
+        try {
+            return distanceDomainBuilder.create(distanceList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+        }
+        return null;
+    }
+
+    @Override
+    public DistanceDomain find(int fromCityId, int toCityId) throws ServiceException {
+        DistanceEntity distance;
+        try {
+            distance = distanceDAO.read(fromCityId, toCityId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_DISTANCE_BY_ITS_FIELDS, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_DISTANCE_BY_ITS_FIELDS, e);
+        }
+        try {
+            return distanceDomainBuilder.create(distance);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+        }
+    }
+
+    @Override
+    public List<DistanceDomain> findAll(double distance) throws ServiceException {
+        List<DistanceEntity> distanceList = null;
+        try {
+            distanceList = distanceDAO.readAll(distance);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
+        }
+        try {
+            return distanceDomainBuilder.create(distanceList);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+        }
+        return null;
+    }
 }

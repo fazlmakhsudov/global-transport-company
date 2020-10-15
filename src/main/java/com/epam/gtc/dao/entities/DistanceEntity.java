@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 public class DistanceEntity implements Serializable {
-    private static final long serialVersionUID = 2l; // need to redefine
+    private static final long serialVersionUID = 2l; //TODO
     private int id;
     private int fromCityId;
     private int toCityId;

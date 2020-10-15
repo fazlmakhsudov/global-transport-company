@@ -34,6 +34,94 @@
     		</div>
     	</footer>
     	<!-- //footer -->
+    	<!--Personal counter modal form-->
+                  <div id="myModalPersonalCounter" class="modal fade" tabindex="-1">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title">Personal counter</h5>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                              <form action='/gtc/controller'  method='POST'>
+                              <div class="modal-body">
+                                     <input type='text' name='command' value='userRequestsTab' style='display:none;'/>
+                                     <input type='text' name='page' value='${page}' style='display:none;'/>
+                                     <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
+                                     <input type='text' name='action' value='add' style='display:none;'/>
+
+
+                                   <div class='form-group'>
+                                        <label for='requestcityfromid'>City from</label>
+                                        <select class="form-control requestfield text-center" id='requestcityfromid' name='requestcityfromid'>
+                                           <option value=''>Choose...</option>
+                                           <c:forEach var="cityid" items="${citiesMap.keySet()}">
+                                                <option value='${cityid}'>${citiesMap.get(cityid)}</option>
+                                           </c:forEach>
+                                        </select>
+                                   </div>
+                                   <div class='form-group'>
+                                        <label for='requestcitytoid'>City to</label>
+                                        <select class="form-control requestfield text-center" id='requestcitytoid' name='requestcitytoid'>
+                                           <option value=''>Choose...</option>
+                                           <c:forEach var="cityid" items="${citiesMap.keySet()}">
+                                                <option value='${cityid}'>${citiesMap.get(cityid)}</option>
+                                           </c:forEach>
+                                        </select>
+                                   </div>
+        
+                                 <div class="form-group">
+                                   <label for="requestweight">Weight</label>
+                                   <input type="number" class="form-control requestfield  text-center" id='requestweight' name='requestweight'
+                                     placeholder="Enter value" min='1' />
+                                 </div>
+                                 <div class="form-group">
+                                   <label for="requestlength">Length</label>
+                                   <input type="number" class="form-control requestfield  text-center" id='requestlength' name='requestlength'
+                                     placeholder="Enter value" min='1' />
+                                 </div>
+                                 <div class="form-group">
+                                   <label for="requestwidth">Width</label>
+                                   <input type="number" class="form-control requestfield  text-center" id='requestwidth' name='requestwidth'
+                                     placeholder="Enter value" min='1' />
+                                 </div>
+                                 <div class="form-group">
+                                   <label for="requestheight">Height</label>
+                                   <input type="number" class="form-control requestfield  text-center" id='requestheight' name='requestheight'
+                                     placeholder="Enter value" min='1' />
+                                 </div>
+        
+                                 <div class="form-group">
+                                   <label for="requestdeliverydate">Delivery date</label>
+                                   <input type="datetime-local" class="form-control requestfield" id='requestdeliverydate' name='requestdeliverydate'
+                                     placeholder="Enter date" />
+                                 </div>
+        
+                                    <div class='form-group'>
+                                        <label for='requestcontenttypename'>Content type</label>
+                                        <select class="form-control requestfield  text-center" id='requestcontenttypename' name='requestcontenttypename'>
+                                                <option value='cargo'>cargo</option>
+                                                <option value='parcel_post'>parcel_post</option>
+                                                <option value='document' >document</option>
+                                                <option value='jewelery'>jewelery</option>
+                                        </select>
+                                   </div>
+                                   <div class='form-group pl-3 pr-3 pb-1' id='showrequestcost' style='border: 2px teal solid;display:none;'>
+                                        <label class='ml-2' for='requestcost'>Cost</label>
+                                       <p class="form-control text-center" id='requestcost' name='requestcost'
+                                          value='${requestcost}'/>
+                                   </div>
+        
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                  <c:if test = "${user != null}">
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                  </c:if>
+                              </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
 
     	<!-- Js files -->
         	<!-- JavaScript -->
@@ -116,9 +204,5 @@
         	<a href="#" id="toTop" style="display: block;">
         		<span id="toTopHover" style="opacity: 1;"> </span>
         	</a>
-	<script>
-        document.getElementById("year").innerHTML = new Date().getFullYear();
-    </script>
+
 	<script src="js/main.js"></script>
-
-
