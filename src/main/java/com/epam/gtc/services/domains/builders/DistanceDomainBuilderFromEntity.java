@@ -3,11 +3,17 @@ package com.epam.gtc.services.domains.builders;
 import com.epam.gtc.dao.entities.DistanceEntity;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.services.domains.DistanceDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Creates(maps) DistanceDomain object from DistanceEntity object
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DistanceDomainBuilderFromEntity extends Builder<DistanceEntity, DistanceDomain> {
     public DistanceDomain create(DistanceEntity distance) throws BuilderException {
         return build(distance, DistanceDomain.class);

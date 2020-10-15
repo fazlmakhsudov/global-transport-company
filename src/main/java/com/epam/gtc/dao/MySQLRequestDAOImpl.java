@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.RequestEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL Request DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLRequestDAOImpl implements RequestDAO {
     private static final Logger LOG = Logger.getLogger(MySQLRequestDAOImpl.class);
     private final Extractor<RequestEntity> RequestExtractor = new RequestExtractor();
@@ -217,13 +222,13 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      * @return number of requests
      */
     @Override
-    public int countAllRequests() {
+    public int countAllRequests() throws DAOException {
         final String query = "select count(*) from requests;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
         ResultSet rs = null;
-        int requestsNumber = 0;
+        int requestsNumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -235,6 +240,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_ALL_REQUESTS);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_REQUESTS, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }
@@ -249,13 +255,13 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      */
 
     @Override
-    public int countUserRequests(int userId) {
+    public int countUserRequests(int userId) throws DAOException {
         final String query = "select count(*) from requests where user_id=?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         ResultSet rs = null;
-        int requestsNumber = 0;
+        int requestsNumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -268,6 +274,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION, ex);
         } finally {
             DBManager.close(con, psmt, rs);
         }
@@ -281,7 +288,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
      * @return number of requests
      */
     @Override
-    public int countRequests(int requestStatusId) {
+    public int countRequests(int requestStatusId) throws DAOException {
         final String query = "select count(*) from requests where request_status_id = ?;";
         DBManager dbm;
         Connection con = null;
@@ -300,6 +307,7 @@ public class MySQLRequestDAOImpl implements RequestDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION, ex);
         } finally {
             DBManager.close(con, psmt, rs);
         }

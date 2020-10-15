@@ -2,7 +2,11 @@ package com.epam.gtc.web.models;
 
 import java.io.Serializable;
 
-
+/**
+ * Distance model
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DistanceModel implements Serializable {
 
     private static final long serialVersionUID = 2l; // need to redefine

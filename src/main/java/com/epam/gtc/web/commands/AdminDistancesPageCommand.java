@@ -4,11 +4,11 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.domains.DistanceDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 
 /**
  * Admin distance page command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AdminDistancesPageCommand implements Command {
 
@@ -70,21 +72,21 @@ public class AdminDistancesPageCommand implements Command {
     private String doPost(HttpServletRequest request, DistanceService distanceService, int page, int itemsPerPage) throws ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
 
         int fromCityId = action.equalsIgnoreCase("remove") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParameter.DISTANCE_FROM_CITY_ID));
+                Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_FROM_CITY_ID));
         LOG.trace("Distance from city id --> " + fromCityId);
         int toCityId = action.equalsIgnoreCase("remove") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParameter.DISTANCE_TO_CITY_ID));
+                Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_TO_CITY_ID));
         LOG.trace("Distance to city id --> " + toCityId);
         double distance = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.DISTANCE_DISTANCE));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.DISTANCE_DISTANCE));
         LOG.trace("Distance between cities --> " + distance);
 
         int distanceId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParameter.DISTANCE_ID));
+                Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_ID));
         LOG.trace("Distance id --> " + distanceId);
         switch (action) {
             case "add":

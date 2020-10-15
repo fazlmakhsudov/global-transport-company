@@ -4,6 +4,11 @@ import com.epam.gtc.web.models.RateModel;
 
 import java.util.List;
 
+/**
+ * Generates html block for rates
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class ShowRatesFunction {
     public static String showRates(List<RateModel> rateModelList, int number) {
         StringBuilder sb = new StringBuilder();

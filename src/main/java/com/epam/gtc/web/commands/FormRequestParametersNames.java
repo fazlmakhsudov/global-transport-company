@@ -1,6 +1,11 @@
 package com.epam.gtc.web.commands;
 
-public class FormRequestParameter {
+/**
+ * Holder for form request parameters names
+ *
+ * @author Fazliddin Makhsudov
+ */
+public class FormRequestParametersNames {
     public static String ACTION = "action";
     public static String USER_ID = "userid";
     public static String USER_NAME = "username";

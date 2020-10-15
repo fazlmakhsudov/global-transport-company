@@ -4,11 +4,12 @@ import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.DeliveryStatus;
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
 import com.epam.gtc.dao.entities.constants.RequestStatus;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
+import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.RequestService;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,8 @@ import java.util.*;
 
 /**
  * Admin main page command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AdminMainPageCommand implements Command {
 
@@ -41,9 +44,13 @@ public class AdminMainPageCommand implements Command {
         DeliveryService deliveryService = (DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE);
 
         Map<String, List<String>> dashboard = new HashMap<>();
-        dashboard.put("Requests", formRequestsReport(requestService));
-        dashboard.put("Invoices", formInvoiceReport(invoiceService));
-        dashboard.put("Deliveries", formDeliveryReport(deliveryService));
+        try {
+            dashboard.put("Requests", formRequestsReport(requestService));
+            dashboard.put("Invoices", formInvoiceReport(invoiceService));
+            dashboard.put("Deliveries", formDeliveryReport(deliveryService));
+        } catch (ServiceException e) {
+            LOG.error(e.getMessage(),e);
+        }
 
         LOG.trace("requests --> " + dashboard.get("Requests"));
         LOG.trace("invoices --> " + dashboard.get("Invoices"));
@@ -52,15 +59,15 @@ public class AdminMainPageCommand implements Command {
         request.setAttribute("dashboard", dashboard);
     }
 
-    private List<String> formDeliveryReport(DeliveryService deliveryService) {
+    private List<String> formDeliveryReport(DeliveryService deliveryService) throws ServiceException {
         List<String> listOfStatusData = new ArrayList<>();
-        Arrays.stream(DeliveryStatus.values()).forEach(deliveryStatus -> {
+        for (DeliveryStatus deliveryStatus : DeliveryStatus.values()) {
             String row = new StringBuilder(formatStatusName(deliveryStatus.getName()))
                     .append(" : ")
                     .append(deliveryService.countDeliveries(deliveryStatus))
                     .append(" delivery(ies)").toString();
             listOfStatusData.add(row);
-        });
+        }
         String allDeliveries = new StringBuilder("All deliveries : ")
                 .append(deliveryService.countAllDeliveries())
                 .append(" deliveries").toString();
@@ -68,15 +75,15 @@ public class AdminMainPageCommand implements Command {
         return listOfStatusData;
     }
 
-    private List<String> formInvoiceReport(InvoiceService invoiceService) {
+    private List<String> formInvoiceReport(InvoiceService invoiceService) throws ServiceException {
         List<String> listOfStatusData = new ArrayList<>();
-        Arrays.stream(InvoiceStatus.values()).forEach(invoiceStatus -> {
+        for (InvoiceStatus invoiceStatus : InvoiceStatus.values()) {
             String row = new StringBuilder(formatStatusName(invoiceStatus.getName()))
                     .append(" : ")
                     .append(invoiceService.countInvoices(invoiceStatus))
                     .append(" invoice(s)").toString();
             listOfStatusData.add(row);
-        });
+        }
         String allInvoices = "All invoices : " +
                 invoiceService.countAllInvoices() +
                 " invoices";
@@ -84,15 +91,15 @@ public class AdminMainPageCommand implements Command {
         return listOfStatusData;
     }
 
-    private List<String> formRequestsReport(RequestService requestService) {
+    private List<String> formRequestsReport(RequestService requestService) throws ServiceException {
         List<String> listOfStatusData = new ArrayList<>();
-        Arrays.stream(RequestStatus.values()).forEach(requestStatus -> {
+        for (RequestStatus requestStatus : RequestStatus.values()) {
             String row = new StringBuilder(formatStatusName(requestStatus.getName()))
                     .append(" : ")
                     .append(requestService.countRequests(requestStatus))
                     .append(" request(s)").toString();
             listOfStatusData.add(row);
-        });
+        }
         String allRequests = new StringBuilder("All requests : ")
                 .append(requestService.countAllRequests())
                 .append(" requests").toString();

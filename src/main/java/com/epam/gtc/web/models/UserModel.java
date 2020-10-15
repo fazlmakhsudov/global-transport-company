@@ -1,10 +1,15 @@
 package com.epam.gtc.web.models;
 
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.util.Date;
 
+/**
+ * User model
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class UserModel {
     private int id;
     private String name;

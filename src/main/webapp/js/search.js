@@ -1,6 +1,6 @@
 $(function () {
 	// Remove Search if user Resets Form or hits Escape!
-	$('body, .navbar-collapse form[role="search"] button[type="reset"]').on('click keyup', function(event) {
+	$('body, .navbar-collapse form[role="search"] button[type="reset"]').on('click keyup', function (event) {
 		console.log(event.currentTarget);
 		if (event.which == 27 && $('.navbar-collapse form[role="search"]').hasClass('active') ||
 			$(event.currentTarget).attr('type') == 'reset') {
@@ -15,7 +15,7 @@ $(function () {
 	}
 
 	// Show Search if form is not active // event.preventDefault() is important, this prevents the form from submitting
-	$(document).on('click', '.navbar-collapse form[role="search"]:not(.active) button[type="submit"]', function(event) {
+	$(document).on('click', '.navbar-collapse form[role="search"]:not(.active) button[type="submit"]', function (event) {
 		event.preventDefault();
 		var $form = $(this).closest('form'),
 			$input = $form.find('input');
@@ -25,7 +25,7 @@ $(function () {
 	});
 	// ONLY FOR DEMO // Please use $('form').submit(function(event)) to track from submission
 	// if your form is ajax remember to call `closeSearch()` to close the search container
-	$(document).on('click', '.navbar-collapse form[role="search"].active button[type="submit"]', function(event) {
+	$(document).on('click', '.navbar-collapse form[role="search"].active button[type="submit"]', function (event) {
 		event.preventDefault();
 		var $form = $(this).closest('form'),
 			$input = $form.find('input');

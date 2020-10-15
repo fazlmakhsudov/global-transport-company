@@ -5,6 +5,11 @@ import com.epam.gtc.dao.entities.DeliveryEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Delivery statuses
+ *
+ * @author Fazliddin Makhsudov
+ */
 public enum DeliveryStatus {
     WAITING_FOR_PACKAGING,
     UNDER_TRANSPORTATION,

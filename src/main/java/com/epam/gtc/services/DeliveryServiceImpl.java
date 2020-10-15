@@ -8,12 +8,16 @@ import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.DeliveryDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Delivery service implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DeliveryServiceImpl implements DeliveryService {
     private final DeliveryDAO deliveryDAO;
     private static final Logger LOG = Logger.getLogger(DeliveryServiceImpl.class);
@@ -100,22 +104,37 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
-    public int countAllDeliveries() {
-        return deliveryDAO.countAllDeliveries();
+    public int countAllDeliveries() throws ServiceException {
+        try {
+            return deliveryDAO.countAllDeliveries();
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_DELIVERIES);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_ALL_DELIVERIES, e);
+        }
     }
 
     @Override
-    public int countUserDeliveries(int userId) {
-        return deliveryDAO.countUserDeliveries(userId);
+    public int countUserDeliveries(int userId) throws ServiceException {
+        try {
+            return deliveryDAO.countUserDeliveries(userId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION, e);
+        }
     }
 
     @Override
-    public int countDeliveries(DeliveryStatus deliveryStatus) {
-        return deliveryDAO.countDeliveries(DeliveryStatus.getId(deliveryStatus));
+    public int countDeliveries(DeliveryStatus deliveryStatus) throws ServiceException {
+        try {
+            return deliveryDAO.countDeliveries(DeliveryStatus.getId(deliveryStatus));
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION, e);
+        }
     }
 
     @Override
-    public List<DeliveryDomain> findAll(int page, int itemsPerPage) {
+    public List<DeliveryDomain> findAll(int page, int itemsPerPage) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<DeliveryEntity> deliveryList = null;
         try {
@@ -123,24 +142,27 @@ public class DeliveryServiceImpl implements DeliveryService {
             return deliveryDomainBuilder.create(deliveryList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_DELIVERY, e);
         }
-        return new ArrayList<>();
     }
 
     @Override
-    public List<DeliveryDomain> findAll(int page, int itemsPerPage, int userId) {
+    public List<DeliveryDomain> findAll(int page, int itemsPerPage, int userId) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
-        List<DeliveryEntity> deliveryList = null;
+        List<DeliveryEntity> deliveryList;
         try {
             deliveryList = deliveryDAO.readDeliveries(offset, itemsPerPage, userId);
             return deliveryDomainBuilder.create(deliveryList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DELIVERIES_WITH_LIMITATION, e);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DELIVERY, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_DELIVERY, e);
+
         }
-        return new ArrayList<>();
     }
 }

@@ -2,9 +2,13 @@ package com.epam.gtc.dao.entities;
 
 import java.io.Serializable;
 
-
+/**
+ * Rate entity
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class RateEntity implements Serializable {
-    private static final long serialVersionUID = 2l; // need to redefine'
+    private static final long serialVersionUID = 2l;
     private int id;
     private String name;
     private double maxWeight;

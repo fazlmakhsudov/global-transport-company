@@ -4,10 +4,10 @@ import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.DeliveryStatus;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.domains.DeliveryDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.DeliveryModel;
 import com.epam.gtc.web.models.UserModel;
@@ -24,6 +24,8 @@ import java.util.Optional;
 
 /**
  * User Deliveries tab command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class UserDeliveriesTabCommand implements Command {
 
@@ -76,14 +78,14 @@ public class UserDeliveriesTabCommand implements Command {
     private String doPost(HttpServletRequest request, DeliveryService deliveryService, int page, int itemsPerPage) throws ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
 
         switch (action) {
             case "save":
-                String deliveryStatusName = request.getParameter(FormRequestParameter.DELIVERY_STATUS_NAME);
+                String deliveryStatusName = request.getParameter(FormRequestParametersNames.DELIVERY_STATUS_NAME);
                 LOG.trace("Delivery status name --> " + deliveryStatusName);
-                int deliveryId = Integer.parseInt(request.getParameter(FormRequestParameter.DELIVERY_ID));
+                int deliveryId = Integer.parseInt(request.getParameter(FormRequestParametersNames.DELIVERY_ID));
                 LOG.trace("Delivery id --> " + deliveryId);
                 DeliveryDomain deliveryDomain = deliveryService.find(deliveryId);
                 deliveryDomain.setDeliveryStatus(DeliveryStatus.getEnumFromName(deliveryStatusName));

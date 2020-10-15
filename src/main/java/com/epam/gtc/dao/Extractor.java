@@ -17,6 +17,7 @@ import java.util.Map;
  * extracts entity from ResultSet object
  *
  * @param <T> entity class
+ * @author Fazliddin Makhsudov
  */
 public abstract class Extractor<T> {
     private static final Logger LOG = Logger.getLogger(Extractor.class);

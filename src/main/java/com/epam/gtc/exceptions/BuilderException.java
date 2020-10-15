@@ -2,6 +2,8 @@ package com.epam.gtc.exceptions;
 
 /**
  * An exception that provides information on a Builder error.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class BuilderException extends AppException {
 

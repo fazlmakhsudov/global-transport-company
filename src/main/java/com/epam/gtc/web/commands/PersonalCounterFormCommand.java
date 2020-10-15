@@ -2,7 +2,6 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.ContentType;
-import com.epam.gtc.utils.CostCounter;
 import com.epam.gtc.web.models.RequestModel;
 import org.apache.log4j.Logger;
 
@@ -16,6 +15,8 @@ import java.util.Objects;
 
 /**
  * Personal Counter Form command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class PersonalCounterFormCommand implements Command {
 

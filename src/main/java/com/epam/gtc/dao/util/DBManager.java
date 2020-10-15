@@ -1,4 +1,4 @@
-package com.epam.gtc.utils;
+package com.epam.gtc.dao.util;
 
 import com.epam.gtc.exceptions.Messages;
 import org.apache.log4j.Logger;
@@ -9,7 +9,12 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
 
-
+/**
+ * Database Manager,
+ * introduces connection pool service
+ *
+ * @author Fazliddin Makhsudov
+ */
 public final class DBManager {
     private static final Logger LOG = Logger.getLogger(DBManager.class);
     private static DBManager instance;

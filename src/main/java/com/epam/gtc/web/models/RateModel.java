@@ -2,7 +2,11 @@ package com.epam.gtc.web.models;
 
 import java.io.Serializable;
 
-
+/**
+ * Rate model
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class RateModel implements Serializable {
     private static final long serialVersionUID = 2l; // need to redefine'
     private int id;

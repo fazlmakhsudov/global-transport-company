@@ -2,12 +2,17 @@ package com.epam.gtc.services.domains.builders;
 
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.services.domains.CityDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import com.epam.gtc.web.models.CityModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates(maps) CityDomain object from CityModel object
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class CityDomainBuilderFromModel extends Builder<CityModel, CityDomain> {
     public CityDomain create(CityModel city) throws BuilderException {
         return build(city, CityDomain.class);

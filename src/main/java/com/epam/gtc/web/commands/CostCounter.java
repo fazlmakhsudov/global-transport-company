@@ -1,12 +1,12 @@
-package com.epam.gtc.utils;
+package com.epam.gtc.web.commands;
 
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RequestService;
 import com.epam.gtc.services.domains.DistanceDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.web.models.RequestModel;
 import com.epam.gtc.web.models.builders.RequestModelBuilder;
 import org.apache.log4j.Logger;
@@ -19,6 +19,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Personal counter for request
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class CostCounter {
     private static final Logger LOG = Logger.getLogger(CostCounter.class);
     //Truck Scania

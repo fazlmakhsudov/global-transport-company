@@ -5,7 +5,11 @@ import com.epam.gtc.dao.entities.InvoiceEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
-
+/**
+ * Invoice statuses
+ *
+ * @author Fazliddin Makhsudov
+ */
 public enum InvoiceStatus {
     PAID,
     UNPAIND,

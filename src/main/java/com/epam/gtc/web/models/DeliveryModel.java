@@ -1,13 +1,17 @@
 package com.epam.gtc.web.models;
 
 import com.epam.gtc.dao.entities.constants.DeliveryStatus;
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.io.Serializable;
 import java.util.Date;
 
-
+/**
+ * Delivery model
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DeliveryModel implements Serializable {
 
     private static final long serialVersionUID = 2l; // need to redefine

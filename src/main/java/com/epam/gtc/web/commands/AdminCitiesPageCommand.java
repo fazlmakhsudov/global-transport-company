@@ -2,10 +2,10 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.domains.CityDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
@@ -19,6 +19,8 @@ import java.util.Optional;
 
 /**
  * Admin cities page command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AdminCitiesPageCommand implements Command {
 
@@ -62,11 +64,11 @@ public class AdminCitiesPageCommand implements Command {
     private String doPost(HttpServletRequest request, CityService cityService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
-        int cityId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(request.getParameter(FormRequestParameter.CITY_ID));
+        int cityId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(request.getParameter(FormRequestParametersNames.CITY_ID));
         LOG.trace("City id --> " + cityId);
-        String name = request.getParameter(FormRequestParameter.CITY_NAME);
+        String name = request.getParameter(FormRequestParametersNames.CITY_NAME);
         LOG.trace("City name --> " + name);
         switch (action) {
             case "add":

@@ -4,10 +4,10 @@ import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.domains.InvoiceDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.InvoiceModel;
 import com.epam.gtc.web.models.UserModel;
@@ -24,6 +24,8 @@ import java.util.Optional;
 
 /**
  * User Invoices tab command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class UserInvoicesTabCommand implements Command {
 
@@ -76,14 +78,14 @@ public class UserInvoicesTabCommand implements Command {
     private String doPost(HttpServletRequest request, InvoiceService invoiceService, int page, int itemsPerPage) throws ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
 
         switch (action) {
             case "save":
-                String invoiceStatusName = request.getParameter(FormRequestParameter.INVOICE_STATUS_NAME);
+                String invoiceStatusName = request.getParameter(FormRequestParametersNames.INVOICE_STATUS_NAME);
                 LOG.trace("Invoice status name --> " + invoiceStatusName);
-                int invoiceId = Integer.parseInt(request.getParameter(FormRequestParameter.INVOICE_ID));
+                int invoiceId = Integer.parseInt(request.getParameter(FormRequestParametersNames.INVOICE_ID));
                 LOG.trace("Invoice id --> " + invoiceId);
                 InvoiceDomain invoiceDomain = invoiceService.find(invoiceId);
                 invoiceDomain.setInvoiceStatus(InvoiceStatus.getEnumFromName(invoiceStatusName));

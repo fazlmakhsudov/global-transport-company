@@ -12,6 +12,8 @@ import java.util.*;
 
 /**
  * Security filter.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class CommandAccessFilter implements Filter {
 

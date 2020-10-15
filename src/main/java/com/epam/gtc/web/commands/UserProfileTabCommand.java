@@ -2,10 +2,10 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.UserService;
 import com.epam.gtc.services.domains.builders.UserDomainBuilderFromModel;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.UserModel;
 import org.apache.log4j.Logger;
@@ -21,6 +21,8 @@ import java.util.Objects;
 
 /**
  * User profile command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class UserProfileTabCommand implements Command {
 
@@ -51,13 +53,13 @@ public class UserProfileTabCommand implements Command {
             LOG.trace("Method is Post");
             UserModel userModel = (UserModel) sessionUser;
 
-            String name = request.getParameter(FormRequestParameter.USER_NAME);
+            String name = request.getParameter(FormRequestParametersNames.USER_NAME);
             LOG.trace("User name --> " + name);
             userModel.setName(name);
-            String surname = request.getParameter(FormRequestParameter.USER_SURNAME);
+            String surname = request.getParameter(FormRequestParametersNames.USER_SURNAME);
             LOG.trace("User surname --> " + surname);
             userModel.setSurname(surname);
-            String password = request.getParameter(FormRequestParameter.USER_PASSWORD);
+            String password = request.getParameter(FormRequestParametersNames.USER_PASSWORD);
             LOG.trace("User password --> " + encryptPassword(password));
             if (!Objects.isNull(password) && !password.isEmpty()) {
                 userModel.setPassword(encryptPassword(password));

@@ -2,6 +2,11 @@ package com.epam.gtc;
 
 import java.util.Locale;
 
+/**
+ * Locale
+ *
+ * @author Fazliddin Makhsudov
+ */
 public final class Locales {
 
     private static final Locale ru = new Locale("ru", "RU");

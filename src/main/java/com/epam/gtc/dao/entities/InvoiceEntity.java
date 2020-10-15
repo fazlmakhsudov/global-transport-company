@@ -1,15 +1,19 @@
 package com.epam.gtc.dao.entities;
 
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-
+/**
+ * Invoice entity
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class InvoiceEntity implements Serializable {
-    private static final long serialVersionUID = 2l; // need to redefine
+    private static final long serialVersionUID = 2l;
     private int id;
     private double cost;
     @BuilderField(transferTo = BuilderFieldConstant.ENUM_FROM_ID, crossQueryName = "invoiceStatus", enumClass = InvoiceStatus.class)

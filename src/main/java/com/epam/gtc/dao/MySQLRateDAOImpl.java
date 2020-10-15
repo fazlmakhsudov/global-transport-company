@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.RateEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL Rate DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLRateDAOImpl implements RateDAO {
     private static final Logger LOG = Logger.getLogger(MySQLRateDAOImpl.class);
     private final Extractor<RateEntity> RateExtractor = new RateExtractor();
@@ -246,7 +251,7 @@ public class MySQLRateDAOImpl implements RateDAO {
      * @return number of rates
      */
     @Override
-    public int countAllRates() {
+    public int countAllRates() throws DAOException {
         final String query = "select count(*) from rates;";
         DBManager dbm;
         Connection con = null;
@@ -263,7 +268,8 @@ public class MySQLRateDAOImpl implements RateDAO {
             con.commit();
         } catch (SQLException ex) {
             DBManager.rollback(con);
-            LOG.error(Messages.ERR_CANNOT_READ_ALL_RATES);
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_RATES);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_RATES, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }

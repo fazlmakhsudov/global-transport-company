@@ -4,11 +4,11 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RateService;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.RateModel;
@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 
 /**
  * Rates command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class RatesCommand implements Command {
 
@@ -37,7 +39,7 @@ public class RatesCommand implements Command {
                                 final HttpServletResponse response) {
         LOG.debug("Command starts");
 
-        String rateName = request.getParameter(FormRequestParameter.RATE_NAME);
+        String rateName = request.getParameter(FormRequestParametersNames.RATE_NAME);
         boolean rateNameFlag = !Objects.isNull(rateName) && !rateName.isEmpty();
         if (rateNameFlag) {
             handleRequest(request, rateName);

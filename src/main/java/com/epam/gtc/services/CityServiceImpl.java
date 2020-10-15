@@ -7,12 +7,16 @@ import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.CityDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * City service implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class CityServiceImpl implements CityService {
     private final CityDAO cityDAO;
     private static final Logger LOG = Logger.getLogger(CityServiceImpl.class);
@@ -115,12 +119,16 @@ public class CityServiceImpl implements CityService {
 
 
     @Override
-    public int countAllCities() {
-        return cityDAO.countAllCities();
+    public int countAllCities() throws ServiceException {
+        try {
+            return cityDAO.countAllCities();
+        } catch (DAOException e) {
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_ALL_CITIES, e);
+        }
     }
 
     @Override
-    public List<CityDomain> findAll(int page, int itemsPerPage) {
+    public List<CityDomain> findAll(int page, int itemsPerPage) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<CityEntity> cityList;
         try {
@@ -128,9 +136,11 @@ public class CityServiceImpl implements CityService {
             return cityDomainBuilder.create(cityList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_CITY, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_CITY, e);
         }
-        return new ArrayList<>();
     }
 }

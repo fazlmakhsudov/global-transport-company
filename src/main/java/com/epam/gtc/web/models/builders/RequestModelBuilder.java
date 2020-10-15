@@ -2,12 +2,17 @@ package com.epam.gtc.web.models.builders;
 
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.services.domains.RequestDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import com.epam.gtc.web.models.RequestModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates(maps) RequestModel object from RequestDomain object
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class RequestModelBuilder extends Builder<RequestDomain, RequestModel> {
     public RequestModel create(RequestDomain request) throws BuilderException {
         return build(request, RequestModel.class);

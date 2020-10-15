@@ -7,12 +7,12 @@ import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.RateService;
 import com.epam.gtc.services.RateServiceImpl;
 import com.epam.gtc.services.domains.builders.RateDomainBuilderFromEntity;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.RateModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 /**
  * Index command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class IndexCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;

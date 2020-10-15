@@ -7,6 +7,8 @@ import java.util.TreeMap;
 
 /**
  * Holder for all commands.<br/>
+ *
+ * @author Fazliddin Makhsudov
  */
 public final class CommandContainer {
 

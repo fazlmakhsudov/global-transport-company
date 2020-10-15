@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * No command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class NoCommand implements Command {
 

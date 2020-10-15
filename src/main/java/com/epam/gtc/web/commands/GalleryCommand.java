@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Gallery command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class GalleryCommand implements Command {
 

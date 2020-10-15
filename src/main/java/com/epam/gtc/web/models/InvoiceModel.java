@@ -1,13 +1,17 @@
 package com.epam.gtc.web.models;
 
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.io.Serializable;
 import java.util.Date;
 
-
+/**
+ * Invoice model
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class InvoiceModel implements Serializable {
 
     private static final long serialVersionUID = 2l; // need to redefine

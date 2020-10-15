@@ -5,12 +5,15 @@ package com.epam.gtc.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Determines type of request method
+ * @author Fazliddin Makhsudov
+ */
 public final class Method {
     /**
      * Clarify whether it is Get request
      *
-     * @param request
-     *            request
+     * @param request request
      * @return boolean
      */
     public static boolean isGet(final HttpServletRequest request) {

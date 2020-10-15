@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.InvoiceEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL Invoice DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLInvoiceDAOImpl implements InvoiceDAO {
     private static final Logger LOG = Logger.getLogger(MySQLInvoiceDAOImpl.class);
     private final Extractor<InvoiceEntity> invoiceExtractor = new InvoiceExtractor();
@@ -200,13 +205,13 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      * @return number of invoices
      */
     @Override
-    public int countAllInvoices() {
+    public int countAllInvoices() throws DAOException {
         final String query = "select count(*) from invoices;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
         ResultSet rs = null;
-        int invoicesNumber = 0;
+        int invoicesNumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -218,6 +223,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_ALL_INVOICES);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_INVOICES, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }
@@ -231,13 +237,13 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      * @return number of invoices
      */
     @Override
-    public int countUserInvoices(int userId) {
+    public int countUserInvoices(int userId) throws DAOException {
         final String query = "SELECT count(*) FROM invoices as i inner join requests as r on r.id=i.request_id WHERE r.user_id=?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement psmt = null;
         ResultSet rs = null;
-        int invoicesnumber = 0;
+        int invoicesnumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -250,6 +256,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, ex);
         } finally {
             DBManager.close(con, psmt, rs);
         }
@@ -263,7 +270,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
      * @return number of invoices
      */
     @Override
-    public int countInvoices(int invoiceStatusId) {
+    public int countInvoices(int invoiceStatusId) throws DAOException {
         final String query = "select count(*) from invoices where invoice_status_id = ?;";
         DBManager dbm;
         Connection con = null;
@@ -282,6 +289,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, ex);
         } finally {
             DBManager.close(con, psmt, rs);
         }

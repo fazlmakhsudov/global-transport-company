@@ -3,10 +3,10 @@ package com.epam.gtc.web.commands;
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.DeliveryStatus;
 import com.epam.gtc.exceptions.AppException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.domains.DeliveryDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.DeliveryModel;
 import com.epam.gtc.web.models.builders.DeliveryModelBuilder;
@@ -20,6 +20,8 @@ import java.util.Optional;
 
 /**
  * Admin deliveries page command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AdminDeliveriesPageCommand implements Command {
 
@@ -63,20 +65,20 @@ public class AdminDeliveriesPageCommand implements Command {
     private String doPost(HttpServletRequest request, DeliveryService deliveryService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
         int deliveryId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParameter.DELIVERY_ID));
+                Integer.parseInt(request.getParameter(FormRequestParametersNames.DELIVERY_ID));
         LOG.trace("Delivery id --> " + deliveryId);
         String deliveryStatusName = action.equalsIgnoreCase("remove") ? "" :
-                request.getParameter(FormRequestParameter.DELIVERY_STATUS_NAME);
+                request.getParameter(FormRequestParametersNames.DELIVERY_STATUS_NAME);
         LOG.trace("Delivery status name --> " + deliveryStatusName);
 
         switch (action) {
             case "add":
                 DeliveryDomain newDeliveryDomain = new DeliveryDomain();
                 newDeliveryDomain.setDeliveryStatus(DeliveryStatus.getEnumFromName(deliveryStatusName));
-                int requestId = Integer.parseInt(request.getParameter(FormRequestParameter.DELIVERY_REQUEST_ID));
+                int requestId = Integer.parseInt(request.getParameter(FormRequestParametersNames.DELIVERY_REQUEST_ID));
                 LOG.trace("Delivery request id --> " + requestId);
                 newDeliveryDomain.setRequestId(requestId);
                 int newId = deliveryService.add(newDeliveryDomain);

@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.DistanceEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL Distance DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLDistanceDAOImpl implements DistanceDAO {
     private static final Logger LOG = Logger.getLogger(MySQLDistanceDAOImpl.class);
     private final Extractor<DistanceEntity> distanceExtractor = new DistanceExtractor();
@@ -224,13 +229,13 @@ public class MySQLDistanceDAOImpl implements DistanceDAO {
      * @return number of distances
      */
     @Override
-    public int countAllDistances() {
+    public int countAllDistances() throws DAOException {
         final String query = "select count(*) from distances;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
         ResultSet rs = null;
-        int distancesNumber = 0;
+        int distancesNumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -241,7 +246,8 @@ public class MySQLDistanceDAOImpl implements DistanceDAO {
             con.commit();
         } catch (SQLException ex) {
             DBManager.rollback(con);
-            LOG.error(Messages.ERR_CANNOT_READ_ALL_DISTANCES);
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_DISTANCES);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_DISTANCES, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }
@@ -253,7 +259,7 @@ public class MySQLDistanceDAOImpl implements DistanceDAO {
      *
      * @param offset row from which starts reading
      * @param limit  number
-     * @return
+     * @return list of distance entities
      */
     @Override
     public List<DistanceEntity> readDistances(int offset, int limit) throws DAOException {

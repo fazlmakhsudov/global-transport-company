@@ -1,7 +1,12 @@
-package com.epam.gtc.utils.builders;
+package com.epam.gtc.utils;
 
 import java.util.Arrays;
 
+/**
+ * Builder field constants
+ *
+ * @author Fazliddin Makhsudov
+ */
 public enum BuilderFieldConstant {
     ID,
     NAME,
@@ -21,10 +26,5 @@ public enum BuilderFieldConstant {
                 .map(part -> Character.toUpperCase(part.charAt(0)) + part.substring(1).toLowerCase())
                 .reduce("", String::concat);
         return Character.toLowerCase(name.charAt(0)) + name.substring(1);
-    }
-
-    public static void main(String[] args) {
-        BuilderFieldConstant d = BuilderFieldConstant.GET_ENUM_FROM_NAME;
-        System.out.println(d.getName());
     }
 }

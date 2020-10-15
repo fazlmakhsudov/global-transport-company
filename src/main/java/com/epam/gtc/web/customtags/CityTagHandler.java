@@ -5,6 +5,11 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
+/**
+ * Generates html block for presenting city
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class CityTagHandler extends TagSupport {
     private String name;
 

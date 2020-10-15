@@ -5,7 +5,11 @@ import com.epam.gtc.dao.entities.RequestEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
-
+/**
+ * Request statuses
+ *
+ * @author Fazliddin Makhsudov
+ */
 public enum RequestStatus {
     WAITING_FOR_MANAGER_REVIEW,
     WAITING_FOR_PAYMENT,

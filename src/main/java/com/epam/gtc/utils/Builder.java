@@ -1,4 +1,4 @@
-package com.epam.gtc.utils.builders;
+package com.epam.gtc.utils;
 
 import com.epam.gtc.exceptions.BuilderException;
 import org.apache.log4j.Logger;
@@ -18,6 +18,7 @@ import java.util.*;
  *
  * @param <F> transform from class object
  * @param <T> transform to class object
+ * @author Fazliddin Makhsudov
  */
 public abstract class Builder<F, T> {
     private static final Logger LOG = Logger.getLogger(Builder.class);

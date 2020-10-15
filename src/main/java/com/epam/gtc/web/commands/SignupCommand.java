@@ -24,7 +24,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Sign up command.
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class SignupCommand implements Command {
 
     private static final long serialVersionUID = -3071536593627692473L;

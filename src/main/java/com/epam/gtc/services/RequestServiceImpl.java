@@ -9,12 +9,16 @@ import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.RequestDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Request service implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class RequestServiceImpl implements RequestService {
     private final RequestDAO requestDAO;
     private static final Logger LOG = Logger.getLogger(RequestServiceImpl.class);
@@ -101,47 +105,66 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public int countAllRequests() {
-        return requestDAO.countAllRequests();
+    public int countAllRequests() throws ServiceException {
+        try {
+            return requestDAO.countAllRequests();
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_REQUESTS, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_ALL_REQUESTS, e);
+        }
     }
 
     @Override
-    public int countUserRequests(int userId) {
-        return requestDAO.countUserRequests(userId);
+    public int countUserRequests(int userId) throws ServiceException {
+        try {
+            return requestDAO.countUserRequests(userId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION, e);
+        }
     }
 
     @Override
-    public int countRequests(RequestStatus requestStatus) {
-        return requestDAO.countRequests(RequestStatus.getId(requestStatus));
+    public int countRequests(RequestStatus requestStatus) throws ServiceException {
+        try {
+            return requestDAO.countRequests(RequestStatus.getId(requestStatus));
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_REQUESTS_WITH_CONDITION, e);
+        }
     }
 
     @Override
-    public List<RequestDomain> findAll(int page, int itemsPerPage) {
+    public List<RequestDomain> findAll(int page, int itemsPerPage) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<RequestEntity> requestList;
         try {
             requestList = requestDAO.readRequests(offset, itemsPerPage);
             return requestDomainBuilder.create(requestList);
         } catch (DAOException e) {
-            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_REQUESTS_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_REQUESTS_WITH_LIMITATION, e);
+
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_REQUEST, e);
+
         }
-        return new ArrayList<>();
     }
 
     @Override
-    public List<RequestDomain> findAll(int page, int itemsPerPage, int userId) {
+    public List<RequestDomain> findAll(int page, int itemsPerPage, int userId) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<RequestEntity> requestList;
         try {
             requestList = requestDAO.readRequests(offset, itemsPerPage, userId);
             return requestDomainBuilder.create(requestList);
         } catch (DAOException e) {
-            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_CITIES_WITH_LIMITATION, e);
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_REQUESTS_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_REQUESTS_WITH_LIMITATION, e);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_REQUEST, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_REQUEST, e);
         }
-        return new ArrayList<>();
     }
 }

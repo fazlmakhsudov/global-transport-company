@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * About us command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AboutUsCommand implements Command {
 

@@ -1,18 +1,20 @@
 package com.epam.gtc.services.domains;
 
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
+/**
+ * Invoice domain
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class InvoiceDomain implements Serializable {
-    /**
-     * Serial version UID.
-     */
-    private static final long serialVersionUID = 2l; // need to redefine
+
+    private static final long serialVersionUID = 2l;
 
     private int id;
     private double cost;

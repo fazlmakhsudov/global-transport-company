@@ -8,7 +8,11 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("serial")
+/**
+ * Checks email content with pattern
+ *
+ * @Blinov
+ */
 public class MailTag extends BodyTagSupport {
     private static final String MAIL_PATTERN = "(\\w{6,})@(\\w+\\.)(\\w{2,4})";
 

@@ -9,12 +9,16 @@ import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.InvoiceDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Invoice service implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceDAO invoiceDAO;
     private static final Logger LOG = Logger.getLogger(InvoiceServiceImpl.class);
@@ -101,22 +105,37 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public int countAllInvoices() {
-        return invoiceDAO.countAllInvoices();
+    public int countAllInvoices() throws ServiceException {
+        try {
+            return invoiceDAO.countAllInvoices();
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_INVOICES, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_ALL_INVOICES, e);
+        }
     }
 
     @Override
-    public int countUserInvoices(int userId) {
-        return invoiceDAO.countUserInvoices(userId);
+    public int countUserInvoices(int userId) throws ServiceException {
+        try {
+            return invoiceDAO.countUserInvoices(userId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, e);
+        }
     }
 
     @Override
-    public int countInvoices(InvoiceStatus invoiceStatus) {
-        return invoiceDAO.countInvoices(InvoiceStatus.getId(invoiceStatus));
+    public int countInvoices(InvoiceStatus invoiceStatus) throws ServiceException {
+        try {
+            return invoiceDAO.countInvoices(InvoiceStatus.getId(invoiceStatus));
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, e);
+        }
     }
 
     @Override
-    public List<InvoiceDomain> findAll(int page, int itemsPerPage) {
+    public List<InvoiceDomain> findAll(int page, int itemsPerPage) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<InvoiceEntity> invoiceList;
         try {
@@ -124,14 +143,16 @@ public class InvoiceServiceImpl implements InvoiceService {
             return invoiceDomainBuilder.create(invoiceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
+
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_INVOICE, e);
         }
-        return new ArrayList<>();
     }
 
     @Override
-    public List<InvoiceDomain> findAll(int page, int itemsPerPage, int userId) {
+    public List<InvoiceDomain> findAll(int page, int itemsPerPage, int userId) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<InvoiceEntity> invoiceList;
         try {
@@ -139,10 +160,11 @@ public class InvoiceServiceImpl implements InvoiceService {
             return invoiceDomainBuilder.create(invoiceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_INVOICES_WITH_LIMITATION, e);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_INVOICE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_INVOICE, e);
         }
-        return new ArrayList<>();
     }
 
 }

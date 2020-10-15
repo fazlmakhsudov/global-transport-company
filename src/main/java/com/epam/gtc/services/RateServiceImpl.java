@@ -8,12 +8,16 @@ import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.RateDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Rate service implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class RateServiceImpl implements RateService {
     private final RateDAO rateDAO;
     private static final Logger LOG = Logger.getLogger(RateServiceImpl.class);
@@ -115,13 +119,18 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public int countAllRates() {
-        return rateDAO.countAllRates();
+    public int countAllRates() throws ServiceException {
+        try {
+            return rateDAO.countAllRates();
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_RATES, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_ALL_RATES, e);
+        }
     }
 
 
     @Override
-    public List<RateDomain> findAll(int page, int itemsPerPage) {
+    public List<RateDomain> findAll(int page, int itemsPerPage) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<RateEntity> rateList;
         try {
@@ -129,9 +138,12 @@ public class RateServiceImpl implements RateService {
             return rateDomainBuilder.create(rateList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_RATES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_RATES_WITH_LIMITATION, e);
+
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
+
         }
-        return new ArrayList<>();
     }
 }

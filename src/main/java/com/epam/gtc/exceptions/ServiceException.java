@@ -2,6 +2,8 @@ package com.epam.gtc.exceptions;
 
 /**
  * An exception that provides information on a service layer error.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class ServiceException extends AppException {
 

@@ -2,6 +2,8 @@ package com.epam.gtc.exceptions;
 
 /**
  * An exception that provides information on an application error.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AppException extends Exception {
 

@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.UserEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL User DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLUserDAOImpl implements UserDAO {
     private static final Logger LOG = Logger.getLogger(MySQLUserDAOImpl.class);
     private final Extractor<UserEntity> userExtractor = new UserExtractor();
@@ -241,7 +246,7 @@ public class MySQLUserDAOImpl implements UserDAO {
      * @return number of users
      */
     @Override
-    public int countAllUsers() {
+    public int countAllUsers() throws DAOException {
         final String query = "select count(*) from users;";
         DBManager dbm;
         Connection con = null;
@@ -259,6 +264,7 @@ public class MySQLUserDAOImpl implements UserDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_ALL_USERS);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_USERS, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }

@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.DeliveryEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL Delivery DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLDeliveryDAOImpl implements DeliveryDAO {
     private static final Logger LOG = Logger.getLogger(MySQLDeliveryDAOImpl.class);
     private final Extractor<DeliveryEntity> deliveryExtractor = new DeliveryExtractor();
@@ -198,7 +203,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      * @return number of deliverys
      */
     @Override
-    public int countAllDeliveries() {
+    public int countAllDeliveries() throws DAOException {
         final String query = "select count(*) from deliveries;";
         DBManager dbm;
         Connection con = null;
@@ -216,6 +221,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_ALL_DELIVERIES);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_DELIVERIES, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }
@@ -229,7 +235,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      * @return number of deliveries
      */
     @Override
-    public int countUserDeliveries(int userId) {
+    public int countUserDeliveries(int userId) throws DAOException {
         final String query = "SELECT count(*) FROM deliveries as d inner join requests as r on r.id=d.request_id WHERE r.user_id=?;";
         DBManager dbm;
         Connection con = null;
@@ -248,6 +254,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION, ex);
         } finally {
             DBManager.close(con, psmt, rs);
         }
@@ -261,7 +268,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
      * @return number of deliveries
      */
     @Override
-    public int countDeliveries(int deliveryStatusId) {
+    public int countDeliveries(int deliveryStatusId) throws DAOException {
         final String query = "select count(*) from deliveries where delivery_status_id = ?;";
         DBManager dbm;
         Connection con = null;
@@ -280,6 +287,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         } catch (SQLException ex) {
             DBManager.rollback(con);
             LOG.error(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION, ex);
         } finally {
             DBManager.close(con, psmt, rs);
         }

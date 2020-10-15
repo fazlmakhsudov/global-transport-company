@@ -2,6 +2,8 @@ package com.epam.gtc.exceptions;
 
 /**
  * Holder for messages of exceptions.
+ *
+ * @author Fazliddin Makhsudov
  */
 public final class Messages {
 

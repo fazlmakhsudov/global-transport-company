@@ -1,12 +1,16 @@
 package com.epam.gtc.dao.entities;
 
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-
+/**
+ * User entity
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = -6889036256149495388L;
     private int id;

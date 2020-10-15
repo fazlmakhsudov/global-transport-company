@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 /**
  * Holder for fields names of DB tables and beans.
+ *
+ * @author Fazliddin Makhsudov
  */
 public final class Fields {
 

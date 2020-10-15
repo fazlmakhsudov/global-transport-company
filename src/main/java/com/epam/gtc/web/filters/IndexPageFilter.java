@@ -8,6 +8,8 @@ import java.io.IOException;
 
 /**
  * Index filter.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class IndexPageFilter implements Filter {
 

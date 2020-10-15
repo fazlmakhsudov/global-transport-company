@@ -5,7 +5,11 @@ import com.epam.gtc.dao.entities.RequestEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
-
+/**
+ * Content types
+ *
+ * @author Fazliddin Makhsudov
+ */
 public enum ContentType {
     CARGO,
     PARCEL_POST,

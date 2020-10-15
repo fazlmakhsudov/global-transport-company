@@ -2,10 +2,10 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.RateService;
 import com.epam.gtc.services.domains.RateDomain;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.RateModel;
 import com.epam.gtc.web.models.builders.RateModelBuilder;
@@ -19,6 +19,8 @@ import java.util.Optional;
 
 /**
  * Admin Rate page command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AdminRatesPageCommand implements Command {
 
@@ -62,33 +64,33 @@ public class AdminRatesPageCommand implements Command {
     private String doPost(HttpServletRequest request, RateService rateService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
 
         String name = action.equalsIgnoreCase("remove") ? "" :
-                request.getParameter(FormRequestParameter.RATE_NAME);
+                request.getParameter(FormRequestParametersNames.RATE_NAME);
         LOG.trace("Rate name --> " + name);
         double maxWeight = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.RATE_MAX_WEIGHT));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_WEIGHT));
         LOG.trace("Rate max weight --> " + maxWeight);
         double maxLength = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.RATE_MAX_LENGTH));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_LENGTH));
         LOG.trace("Rate max length --> " + maxLength);
         double maxWidth = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.RATE_MAX_WIDTH));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_WIDTH));
         LOG.trace("Rate max width --> " + maxWidth);
         double maxHeight = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.RATE_MAX_HEIGHT));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_HEIGHT));
         LOG.trace("Rate max height --> " + maxHeight);
         double maxDistance = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.RATE_MAX_DISTANCE));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_DISTANCE));
         LOG.trace("Rate max distance --> " + maxDistance);
         double cost = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParameter.RATE_COST));
+                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_COST));
         LOG.trace("Rate cost --> " + cost);
 
         int rateId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParameter.RATE_ID));
+                Integer.parseInt(request.getParameter(FormRequestParametersNames.RATE_ID));
         LOG.trace("Rate id --> " + rateId);
 
 

@@ -3,11 +3,10 @@ package com.epam.gtc.web.commands;
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
 import com.epam.gtc.exceptions.AppException;
-import com.epam.gtc.service_factory.ServiceFactory;
-import com.epam.gtc.service_factory.ServiceType;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.domains.InvoiceDomain;
-import com.epam.gtc.utils.CostCounter;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.InvoiceModel;
 import com.epam.gtc.web.models.builders.InvoiceModelBuilder;
@@ -22,6 +21,8 @@ import java.util.Optional;
 
 /**
  * Admin invoice page command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class AdminInvoicesPageCommand implements Command {
 
@@ -65,23 +66,23 @@ public class AdminInvoicesPageCommand implements Command {
     private String doPost(HttpServletRequest request, InvoiceService invoiceService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
-        String action = request.getParameter(FormRequestParameter.ACTION);
+        String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
 
         String invoiceStatusName = action.equalsIgnoreCase("remove") ? "" :
-                request.getParameter(FormRequestParameter.INVOICE_STATUS_NAME);
+                request.getParameter(FormRequestParametersNames.INVOICE_STATUS_NAME);
         LOG.trace("Invoice status name --> " + invoiceStatusName);
 
         int invoiceId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParameter.INVOICE_ID));
+                Integer.parseInt(request.getParameter(FormRequestParametersNames.INVOICE_ID));
         LOG.trace("Invoice id --> " + invoiceId);
 
         switch (action) {
             case "add":
                 InvoiceDomain newInvoiceDomain = new InvoiceDomain();
-                String costString = request.getParameter(FormRequestParameter.INVOICE_COST);
+                String costString = request.getParameter(FormRequestParametersNames.INVOICE_COST);
                 LOG.trace("invoice cost --> " + costString);
-                int requestId = Integer.parseInt(request.getParameter(FormRequestParameter.INVOICE_REQUEST_ID));
+                int requestId = Integer.parseInt(request.getParameter(FormRequestParametersNames.INVOICE_REQUEST_ID));
                 LOG.trace("Request id --> " + requestId);
                 boolean costFlag = Objects.isNull(costString) || costString.isEmpty()
                         || Double.parseDouble(costString) <= 1d;

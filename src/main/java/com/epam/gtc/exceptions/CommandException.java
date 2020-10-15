@@ -2,6 +2,8 @@ package com.epam.gtc.exceptions;
 
 /**
  * An exception that provides information on a Command layer.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class CommandException extends RuntimeException {
 

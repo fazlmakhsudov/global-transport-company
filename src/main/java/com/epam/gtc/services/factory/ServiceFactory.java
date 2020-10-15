@@ -1,4 +1,4 @@
-package com.epam.gtc.service_factory;
+package com.epam.gtc.services.factory;
 
 import com.epam.gtc.dao.*;
 import com.epam.gtc.dao.entities.builders.*;
@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 /**
  * Factory class,
  * creates instances of Services
+ *
+ * @author Fazliddin Makhsudov
  */
 public class ServiceFactory {
     private static final Logger LOG = Logger.getLogger(CommandContainer.class);

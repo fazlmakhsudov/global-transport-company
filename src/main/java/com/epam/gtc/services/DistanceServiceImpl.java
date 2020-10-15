@@ -8,12 +8,16 @@ import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.DistanceDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Distance service implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DistanceServiceImpl implements DistanceService {
     private final DistanceDAO distanceDAO;
     private static final Logger LOG = Logger.getLogger(DistanceServiceImpl.class);
@@ -100,12 +104,17 @@ public class DistanceServiceImpl implements DistanceService {
     }
 
     @Override
-    public int countAllDistances() {
-        return distanceDAO.countAllDistances();
+    public int countAllDistances() throws ServiceException {
+        try {
+            return distanceDAO.countAllDistances();
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_DISTANCES);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_ALL_DISTANCES, e);
+        }
     }
 
     @Override
-    public List<DistanceDomain> findAll(int page, int itemsPerPage) {
+    public List<DistanceDomain> findAll(int page, int itemsPerPage) throws ServiceException {
         int offset = (page - 1) * itemsPerPage;
         List<DistanceEntity> distanceList;
         try {
@@ -113,10 +122,12 @@ public class DistanceServiceImpl implements DistanceService {
             return distanceDomainBuilder.create(distanceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+
         }
-        return new ArrayList<>();
     }
 
     @Override
@@ -135,16 +146,17 @@ public class DistanceServiceImpl implements DistanceService {
     }
 
     @Override
-    public List<DistanceDomain> findAll(double distance) {
+    public List<DistanceDomain> findAll(double distance) throws ServiceException {
         List<DistanceEntity> distanceList;
         try {
             distanceList = distanceDAO.readAll(distance);
             return distanceDomainBuilder.create(distanceList);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
         } catch (BuilderException e) {
             LOG.error(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_DISTANCE, e);
         }
-        return new ArrayList<>();
     }
 }

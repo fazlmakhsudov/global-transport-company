@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Contact us command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class ContactUsCommand implements Command {
 

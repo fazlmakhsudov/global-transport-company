@@ -21,10 +21,13 @@ import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 
 /**
  * Login command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class LoginCommand implements Command {
 
@@ -70,7 +73,7 @@ public class LoginCommand implements Command {
                 LOG.error(Messages.ERR_CANNOT_HANDLE_POST_REQUEST);
                 throw new AppException(Messages.ERR_CANNOT_HANDLE_POST_REQUEST, e);
             }
-            if (foundUser.getPassword().equals(encryptPassword(password))) {
+            if (!Objects.isNull(foundUser) && foundUser.getPassword().equals(encryptPassword(password))) {
                 forward = Path.COMMAND_USER_CABINET;
                 session.setAttribute("user", new UserModelBuilder().create(foundUser));
                 System.out.println("password is correct");

@@ -2,12 +2,17 @@ package com.epam.gtc.services.domains.builders;
 
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.services.domains.DistanceDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import com.epam.gtc.web.models.DistanceModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates(maps) DistanceDomain object from DistanceModel object
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DistanceDomainBuilderFromModel extends Builder<DistanceModel, DistanceDomain> {
     public DistanceDomain create(DistanceModel distance) throws BuilderException {
         return build(distance, DistanceDomain.class);

@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 /**
  * Main interface for the Command pattern implementation.
+ *
+ * @author Fazliddin Makhsudov
  */
 public interface Command extends Serializable {
 

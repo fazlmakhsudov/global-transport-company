@@ -2,12 +2,14 @@ package com.epam.gtc.services.domains;
 
 import java.io.Serializable;
 
-
+/**
+ * Rate domaine
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class RateDomain implements Serializable {
-    /**
-     * Serial version UID.
-     */
-    private static final long serialVersionUID = 2l; // need to redefine'
+
+    private static final long serialVersionUID = 2l;
 
     private int id;
     private String name;

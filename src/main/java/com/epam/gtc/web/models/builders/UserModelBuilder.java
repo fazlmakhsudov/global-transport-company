@@ -2,12 +2,17 @@ package com.epam.gtc.web.models.builders;
 
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.services.domains.UserDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 import com.epam.gtc.web.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates(maps) UserModel object from UserDomain object
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class UserModelBuilder extends Builder<UserDomain, UserModel> {
     public UserModel create(UserDomain user) throws BuilderException {
         return build(user, UserModel.class);

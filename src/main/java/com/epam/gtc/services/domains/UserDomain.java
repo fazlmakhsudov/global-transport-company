@@ -1,11 +1,16 @@
 package com.epam.gtc.services.domains;
 
 import com.epam.gtc.dao.entities.constants.Role;
-import com.epam.gtc.utils.builders.BuilderField;
-import com.epam.gtc.utils.builders.BuilderFieldConstant;
+import com.epam.gtc.utils.BuilderField;
+import com.epam.gtc.utils.BuilderFieldConstant;
 
 import java.time.LocalDateTime;
 
+/**
+ * User domain
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class UserDomain {
     private int id;
     private String name;

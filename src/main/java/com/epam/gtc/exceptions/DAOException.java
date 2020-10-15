@@ -2,6 +2,8 @@ package com.epam.gtc.exceptions;
 
 /**
  * An exception that provides information on a DAO error.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class DAOException extends AppException {
 

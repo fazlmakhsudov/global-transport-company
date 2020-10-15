@@ -2,9 +2,13 @@ package com.epam.gtc.dao.entities;
 
 import java.io.Serializable;
 
-
+/**
+ * Distance entity
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DistanceEntity implements Serializable {
-    private static final long serialVersionUID = 2l; //TODO
+    private static final long serialVersionUID = 2l;
     private int id;
     private int fromCityId;
     private int toCityId;

@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Main servlet controller.
+ * Main only servlet controller.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class Controller extends HttpServlet {
 

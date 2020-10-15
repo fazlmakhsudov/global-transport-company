@@ -3,13 +3,15 @@ package com.epam.gtc.dao.entities.builders;
 import com.epam.gtc.dao.entities.DeliveryEntity;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.services.domains.DeliveryDomain;
-import com.epam.gtc.utils.builders.Builder;
+import com.epam.gtc.utils.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Creates(maps) DeliveryEntity object from DeliveryDomain object
+ *
+ * @author Fazliddin Makhsudov
  */
 public class DeliveryEntityBuilder extends Builder<DeliveryDomain, DeliveryEntity> {
     public DeliveryEntity create(DeliveryDomain delivery) throws BuilderException {

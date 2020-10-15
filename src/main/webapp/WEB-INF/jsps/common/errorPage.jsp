@@ -12,7 +12,7 @@
 	<!-- header -->
        	<header>
             <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-            <c:set var="navmenu" value="About Us" />
+            <c:set var="navmenu" value="Error" />
             <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
         </header>
         <!-- header -->

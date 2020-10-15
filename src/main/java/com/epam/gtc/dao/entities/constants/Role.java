@@ -5,6 +5,11 @@ import com.epam.gtc.dao.entities.UserEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Roles
+ *
+ * @author Fazliddin Makhsudov
+ */
 public enum Role {
     ADMIN,
     MANAGER,

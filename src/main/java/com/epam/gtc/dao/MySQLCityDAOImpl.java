@@ -1,15 +1,20 @@
 package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.CityEntity;
+import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.utils.DBManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * MySQL City DAO implementation
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class MySQLCityDAOImpl implements CityDAO {
     private static final Logger LOG = Logger.getLogger(MySQLCityDAOImpl.class);
     private final Extractor<CityEntity> cityExtractor = new CityExtractor();
@@ -232,13 +237,13 @@ public class MySQLCityDAOImpl implements CityDAO {
      * @return number of cities
      */
     @Override
-    public int countAllCities() {
+    public int countAllCities() throws DAOException {
         final String query = "select count(*) from cities;";
         DBManager dbm;
         Connection con = null;
         Statement smt = null;
         ResultSet rs = null;
-        int citiesNumber = 0;
+        int citiesNumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -249,7 +254,8 @@ public class MySQLCityDAOImpl implements CityDAO {
             con.commit();
         } catch (SQLException ex) {
             DBManager.rollback(con);
-            LOG.error(Messages.ERR_CANNOT_READ_ALL_CITIES);
+            LOG.error(Messages.ERR_CANNOT_COUNT_ALL_CITIES);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_ALL_CITIES, ex);
         } finally {
             DBManager.close(con, smt, rs);
         }

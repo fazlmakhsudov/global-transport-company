@@ -69,8 +69,8 @@
                                                 ${order}<c:set var='order' value='${order + 1}'/>
                                               </td>
                                               <td class='align-middle text-center request${request.id}'>${request.id}</td>
-                                              <td class='align-middle text-center request${request.id}'>${applicationScope['citiesMap'].get(request.cityFromId)}</td>
-                                              <td class='align-middle text-center request${request.id}'>${applicationScope['citiesMap'].get(request.cityToId)}</td>
+                                              <td class='align-middle text-center request${request.id}'>${citiesMap.get(request.cityFromId)}</td>
+                                              <td class='align-middle text-center request${request.id}'>${citiesMap.get(request.cityToId)}</td>
                                               <td class='align-middle text-center request${request.id}'>${request.weight}</td>
                                               <td class='align-middle text-center request${request.id}'>${request.length}</td>
                                               <td class='align-middle text-center request${request.id}'>${request.width}</td>

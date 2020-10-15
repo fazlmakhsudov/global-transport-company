@@ -6,7 +6,11 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
-
+/**
+ * Generates html block for pagination
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class PaginationHandler extends TagSupport {
     private int allItems;
     private int itemsNumber;

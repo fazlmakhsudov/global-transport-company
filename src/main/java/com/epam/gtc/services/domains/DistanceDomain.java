@@ -2,12 +2,14 @@ package com.epam.gtc.services.domains;
 
 import java.io.Serializable;
 
-
+/**
+ * Distance domain
+ *
+ * @author Fazliddin Makhsudov
+ */
 public class DistanceDomain implements Serializable {
-    /**
-     * Serial version UID.
-     */
-    private static final long serialVersionUID = 2l; // need to redefine
+
+    private static final long serialVersionUID = 2l;
 
     private int id;
     private int fromCityId;

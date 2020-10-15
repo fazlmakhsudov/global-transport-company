@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Logout command.
+ *
+ * @author Fazliddin Makhsudov
  */
 public class LogoutCommand implements Command {
 
