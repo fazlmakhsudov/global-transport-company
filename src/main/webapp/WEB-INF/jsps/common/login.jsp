@@ -52,7 +52,9 @@
 							or <a href="/gtc/controller?command=signup">sign up</a>
 						</span>
 					</div>
-
+                    <div style='color:red; font-weight: bold;'>
+                        ${errorSignIn}
+                    </div>
 				</form>
 
 				<div class="login100-more" style="background-image: url('images/bg-01.jpg');">

@@ -1,6 +1,7 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
+import com.epam.gtc.dao.entities.constants.Role;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.services.UserService;
@@ -49,82 +50,60 @@ public class LoginCommand implements Command {
     }
 
     private String handlePostRequest(final HttpServletRequest request) throws AppException {
-        String forward;
+        String forward = Path.PAGE_USER_CABINET;
         HttpSession session = request.getSession();
 
         String email = request.getParameter(Fields.USER_EMAIL);
         LOG.trace("Request parameter: email --> " + email);
         String password = request.getParameter(Fields.USER_PASSWORD);
-        session.removeAttribute("errorSignIn");
+        session.removeAttribute("errorLogin");
         LOG.trace("Set request attribute: command login");
         request.setAttribute("command", "login");
         UserModel userModel = (UserModel) session.getAttribute("user");
-        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
-            if (userModel == null) {
-                forward = Path.PAGE_LOGIN;
+        if (!Objects.isNull(userModel)) {
+            LOG.debug("User is already loginned");
+            request.setAttribute("errorMessage", "You have already loginned. Login out in order to login in again.");
+            return Path.PAGE_ERROR_PAGE;
+        }
+        if (Validator.isValidEmail(email)) {
+            UserDomain userDomain = userService.find(email);
+            LOG.trace("Found in DB: user --> " + userDomain);
+            if (userDomain != null && Validator.isValidString(password)
+                    && Validator.isValidPassword(userDomain.getPassword(), encryptPassword(password))) {
+                Role userRole = userDomain.getRole();
+                LOG.trace("userRole --> " + userRole);
+
+                if (userRole == Role.ADMIN) {
+                    forward = Path.PAGE_ADMIN_HOME;
+                }
+                if (userRole == Role.MANAGER) {
+                    forward = Path.PAGE_ADMIN_HOME;
+                }
+                if (userRole == Role.USER) {
+                    forward = Path.PAGE_USER_CABINET;
+                }
+                userModel = new UserModelBuilder().create(userDomain);
+                session.setAttribute("user", userModel);
+                LOG.trace("Set the session attribute: user --> " + userModel);
             } else {
-                forward = Path.COMMAND_INDEX;
+                forward = Path.PAGE_LOGIN;
+                LOG.error("Cannot find user with such email/password");
+                String error = "Cannot find user with such email/password";
+                session.setAttribute("errorSignIn", error);
             }
         } else {
-            UserDomain foundUser;
-            try {
-                foundUser = userService.find(email);
-            } catch (AppException e) {
-                LOG.error(Messages.ERR_CANNOT_HANDLE_POST_REQUEST);
-                throw new AppException(Messages.ERR_CANNOT_HANDLE_POST_REQUEST, e);
-            }
-            if (!Objects.isNull(foundUser) && foundUser.getPassword().equals(encryptPassword(password))) {
-                forward = Path.COMMAND_USER_CABINET;
-                session.setAttribute("user", new UserModelBuilder().create(foundUser));
-                System.out.println("password is correct");
-            } else {
-                System.out.println("password is incorrect");
-                forward = Path.PAGE_ERROR_PAGE;
-            }
-            /**
-             * For analyzing
-             * 				if (Validator.isValidEmail(email)) {
-             * 					user = manager.findUserByEmail(email);
-             * 					LOG.trace("Found in DB: user --> " + user);
-             * 					if (user != null && Validator.isValidPassword(user.getPassword(), password)) {
-             * 						Role userRole = Role.getRole(user);
-             * 						LOG.trace("userRole --> " + userRole);
-             *
-             * 						if (userRole == Role.ADMIN) {
-             * 							forward = Path.COMMAND_ADMIN;
-             *                                                }
-             * 						if (userRole == Role.MANAGER) {
-             * 							forward = Path.COMMAND_MANAGER;
-             *                        }
-             * 						if (userRole == Role.CLIENT) {
-             * 							forward = Path.COMMAND_CLIENT;
-             *                        }
-             * 						session.setAttribute("cabinet", forward);
-             * 						session.setAttribute("user", user);
-             * 						LOG.trace("Set the session attribute: user --> " + user);
-             *
-             * 						session.setAttribute("userRole", userRole);
-             * 						LOG.trace("Set the session attribute: userRole --> " + userRole);
-             *
-             * 						LOG.info("User " + user + " logged as " + userRole.toString().toLowerCase());
-             **                    } else {
-             * 						forward = Path.PAGE_LOGIN;
-             * 						LOG.error("Cannot find user with such email/password");
-             * 						error = "Cannot find user with such email/password";
-             * 						session.setAttribute("errorSignIn", error);
-             *                    }
-             *                }                 else {
-             * 					forward = Path.PAGE_LOGIN;
-             * 					LOG.error("Illegal email format");
-             * 					error = "Illegal email format";
-             * 					session.setAttribute("errorSignIn", error);
-             *                                }
-             */
+            LOG.error("Illegal email format");
+            String error = "Illegal email format";
+            session.setAttribute("errorSignIn", error);
+            forward = Path.PAGE_ERROR_PAGE;
         }
         return forward;
     }
 
     private String encryptPassword(final String password) throws AppException {
+        if (Objects.isNull(password) || password.isEmpty()) {
+            return null;
+        }
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("MD5");

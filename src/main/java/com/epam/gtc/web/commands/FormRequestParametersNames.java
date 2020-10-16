@@ -51,4 +51,6 @@ public class FormRequestParametersNames {
     public static String REQUEST_CONTENT_TYPE_NAME = "requestcontenttypename";
     public static String REQUEST_STATUS_NAME = "requeststatusname";
 
+    public static String SORT_PARAMETER = "sortparameter";
+
 }

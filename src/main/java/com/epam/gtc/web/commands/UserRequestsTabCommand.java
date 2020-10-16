@@ -198,4 +198,9 @@ public class UserRequestsTabCommand implements Command {
             throw new CommandException(e.getMessage(), e);
         }
     }
+
+    private void sortRequestModelsList(HttpServletRequest request, List<RequestModel> requestModels) {
+        String sortparameter = FormRequestParametersNames.SORT_PARAMETER;
+        
+    }
 }
