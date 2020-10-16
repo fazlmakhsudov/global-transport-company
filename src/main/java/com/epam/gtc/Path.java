@@ -29,6 +29,7 @@ public final class Path {
     public static final String AJAX_COMMAND_PERSONAL_COUNTER_FORM = "ajaxPersonalCounterForm";
 
     public static final String COMMAND_INDEX = "controller?command=index";
+    public static final String COMMAND_SIGNUP = "controller?command=signup";
     public static final String COMMAND_USER_CABINET = "controller?command=userCabinet";
     public static final String COMMAND_USER_REQUESTS_TAB = "controller?command=userRequestsTab";
     public static final String COMMAND_USER_INVOICES_TAB = "controller?command=userInvoicesTab";

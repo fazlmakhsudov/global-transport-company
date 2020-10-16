@@ -2,6 +2,8 @@ package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
+import com.epam.gtc.exceptions.BuilderException;
+import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.UserService;
 import com.epam.gtc.services.domains.UserDomain;
 import com.epam.gtc.services.domains.builders.UserDomainBuilderFromModel;
@@ -19,6 +21,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Sign up command.
@@ -44,7 +47,12 @@ public class SignupCommand implements Command {
         String forward = Path.PAGE_SIGNUP;
         UserModel user = (UserModel) session.getAttribute("user");
         if (user == null && Method.isPost(request)) {
-            forward = handlePostRequest(request, session);
+            try {
+                forward = handlePostRequest(request, session);
+            } catch (ServiceException | BuilderException e) {
+                request.setAttribute("errorMessage", e.getMessage());
+                forward = Path.PAGE_ERROR_PAGE;
+            }
         } else if (user != null) {
             forward = Path.COMMAND_INDEX;
         }
@@ -52,14 +60,14 @@ public class SignupCommand implements Command {
         return forward;
     }
 
-    private String handlePostRequest(HttpServletRequest request, HttpSession session) {
+    private String handlePostRequest(HttpServletRequest request, HttpSession session) throws ServiceException, BuilderException {
         String name = request.getParameter(Fields.ENTITY_NAME);
         String surname = request.getParameter(Fields.USER_SURNAME);
         String email = request.getParameter(Fields.USER_EMAIL);
         String password = request.getParameter(Fields.USER_PASSWORD);
-        String forward = Path.PAGE_SIGNUP;
+        String forward = Path.COMMAND_USER_CABINET;
         List<String> errors = new ArrayList<>();
-        int count = 0;
+        session.removeAttribute("newUser");
         session.removeAttribute("errorSignUp");
         LOG.trace("Set request attribute: command signup");
         request.setAttribute("command", "signup");
@@ -67,20 +75,55 @@ public class SignupCommand implements Command {
         LOG.trace("Request parameter: surname --> " + surname);
         LOG.trace("Request parameter: email --> " + email);
         LOG.trace("Request parameter: password --> " + encryptPassword(password));
-        UserModel userModel = new UserModel();
-        userModel.setName(name);
-        userModel.setSurname(surname);
-        userModel.setEmail(email);
-        userModel.setPassword(password);
-        userModel.setRoleName("user");
-        LOG.trace("Saving new user: " + userModel);
-        try {
+        boolean requestParametersFlag = true;
+        if (!Validator.isValidString(name)) {
+            errors.add(String.format("Type proper name"));
+            LOG.trace("Type proper name");
+            requestParametersFlag = false;
+        }
+        if (!Validator.isValidString(surname)) {
+            errors.add(String.format("Type proper surname"));
+            LOG.trace("Type proper surname");
+            requestParametersFlag = false;
+        }
+        if (!Validator.isValidEmail(email)) {
+            errors.add(String.format("Type proper email"));
+            LOG.trace("Type proper email");
+            requestParametersFlag = false;
+        }
+        if (!Validator.isValidString(password)) {
+            errors.add(String.format("Type proper password"));
+            LOG.trace("Type proper password");
+            requestParametersFlag = false;
+        }
+        UserModel newUser = new UserModel();
+        newUser.setName(name);
+        newUser.setSurname(surname);
+        newUser.setEmail(email);
+        if (!requestParametersFlag) {
+            LOG.debug("Post parameters validation failed");
+            session.setAttribute("newUser", newUser);
+            session.setAttribute("errorSignUp", errors.stream().reduce((s, s2) -> s + System.lineSeparator() + s2));
+            return Path.COMMAND_SIGNUP;
+        }
+        boolean isEmailOccupied = Objects.isNull(userService.find(email)) ? false : true;
+        if (isEmailOccupied) {
+            LOG.debug("Email is occupied -");
+            session.setAttribute("newUser", newUser);
+            session.setAttribute("errorSignUp", "Email is occupied.");
+            forward = Path.COMMAND_SIGNUP;
+        } else {
+            UserModel userModel = new UserModel();
+            userModel.setName(name);
+            userModel.setSurname(surname);
+            userModel.setEmail(email);
+            userModel.setPassword(password);
+            userModel.setRoleName("user");
+            LOG.trace("Saving new user: " + userModel);
             userService.add(new UserDomainBuilderFromModel().create(userModel));
             UserDomain userDomain = userService.find(userModel.getEmail());
             session.setAttribute("user", new UserModelBuilder().create(userDomain));
-            forward = Path.PAGE_HOME;
-        } catch (AppException e) {
-            LOG.error(e.getMessage());
+            forward = Path.COMMAND_USER_CABINET;
         }
         return forward;
     }

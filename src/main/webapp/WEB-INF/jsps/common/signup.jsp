@@ -18,19 +18,19 @@
 						Signup to continue
 					</span>
 					<div class="wrap-input100 validate-input" data-validate="Name is required">
-						<input class="input100" type="text" name="name" minlength="4">
+						<input class="input100" type="text" name="name" value='${sessionScope.newUser.name}' minlength="4">
 						<span class="focus-input100"></span>
 						<span class="label-input100">First name</span>
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Surname is required">
-						<input class="input100" type="text" name="surname" minlength="3">
+						<input class="input100" type="text" name="surname" value='${sessionScope.newUser.surname}' minlength="3">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Second name</span>
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-						<input class="input100" type="email" name="email">
+						<input class="input100" type="email" name="email" value='${sessionScope.newUser.email}'>
 						<span class="focus-input100"></span>
 						<span class="label-input100">Email</span>
 					</div>
@@ -61,7 +61,9 @@
 							or <a href="/gtc/controller?command=login">login</a>
 						</span>
 					</div>
-
+                     <div class='text-center h5 text-danger'>
+                        ${sessionScope.errorSignUp}
+                    </div>
 				</form>
 				<div class="login100-more" style="background-image: url('images/bg-02.jpg');">
 				</div>

@@ -17,14 +17,9 @@
         </header>
         <!-- header -->
 
-	<div class="main_bg">
-		<div class="wrap">
-			<div class="main">
-				<div class="contact">
-
-					<%-- CONTENT --%>
-
-					<div class="well">The following error occurred</div>
+	<div class="container">
+		<div class="col-6 justify-content-center h-50">
+					<div class="bg-info h3 font-weight-bold text-center">The following error occurred</div>
 					<c:set var="code"
 						value="${requestScope['javax.servlet.error.status_code']}" />
 					<c:set var="message"
@@ -38,17 +33,12 @@
 						<div class="alert alert-danger">${message}</div>
 					</c:if>
 					<c:if test="${not empty exception}">
-						<%
-							exception.printStackTrace(new PrintWriter(out));
-						%>
+						${exception.message}
 					</c:if>
 					<%-- if we get this page using forward --%>
 					<c:if test="${not empty requestScope.errorMessage}">
 						<div class="alert alert-danger">${requestScope.errorMessage}</div>
 					</c:if>
-					<%-- CONTENT --%>
-				</div>
-			</div>
 		</div>
 	</div>
 	    <!-- footer section -->

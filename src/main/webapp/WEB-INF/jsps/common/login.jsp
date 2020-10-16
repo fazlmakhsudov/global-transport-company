@@ -20,7 +20,7 @@
 
 
 					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-						<input class="input100" type="email" name="email">
+						<input class="input100" type="email" name="email" value='${email}'>
 						<span class="focus-input100"></span>
 						<span class="label-input100">Email</span>
 					</div>
@@ -52,7 +52,7 @@
 							or <a href="/gtc/controller?command=signup">sign up</a>
 						</span>
 					</div>
-                    <div style='color:red; font-weight: bold;'>
+                    <div class='text-center h5 text-danger'>
                         ${errorSignIn}
                     </div>
 				</form>

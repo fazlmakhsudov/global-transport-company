@@ -90,6 +90,7 @@ public class LoginCommand implements Command {
                 forward = Path.PAGE_LOGIN;
                 LOG.error("Cannot find user with such email/password");
                 String error = "Cannot find user with such email/password";
+                request.setAttribute("email", email);
                 session.setAttribute("errorSignIn", error);
             }
         } else {
