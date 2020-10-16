@@ -25,21 +25,27 @@ public final class CommandContainer {
     static {
         // common commands
         commands.put("index", new IndexCommand((RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE),
-                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
         commands.put("login", new LoginCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
         commands.put("logout", new LogoutCommand());
         commands.put("signup", new SignupCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
         commands.put("rates", new RatesCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
                 (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE),
                 (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE)));
-        commands.put("gallery", new GalleryCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
-        commands.put("aboutUs", new AboutUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
-        commands.put("contactUs", new ContactUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("gallery", new GalleryCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
+        commands.put("aboutUs", new AboutUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
+        commands.put("contactUs", new ContactUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
 
-        commands.put("userCabinet", new UserCabinetCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("userCabinet", new UserCabinetCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
         commands.put("userProfileTab", new UserProfileTabCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
         commands.put("userRequestsTab", new UserRequestsTabCommand((RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE),
-                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
         commands.put("userInvoicesTab", new UserInvoicesTabCommand((InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE)));
         commands.put("userDeliveriesTab", new UserDeliveriesTabCommand((DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE)));
 
@@ -57,7 +63,7 @@ public final class CommandContainer {
         commands.put("adminInvoicesPage", new AdminInvoicesPageCommand((InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE)));
         commands.put("adminRatesPage", new AdminRatesPageCommand((RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE)));
         commands.put("adminRequestsPage", new AdminRequestsPageCommand((RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE),
-                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),(DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
 
         LOG.debug("Command container was successfully initialized");
         LOG.trace("Number of commands --> " + commands.size());

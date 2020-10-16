@@ -45,7 +45,7 @@ public class AdminDistancesPageCommand implements Command {
             throws AppException {
         LOG.debug("AdminDistancesPageCommand starts");
         String forward = handleRequest(request);
-        getCities(request);
+        supplyRequestWithCities(request);
         LOG.debug("AdminDistancesPageCommand finished");
         return forward;
     }
@@ -122,15 +122,19 @@ public class AdminDistancesPageCommand implements Command {
         return forward;
     }
 
-    private void getCities(HttpServletRequest request) {
+    private void supplyRequestWithCities(HttpServletRequest request) {
+
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
+            List<DistanceModel> distanceModels = new DistanceModelBuilder().create(distanceService.findAll());
+            List<Integer> distanceIdFilterList = distanceModels.stream().map(DistanceModel::getFromCityId).collect(Collectors.toList());
             List<String> cityNames = cityModels.stream()
-                    .map(cityModel -> cityModel.getName())
+                    .map(CityModel::getName)
                     .collect(Collectors.toList());
             Map<Integer, String> citiesMap = cityModels.stream()
-                    .collect(Collectors.toMap(cityModel -> cityModel.getId(),
-                            cityModel -> cityModel.getName()));
+                    .filter(cityModel -> distanceIdFilterList.contains(cityModel.getId()))
+                    .collect(Collectors.toMap(CityModel::getId,
+                            CityModel::getName));
             request.setAttribute("citiesNames", cityNames);
             request.setAttribute("citiesMap", citiesMap);
 

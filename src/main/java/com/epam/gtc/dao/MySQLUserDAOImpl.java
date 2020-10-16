@@ -29,7 +29,8 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public int create(final UserEntity user) throws DAOException {
-        int cond = -1;
+        System.out.println("mysqluser: create ; " + user.getName() + " " + user.getSurname());
+        int id = -1;
         if (user.getId() != 0 && user.getId() > 0) {
             return 0;
         }
@@ -52,7 +53,7 @@ public class MySQLUserDAOImpl implements UserDAO {
             pstmt.executeUpdate();
             rs = pstmt.getGeneratedKeys();
             if (rs != null && rs.next()) {
-                cond = rs.getInt(1);
+                id = rs.getInt(1);
             }
             con.commit();
         } catch (SQLException ex) {
@@ -62,7 +63,7 @@ public class MySQLUserDAOImpl implements UserDAO {
         } finally {
             DBManager.close(con, pstmt, rs);
         }
-        return cond;
+        return id;
     }
 
     /**

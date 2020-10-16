@@ -82,25 +82,19 @@
                                               <td class='align-middle text-center request${request.id}'>${request.createdDate}</td>
                                               <td class='align-middle text-center request${request.id}'>${request.updatedDate}</td>
 
-                                              <td>
-                                                  <form action="${urlForPage}" method='POST'>
-                                                    <input type='text' name='command' value='userRequestsPage' style='display:none;'/>
-                                                    <input type='text' name='page' value='${page}' style='display:none;'/>
-                                                    <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
-                                                    <input type='text' name='requestid' value="${request.id}" style='display:none;'/>
-                                                    <div class="input-group form-group">
-                                                      <div class="input-group-prepend" id='removeSubmit${request.id}'
-                                                        style='display:none'>
-                                                        <button type="submit" class="btn btn-outline-danger">Do</button>
-                                                      </div>
-                                                      <select class="requests custom-select form-control" name='action' data-requestid='${request.id}'
-                                                            data-requestcontenttypename='${request.contentTypeName}'
-                                                            data-requestStatusName='${request.requestStatusName}'>
-                                                        <option selected>Choose...</option>
-                                                        <option value="save"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Save</option>
-                                                      </select>
-                                                    </div>
-                                                  </form>
+                                              <td class='align-middle'>
+                                                 <c:if test = "${ request.requestStatusName != null && request.requestStatusName == 'waiting_for_manager_review'}">
+
+                                                   <form action='${urlForPage}'  method='POST'>
+                                                         <input type='text' name='command' value='userRequestsTab' style='display:none;'/>
+                                                         <input type='text' name='page' value='${page}' style='display:none;'/>
+                                                         <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
+                                                         <input type='text' name='requestid' value="${request.id}" style='display:none;'/>
+                                                         <input type='text' name='requeststatusname' value="cancelled" style='display:none;'/>
+                                                         <input type='text' name='action' value='save' style='display:none;'/>
+                                                          <button type="submit" class="btn btn-outline-warning w-100 mb-1" >Cancel</button>
+                                                   </form>
+                                                </c:if>
                                               </td>
                                             </tr>
                                            </c:forEach>

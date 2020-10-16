@@ -13,8 +13,7 @@ import java.util.Objects;
 public enum Role {
     ADMIN,
     MANAGER,
-    USER,
-    GUEST;
+    USER;
 
     /**
      * Get role.

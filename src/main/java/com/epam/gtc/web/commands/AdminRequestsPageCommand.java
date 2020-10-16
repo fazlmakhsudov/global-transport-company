@@ -6,12 +6,15 @@ import com.epam.gtc.dao.entities.constants.RequestStatus;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
+import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RequestService;
 import com.epam.gtc.services.domains.RequestDomain;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
+import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.RequestModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
+import com.epam.gtc.web.models.builders.DistanceModelBuilder;
 import com.epam.gtc.web.models.builders.RequestModelBuilder;
 import org.apache.log4j.Logger;
 
@@ -36,10 +39,12 @@ public class AdminRequestsPageCommand implements Command {
     private static final Logger LOG = Logger.getLogger(AdminRequestsPageCommand.class);
     private final RequestService requestService;
     private final CityService cityService;
+    private final DistanceService distanceService;
 
-    public AdminRequestsPageCommand(RequestService requestService, CityService cityService) {
+    public AdminRequestsPageCommand(RequestService requestService, CityService cityService, DistanceService distanceService) {
         this.requestService = requestService;
         this.cityService = cityService;
+        this.distanceService = distanceService;
     }
 
     @Override
@@ -158,10 +163,13 @@ public class AdminRequestsPageCommand implements Command {
 
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
+            List<DistanceModel> distanceModels = new DistanceModelBuilder().create(distanceService.findAll());
+            List<Integer> distanceIdFilterList = distanceModels.stream().map(DistanceModel::getFromCityId).collect(Collectors.toList());
             List<String> cityNames = cityModels.stream()
                     .map(CityModel::getName)
                     .collect(Collectors.toList());
             Map<Integer, String> citiesMap = cityModels.stream()
+                    .filter(cityModel -> distanceIdFilterList.contains(cityModel.getId()))
                     .collect(Collectors.toMap(CityModel::getId,
                             CityModel::getName));
             request.setAttribute("citiesNames", cityNames);

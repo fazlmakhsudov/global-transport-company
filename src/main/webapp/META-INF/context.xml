@@ -3,5 +3,6 @@
     <Resource name="jdbc/gtc" auth="Container" type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000" username="mfh" password="111111"
               driverClassName="com.mysql.cj.jdbc.Driver" defaultAutoCommit="false"
-              defaultTransactionIsolation="READ_COMMITTED" url="jdbc:mysql://localhost:3306/epamdb"/>
+              defaultTransactionIsolation="READ_COMMITTED" url="jdbc:mysql://localhost:3306/epamdb"
+              characterEncoding="UTF-8" />
 </Context>

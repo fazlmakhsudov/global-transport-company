@@ -4,8 +4,11 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
+import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.web.models.CityModel;
+import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
+import com.epam.gtc.web.models.builders.DistanceModelBuilder;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +27,11 @@ public class GalleryCommand implements Command {
     private static final long serialVersionUID = 2735976616686657267L;
     private static final Logger LOG = Logger.getLogger(GalleryCommand.class);
     private final CityService cityService;
+    private final DistanceService distanceService;
 
-    public GalleryCommand(CityService cityService) {
+    public GalleryCommand(CityService cityService, DistanceService distanceService) {
         this.cityService = cityService;
+        this.distanceService = distanceService;
     }
 
     @Override
@@ -40,12 +45,16 @@ public class GalleryCommand implements Command {
     }
 
     private void supplyRequestWithCities(HttpServletRequest request) {
+
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
+            List<DistanceModel> distanceModels = new DistanceModelBuilder().create(distanceService.findAll());
+            List<Integer> distanceIdFilterList = distanceModels.stream().map(DistanceModel::getFromCityId).collect(Collectors.toList());
             List<String> cityNames = cityModels.stream()
                     .map(CityModel::getName)
                     .collect(Collectors.toList());
             Map<Integer, String> citiesMap = cityModels.stream()
+                    .filter(cityModel -> distanceIdFilterList.contains(cityModel.getId()))
                     .collect(Collectors.toMap(CityModel::getId,
                             CityModel::getName));
             request.setAttribute("citiesNames", cityNames);

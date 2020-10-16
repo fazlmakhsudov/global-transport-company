@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public enum InvoiceStatus {
     PAID,
-    UNPAIND,
+    UNPAID,
     REJECTED;
 
     /**
@@ -54,7 +54,7 @@ public enum InvoiceStatus {
     public static int getId(String name) {
         return Arrays.stream(InvoiceStatus.values())
                 .filter(InvoiceStatus -> InvoiceStatus.name().equalsIgnoreCase(name))
-                .findFirst().orElse(InvoiceStatus.UNPAIND).ordinal() + 1;
+                .findFirst().orElse(InvoiceStatus.UNPAID).ordinal() + 1;
     }
 
     /**
@@ -65,7 +65,7 @@ public enum InvoiceStatus {
     public static int getId(InvoiceStatus InvoiceStatusB) {
         return Arrays.stream(InvoiceStatus.values())
                 .filter(InvoiceStatusA -> Objects.equals(InvoiceStatusA, InvoiceStatusB))
-                .findFirst().orElse(InvoiceStatus.UNPAIND).ordinal() + 1;
+                .findFirst().orElse(InvoiceStatus.UNPAID).ordinal() + 1;
     }
 
     /**
@@ -76,7 +76,7 @@ public enum InvoiceStatus {
     public static InvoiceStatus getEnumFromName(String name) {
         return Arrays.stream(InvoiceStatus.values())
                 .filter(InvoiceStatus -> InvoiceStatus.name().equalsIgnoreCase(name))
-                .findFirst().orElse(InvoiceStatus.UNPAIND);
+                .findFirst().orElse(InvoiceStatus.UNPAID);
     }
 
     @Override

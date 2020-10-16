@@ -84,7 +84,7 @@ public class CostCounter {
     public static double countCost(RequestModel requestModel) {
         double distance = getDistance(requestModel);
         LOG.debug(String.format("distance --> %.2f", distance));
-        double cost = distance * getCostPerKm(requestModel); // this is cost for normal delivery,
+        double cost = distance * countCostPerKm(requestModel); // this is cost for normal delivery,
         LOG.debug(String.format("estimated cost for standard delivery --> %.3f", cost));
         double hours = distance / permittedSpeed;
         LOG.debug(String.format("estimated riding hours for delivery --> %.3f", hours));
@@ -117,7 +117,7 @@ public class CostCounter {
     }
 
 
-    private static double getCostPerKm(RequestModel requestModel) {
+    private static double countCostPerKm(RequestModel requestModel) {
         double volumeOfCargo = requestModel.getHeight() * requestModel.getWidth()
                 * requestModel.getLength() * 0.000001d; // in m^3
         LOG.debug(String.format("volume of cargo --> %.3f m^3", volumeOfCargo));

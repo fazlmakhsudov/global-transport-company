@@ -19,7 +19,9 @@
       <span>S</span>uggest
       <span>R</span>ates</h3>
     <div class="card-deck mb-3 text-center">
-    ${ctg:showrates(ratesList, 4)}
+           <c:if test = "ratesList != null && ratesList.size() >= 4">
+              ${ctg:showrates(ratesList, 4)}
+           </c:if>
     </div>
   </div>
 

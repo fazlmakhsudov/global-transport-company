@@ -2,6 +2,7 @@ package com.epam.gtc.web.filters;
 
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.Role;
+import com.epam.gtc.web.models.UserModel;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -77,12 +78,12 @@ public class CommandAccessFilter implements Filter {
             return false;
         }
 
-        Role userRole = (Role) session.getAttribute("userRole");
-        if (userRole == null) {
+        UserModel userModel = (UserModel) session.getAttribute("user");
+        if (Objects.isNull(userModel)) {
             return false;
         }
-
-        return accessMap.get(userRole).contains(commandName)
+        String roleName = userModel.getRoleName();
+        return accessMap.get(Role.getEnumFromName(roleName)).contains(commandName)
                 || commons.contains(commandName);
     }
 
@@ -92,10 +93,11 @@ public class CommandAccessFilter implements Filter {
         LOG.debug("Filter initialization starts");
 
         // roles
-        accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("admin")));
+        accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("restricted")));
         accessMap.put(Role.MANAGER, asList(
-                fConfig.getInitParameter("manager")));
-        accessMap.put(Role.USER, asList(fConfig.getInitParameter("user")));
+                fConfig.getInitParameter("restricted")));
+        accessMap.put(Role.USER, asList(
+                fConfig.getInitParameter("common")));
         LOG.trace("Access map --> " + accessMap);
 
         // commons

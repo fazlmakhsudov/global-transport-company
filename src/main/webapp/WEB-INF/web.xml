@@ -38,32 +38,24 @@
     <filter>
         <filter-name>CommandAccessFilter</filter-name>
         <filter-class>com.epam.gtc.web.filters.CommandAccessFilter</filter-class>
+
         <init-param>
-            <param-name>admin</param-name>
-            <param-value>admin</param-value>
-        </init-param>
-        <init-param>
-            <param-name>manager</param-name>
-            <param-value>manager</param-value>
-        </init-param>
-        <init-param>
-            <param-name>user</param-name>
-            <param-value>user</param-value>
-        </init-param>
-        <init-param>
-            <param-name>guest</param-name>
-            <param-value>guest</param-value>
+            <param-name>restricted</param-name>
+            <param-value>adminMainPage
+                adminUsersPage adminCitiesPage adminDeliveriesPage
+                adminDistancesPage adminInvoicesPage adminRatesPage adminRequestsPage
+            </param-value>
         </init-param>
         <init-param>
             <param-name>common</param-name>
-            <param-value>process settings responses requests</param-value>
+            <param-value>
+                userCabinet userProfileTab userRequestsTab userInvoicesTab userDeliveriesTab
+            </param-value>
         </init-param>
+
         <init-param>
             <param-name>out-of-control</param-name>
-            <param-value>index logout signup noCommand login rates gallery aboutUs contactUs adminMainPage
-                adminUsersPage adminCitiesPage adminDeliveriesPage
-                adminDistancesPage adminInvoicesPage adminRatesPage adminRequestsPage
-                userCabinet userProfileTab userRequestsTab userInvoicesTab userDeliveriesTab
+            <param-value>index logout signup noCommand login rates gallery aboutUs contactUs
                 personalCounterForm
             </param-value>
         </init-param>
@@ -86,10 +78,10 @@
     </resource-ref>
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/WEB-INF/jsps/common/errorPage.jsp</location>
+        <location>/WEB-INF/errorPage.jsp</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/WEB-INF/jsps/common/404.jsp</location>
+        <location>/WEB-INF/404.jsp</location>
     </error-page>
 </web-app>

@@ -45,6 +45,9 @@
                                                                   </button>
                                                                   <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
                                                                     <a class="dropdown-item" href="/gtc/controller?command=userCabinet">My cabinet</a>
+                                                                    <c:if test="${user.roleName =='admin' }">
+                                                                        <a class="dropdown-item" href="/gtc/controller?command=adminMainPage">Management</a>
+                                                                    </c:if>
                                                                     <a class="dropdown-item" href="/gtc/controller?command=logout">Log out</a>
                                                                    </div>
                                                                 </div>

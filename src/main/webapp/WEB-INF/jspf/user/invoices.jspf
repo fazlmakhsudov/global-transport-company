@@ -63,24 +63,27 @@
                               <td class='align-middle text-center invoice${invoice.id}'>${invoice.createdDate}</td>
                              <td class='align-middle text-center invoice${invoice.id}'>${invoice.updatedDate}</td>
                               <td>
-                                  <form action="${urlForPage}" method='POST'>
+                                <c:if test = "${ invoice.invoiceStatusName != null && invoice.invoiceStatusName == 'unpaid'}">
+                                  <form action='${urlForPage}'  method='POST'>
+                                       <input type='text' name='command' value='userInvoicesTab' style='display:none;'/>
+                                       <input type='text' name='page' value='${page}' style='display:none;'/>
+                                       <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
+                                       <input type='text' id="invoiceid" name='invoiceid' value="${invoice.id}" style='display:none;'/>
+                                       <input type='text' name='invoicestatusname' value="Paid" style='display:none;'/>
+                                       <input type='text' name='action' value='save' style='display:none;'/>
+                                       <button type="submit" class="btn btn-outline-primary w-100 mb-1">Pay</button>
+                                  </form>
+                                  <form action='${urlForPage}'  method='POST'>
                                     <input type='text' name='command' value='userInvoicesTab' style='display:none;'/>
                                     <input type='text' name='page' value='${page}' style='display:none;'/>
                                     <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
                                     <input type='text' name='invoiceid' value="${invoice.id}" style='display:none;'/>
-                                    <div class="input-group form-group">
-                                      <div class="input-group-prepend" id='removeSubmit${invoice.id}'
-                                        style='display:none'>
-                                        <button type="submit" class="btn btn-outline-danger">Do</button>
-                                      </div>
-                                      <select class="invoices custom-select form-control" name='action' data-invoiceid='${invoice.id}'
-                                            data-invoicestatusname='${invoice.invoiceStatusName}'>
-                                        <option selected>Choose...</option>
-                                        <option value="save"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Save</option>
+                                    <input type='text' name='invoicestatusname' value="Rejected" style='display:none;'/>
 
-                                      </select>
-                                    </div>
+                                    <input type='text' name='action' value='save' style='display:none;'/>
+                                    <button type="submit" class="btn btn-outline-danger w-100">Reject</button>
                                   </form>
+                                 </c:if>
                               </td>
                             </tr>
                            </c:forEach>
@@ -106,11 +109,7 @@
                   </div>
                    <form action='${urlForPage}'  method='POST'>
                   <div class="modal-body">
-                         <input type='text' name='command' value='userInvoicesTab' style='display:none;'/>
-                         <input type='text' name='page' value='${page}' style='display:none;'/>
-                         <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
-                         <input type='text' id="invoiceid" name='invoiceid' value="${invoice.id}" style='display:none;'/>
-                         <input type='text' name='action' value='save' style='display:none;'/>
+
 
                          <div class="form-group">
                            <label for="invoicestatusname">Invoice status</label>

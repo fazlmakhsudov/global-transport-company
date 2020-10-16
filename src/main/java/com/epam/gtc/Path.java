@@ -15,8 +15,8 @@ public final class Path {
     public static final String PAGE_ABOUT_US = "/WEB-INF/jsps/common/aboutUs.jsp";
     public static final String PAGE_CONTACT_US = "/WEB-INF/jsps/common/contactUs.jsp";
     public static final String PAGE_USER_CABINET = "/WEB-INF/jsps/user/userCabinet.jsp";
-    public static final String PAGE_ERROR_PAGE = "/WEB-INF/jsps/common/errorPage.jsp";
-    public static final String PAGE_404 = "/WEB-INF/jsps/common/404.jsp";
+    public static final String PAGE_ERROR_PAGE = "/WEB-INF/errorPage.jsp";
+    public static final String PAGE_404 = "/WEB-INF/404.jsp";
     public static final String PAGE_ADMIN_HOME = "/WEB-INF/jsps/admin/adminMainPage.jsp";
     public static final String PAGE_ADMIN_USERS = "/WEB-INF/jsps/admin/adminUsersPage.jsp";
     public static final String PAGE_ADMIN_CITIES = "/WEB-INF/jsps/admin/adminCitiesPage.jsp";
