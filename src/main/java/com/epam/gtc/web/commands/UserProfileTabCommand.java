@@ -4,8 +4,6 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.UserService;
 import com.epam.gtc.services.domains.builders.UserDomainBuilderFromModel;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.UserModel;
 import org.apache.log4j.Logger;
@@ -29,6 +27,11 @@ public class UserProfileTabCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(UserProfileTabCommand.class);
+    private final UserService userService;
+
+    public UserProfileTabCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -47,7 +50,6 @@ public class UserProfileTabCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request, Object sessionUser) throws AppException {
-        UserService userService = (UserService) ServiceFactory.createService(ServiceType.USER_SERVICE);
         String forward = Path.PAGE_USER_CABINET;
         if (Method.isPost(request)) {
             LOG.trace("Method is Post");

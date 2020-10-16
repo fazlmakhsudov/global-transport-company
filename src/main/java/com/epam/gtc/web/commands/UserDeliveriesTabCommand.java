@@ -6,8 +6,6 @@ import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.domains.DeliveryDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.DeliveryModel;
 import com.epam.gtc.web.models.UserModel;
@@ -32,6 +30,11 @@ public class UserDeliveriesTabCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(UserDeliveriesTabCommand.class);
+    private final DeliveryService deliveryService;
+
+    public UserDeliveriesTabCommand(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -50,7 +53,7 @@ public class UserDeliveriesTabCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request, Object sessionUser) throws AppException {
-        DeliveryService deliveryService = (DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE);
+
         UserModel userModel = (UserModel) sessionUser;
         int deliveriesNumber = deliveryService.countUserDeliveries(userModel.getId());
         LOG.trace("Number of user deliveries : " + deliveriesNumber);

@@ -8,8 +8,6 @@ import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.RequestService;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +25,15 @@ public class AdminMainPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminMainPageCommand.class);
+    private final RequestService requestService;
+    private final InvoiceService invoiceService;
+    private final DeliveryService deliveryService;
+
+    public AdminMainPageCommand(RequestService requestService, InvoiceService invoiceService, DeliveryService deliveryService) {
+        this.requestService = requestService;
+        this.invoiceService = invoiceService;
+        this.deliveryService = deliveryService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response) {
@@ -39,9 +46,6 @@ public class AdminMainPageCommand implements Command {
 
     private void handleRequest(final HttpServletRequest request) {
 
-        RequestService requestService = (RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE);
-        InvoiceService invoiceService = (InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE);
-        DeliveryService deliveryService = (DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE);
 
         Map<String, List<String>> dashboard = new HashMap<>();
         try {
@@ -49,7 +53,7 @@ public class AdminMainPageCommand implements Command {
             dashboard.put("Invoices", formInvoiceReport(invoiceService));
             dashboard.put("Deliveries", formDeliveryReport(deliveryService));
         } catch (ServiceException e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
         }
 
         LOG.trace("requests --> " + dashboard.get("Requests"));

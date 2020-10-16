@@ -33,6 +33,15 @@ public class RatesCommand implements Command {
 
     private static final long serialVersionUID = 2735976616686657267L;
     private static final Logger LOG = Logger.getLogger(RatesCommand.class);
+    private final CityService cityService;
+    private final DistanceService distanceService;
+    private final RateService rateService;
+
+    public RatesCommand(CityService cityService, DistanceService distanceService, RateService rateService) {
+        this.cityService = cityService;
+        this.distanceService = distanceService;
+        this.rateService = rateService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request,
@@ -52,9 +61,7 @@ public class RatesCommand implements Command {
     }
 
     private void handleRequest(HttpServletRequest request, String rateName) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
-        DistanceService distanceService = (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE);
-        RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
+
         List<RateModel> rates;
         List<DistanceModel> distances;
         List<CityModel> cityModels;

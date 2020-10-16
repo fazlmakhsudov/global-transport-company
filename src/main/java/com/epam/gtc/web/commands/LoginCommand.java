@@ -1,14 +1,10 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
-import com.epam.gtc.dao.MySQLUserDAOImpl;
-import com.epam.gtc.dao.entities.builders.UserEntityBuilder;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.services.UserService;
-import com.epam.gtc.services.UserServiceImpl;
 import com.epam.gtc.services.domains.UserDomain;
-import com.epam.gtc.services.domains.builders.UserDomainBuilderFromEntity;
 import com.epam.gtc.utils.Fields;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.UserModel;
@@ -34,6 +30,11 @@ public class LoginCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(LoginCommand.class);
+    private final UserService userService;
+
+    public LoginCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -50,8 +51,7 @@ public class LoginCommand implements Command {
     private String handlePostRequest(final HttpServletRequest request) throws AppException {
         String forward;
         HttpSession session = request.getSession();
-        UserService userService = new UserServiceImpl(new MySQLUserDAOImpl(), new UserEntityBuilder(),
-                new UserDomainBuilderFromEntity());
+
         String email = request.getParameter(Fields.USER_EMAIL);
         LOG.trace("Request parameter: email --> " + email);
         String password = request.getParameter(Fields.USER_PASSWORD);

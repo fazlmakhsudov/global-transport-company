@@ -7,8 +7,6 @@ import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.domains.DistanceDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
@@ -34,6 +32,13 @@ public class AdminDistancesPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminDistancesPageCommand.class);
+    private final DistanceService distanceService;
+    private final CityService cityService;
+
+    public AdminDistancesPageCommand(DistanceService distanceService, CityService cityService) {
+        this.distanceService = distanceService;
+        this.cityService = cityService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -46,7 +51,6 @@ public class AdminDistancesPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        DistanceService distanceService = (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE);
         int distancesNumber = distanceService.countAllDistances();
         LOG.trace("Number of distances : " + distancesNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
@@ -119,7 +123,6 @@ public class AdminDistancesPageCommand implements Command {
     }
 
     private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

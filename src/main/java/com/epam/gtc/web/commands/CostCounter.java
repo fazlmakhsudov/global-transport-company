@@ -46,6 +46,13 @@ public class CostCounter {
         LOG.debug(String.format("initializing carryingCapacity = %.2f", carryingCapacity));
     }
 
+    /**
+     * Determines delivery date
+     * according company shcedule
+     *
+     * @param requestModel request
+     * @return Date
+     */
     public static Date determineDeliveryDate(RequestModel requestModel) {
         double hours = getDistance(requestModel) / permittedSpeed;
         int days = (int) hours / ridingHours + (((int) hours % ridingHours) < 5 ? 0 : 1);
@@ -68,6 +75,12 @@ public class CostCounter {
         return countCost(requestModel);
     }
 
+    /**
+     * Counts personal cost for certain request
+     *
+     * @param requestModel request
+     * @return cost
+     */
     public static double countCost(RequestModel requestModel) {
         double distance = getDistance(requestModel);
         LOG.debug(String.format("distance --> %.2f", distance));

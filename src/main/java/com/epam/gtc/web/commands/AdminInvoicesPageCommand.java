@@ -5,8 +5,6 @@ import com.epam.gtc.dao.entities.constants.InvoiceStatus;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.domains.InvoiceDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.InvoiceModel;
 import com.epam.gtc.web.models.builders.InvoiceModelBuilder;
@@ -29,6 +27,12 @@ public class AdminInvoicesPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminInvoicesPageCommand.class);
+    private final InvoiceService invoiceService;
+
+
+    public AdminInvoicesPageCommand(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -40,7 +44,7 @@ public class AdminInvoicesPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        InvoiceService invoiceService = (InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE);
+
         int invoicesNumber = invoiceService.countAllInvoices();
         LOG.trace("Number of invoices : " + invoicesNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));

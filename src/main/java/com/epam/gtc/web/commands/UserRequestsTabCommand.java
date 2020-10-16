@@ -9,8 +9,6 @@ import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.RequestService;
 import com.epam.gtc.services.domains.RequestDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.RequestModel;
@@ -40,6 +38,13 @@ public class UserRequestsTabCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(UserRequestsTabCommand.class);
+    private final RequestService requestService;
+    private final CityService cityService;
+
+    public UserRequestsTabCommand(RequestService requestService, CityService cityService) {
+        this.requestService = requestService;
+        this.cityService = cityService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -53,13 +58,13 @@ public class UserRequestsTabCommand implements Command {
         } else {
             forward = handleRequest(request, sessionUser);
         }
-        getCities(request);
+        supplyRequestWithCities(request);
         LOG.debug("UserRequestsTabCommand finished");
         return forward;
     }
 
     private String handleRequest(final HttpServletRequest request, Object sessionUser) throws AppException {
-        RequestService requestService = (RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE);
+
         UserModel userModel = (UserModel) sessionUser;
         int requestsNumber = requestService.countUserRequests(userModel.getId());
         LOG.trace("Number of user requests : " + requestsNumber);
@@ -164,8 +169,7 @@ public class UserRequestsTabCommand implements Command {
         session.setAttribute("requeststabbody", "show active");
     }
 
-    private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
+    private void supplyRequestWithCities(HttpServletRequest request) {
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

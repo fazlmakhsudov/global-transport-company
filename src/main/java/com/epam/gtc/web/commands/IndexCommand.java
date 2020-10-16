@@ -1,18 +1,12 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
-import com.epam.gtc.dao.MySQLRateDAOImpl;
-import com.epam.gtc.dao.entities.builders.RateEntityBuilder;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.RateService;
-import com.epam.gtc.services.RateServiceImpl;
-import com.epam.gtc.services.domains.builders.RateDomainBuilderFromEntity;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.RateModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
@@ -34,16 +28,11 @@ public class IndexCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
     private static final Logger LOG = Logger.getLogger(IndexCommand.class);
     private final RateService rateService;
+    private final CityService cityService;
 
-    // TODO create constructor in every command
-    public IndexCommand(RateService rateService) {
+    public IndexCommand(RateService rateService, CityService cityService) {
         this.rateService = rateService;
-    }
-
-    public IndexCommand() {
-        this.rateService = new RateServiceImpl(new MySQLRateDAOImpl(), new RateEntityBuilder(),
-                new RateDomainBuilderFromEntity());
-
+        this.cityService = cityService;
     }
 
     @Override
@@ -70,7 +59,7 @@ public class IndexCommand implements Command {
     }
 
     private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
+
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

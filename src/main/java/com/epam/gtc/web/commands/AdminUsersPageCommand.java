@@ -5,8 +5,6 @@ import com.epam.gtc.dao.entities.constants.Role;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.UserService;
 import com.epam.gtc.services.domains.UserDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.UserModel;
 import com.epam.gtc.web.models.builders.UserModelBuilder;
@@ -28,6 +26,11 @@ public class AdminUsersPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminUsersPageCommand.class);
+    private final UserService userService;
+
+    public AdminUsersPageCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -39,7 +42,6 @@ public class AdminUsersPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        UserService userService = (UserService) ServiceFactory.createService(ServiceType.USER_SERVICE);
         int usersNumber = userService.countAllUsers();
         LOG.trace("Number of users : " + usersNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
@@ -74,7 +76,6 @@ public class AdminUsersPageCommand implements Command {
             forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_USERS_PAGE,
                     page, itemsPerPage);
         }
-        System.out.println(" --- >>> page: " + page + "  itemsPerPage: " + itemsPerPage);
         List<UserModel> userModels = new UserModelBuilder().create(userService.findAll(page, itemsPerPage));
         LOG.trace("Users : " + userModels);
         request.setAttribute("page", page);

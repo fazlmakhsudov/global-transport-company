@@ -8,8 +8,6 @@ import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.RequestService;
 import com.epam.gtc.services.domains.RequestDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.RequestModel;
@@ -36,19 +34,26 @@ public class AdminRequestsPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminRequestsPageCommand.class);
+    private final RequestService requestService;
+    private final CityService cityService;
+
+    public AdminRequestsPageCommand(RequestService requestService, CityService cityService) {
+        this.requestService = requestService;
+        this.cityService = cityService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
             throws AppException {
         LOG.debug("AdminRequestsPageCommand starts");
         String forward = handleRequest(request);
-        getCities(request);
+        supplyRequestWithCities(request);
         LOG.debug("AdminRequestsPageCommand finished");
         return forward;
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        RequestService requestService = (RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE);
+
         int requestsNumber = requestService.countAllRequests();
         LOG.trace("Number of requests : " + requestsNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
@@ -149,8 +154,8 @@ public class AdminRequestsPageCommand implements Command {
         return forward;
     }
 
-    private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
+    private void supplyRequestWithCities(HttpServletRequest request) {
+
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

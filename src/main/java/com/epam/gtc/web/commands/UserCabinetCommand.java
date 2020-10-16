@@ -4,8 +4,6 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
 import org.apache.log4j.Logger;
@@ -27,6 +25,11 @@ public class UserCabinetCommand implements Command {
 
     private static final long serialVersionUID = 2735976616686657267L;
     private static final Logger LOG = Logger.getLogger(UserCabinetCommand.class);
+    private final CityService cityService;
+
+    public UserCabinetCommand(CityService cityService) {
+        this.cityService = cityService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request,
@@ -57,7 +60,7 @@ public class UserCabinetCommand implements Command {
     }
 
     private void getCities(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
+
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
             List<String> cityNames = cityModels.stream()

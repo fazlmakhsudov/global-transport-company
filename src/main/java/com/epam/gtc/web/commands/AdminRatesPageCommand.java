@@ -4,8 +4,6 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.RateService;
 import com.epam.gtc.services.domains.RateDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.RateModel;
 import com.epam.gtc.web.models.builders.RateModelBuilder;
@@ -27,6 +25,11 @@ public class AdminRatesPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminRatesPageCommand.class);
+    private final RateService rateService;
+
+    public AdminRatesPageCommand(RateService rateService) {
+        this.rateService = rateService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -38,7 +41,7 @@ public class AdminRatesPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
+
         int ratesNumber = rateService.countAllRates();
         LOG.trace("Number of rates : " + ratesNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));

@@ -1,13 +1,9 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
-import com.epam.gtc.dao.MySQLUserDAOImpl;
-import com.epam.gtc.dao.entities.builders.UserEntityBuilder;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.UserService;
-import com.epam.gtc.services.UserServiceImpl;
 import com.epam.gtc.services.domains.UserDomain;
-import com.epam.gtc.services.domains.builders.UserDomainBuilderFromEntity;
 import com.epam.gtc.services.domains.builders.UserDomainBuilderFromModel;
 import com.epam.gtc.utils.Fields;
 import com.epam.gtc.utils.Method;
@@ -34,6 +30,11 @@ public class SignupCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(SignupCommand.class);
+    private final UserService userService;
+
+    public SignupCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response) {
@@ -66,8 +67,6 @@ public class SignupCommand implements Command {
         LOG.trace("Request parameter: surname --> " + surname);
         LOG.trace("Request parameter: email --> " + email);
         LOG.trace("Request parameter: password --> " + encryptPassword(password));
-        UserService userService = new UserServiceImpl(new MySQLUserDAOImpl(), new UserEntityBuilder(),
-                new UserDomainBuilderFromEntity());
         UserModel userModel = new UserModel();
         userModel.setName(name);
         userModel.setSurname(surname);

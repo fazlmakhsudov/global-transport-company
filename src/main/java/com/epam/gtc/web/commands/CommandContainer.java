@@ -1,5 +1,8 @@
 package com.epam.gtc.web.commands;
 
+import com.epam.gtc.services.*;
+import com.epam.gtc.services.factory.ServiceFactory;
+import com.epam.gtc.services.factory.ServiceType;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
@@ -21,32 +24,40 @@ public final class CommandContainer {
 
     static {
         // common commands
-        commands.put("index", new IndexCommand());
-        commands.put("login", new LoginCommand());
+        commands.put("index", new IndexCommand((RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE),
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("login", new LoginCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
         commands.put("logout", new LogoutCommand());
-        commands.put("signup", new SignupCommand());
-        commands.put("rates", new RatesCommand());
-        commands.put("gallery", new GalleryCommand());
-        commands.put("aboutUs", new AboutUsCommand());
-        commands.put("contactUs", new ContactUsCommand());
+        commands.put("signup", new SignupCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
+        commands.put("rates", new RatesCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE),
+                (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE)));
+        commands.put("gallery", new GalleryCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("aboutUs", new AboutUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("contactUs", new ContactUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
 
-        commands.put("userCabinet", new UserCabinetCommand());
-        commands.put("userProfileTab", new UserProfileTabCommand());
-        commands.put("userRequestsTab", new UserRequestsTabCommand());
-        commands.put("userInvoicesTab", new UserInvoicesTabCommand());
-        commands.put("userDeliveriesTab", new UserDeliveriesTabCommand());
+        commands.put("userCabinet", new UserCabinetCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("userProfileTab", new UserProfileTabCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
+        commands.put("userRequestsTab", new UserRequestsTabCommand((RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE),
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("userInvoicesTab", new UserInvoicesTabCommand((InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE)));
+        commands.put("userDeliveriesTab", new UserDeliveriesTabCommand((DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE)));
 
         commands.put("personalCounterForm", new PersonalCounterFormCommand());
 
         commands.put("noCommand", new NoCommand());
-        commands.put("adminMainPage", new AdminMainPageCommand());
-        commands.put("adminUsersPage", new AdminUsersPageCommand());
-        commands.put("adminCitiesPage", new AdminCitiesPageCommand());
-        commands.put("adminDeliveriesPage", new AdminDeliveriesPageCommand());
-        commands.put("adminDistancesPage", new AdminDistancesPageCommand());
-        commands.put("adminInvoicesPage", new AdminInvoicesPageCommand());
-        commands.put("adminRatesPage", new AdminRatesPageCommand());
-        commands.put("adminRequestsPage", new AdminRequestsPageCommand());
+        commands.put("adminMainPage", new AdminMainPageCommand((RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE),
+                (InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE),
+                (DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE)));
+        commands.put("adminUsersPage", new AdminUsersPageCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));
+        commands.put("adminCitiesPage", new AdminCitiesPageCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("adminDeliveriesPage", new AdminDeliveriesPageCommand((DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE)));
+        commands.put("adminDistancesPage", new AdminDistancesPageCommand((DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE),
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
+        commands.put("adminInvoicesPage", new AdminInvoicesPageCommand((InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE)));
+        commands.put("adminRatesPage", new AdminRatesPageCommand((RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE)));
+        commands.put("adminRequestsPage", new AdminRequestsPageCommand((RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE),
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE)));
 
         LOG.debug("Command container was successfully initialized");
         LOG.trace("Number of commands --> " + commands.size());

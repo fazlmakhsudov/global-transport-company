@@ -6,8 +6,6 @@ import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.domains.InvoiceDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.InvoiceModel;
 import com.epam.gtc.web.models.UserModel;
@@ -32,6 +30,11 @@ public class UserInvoicesTabCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(UserInvoicesTabCommand.class);
+    private final InvoiceService invoiceService;
+
+    public UserInvoicesTabCommand(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest invoice, final HttpServletResponse response)
@@ -50,7 +53,7 @@ public class UserInvoicesTabCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request, Object sessionUser) throws AppException {
-        InvoiceService invoiceService = (InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE);
+
         UserModel userModel = (UserModel) sessionUser;
         int invoicesNumber = invoiceService.countUserInvoices(userModel.getId());
         LOG.trace("Number of user invoices : " + invoicesNumber);

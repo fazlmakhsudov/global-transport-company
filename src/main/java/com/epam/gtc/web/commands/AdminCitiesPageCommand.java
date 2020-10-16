@@ -4,8 +4,6 @@ import com.epam.gtc.Path;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.domains.CityDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
@@ -27,6 +25,13 @@ public class AdminCitiesPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminCitiesPageCommand.class);
+    private final CityService cityService;
+
+
+    public AdminCitiesPageCommand(CityService cityService) {
+        this.cityService = cityService;
+    }
+
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -38,7 +43,6 @@ public class AdminCitiesPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
         int citiesNumber = cityService.countAllCities();
         LOG.trace("Number of Cities : " + citiesNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
@@ -94,5 +98,4 @@ public class AdminCitiesPageCommand implements Command {
                 page, itemsPerPage);
         return forward;
     }
-
 }

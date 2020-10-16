@@ -5,8 +5,6 @@ import com.epam.gtc.dao.entities.constants.DeliveryStatus;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.domains.DeliveryDomain;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.DeliveryModel;
 import com.epam.gtc.web.models.builders.DeliveryModelBuilder;
@@ -28,6 +26,12 @@ public class AdminDeliveriesPageCommand implements Command {
     private static final long serialVersionUID = -3071536593627692473L;
 
     private static final Logger LOG = Logger.getLogger(AdminDeliveriesPageCommand.class);
+    private final DeliveryService deliveryService;
+
+
+    public AdminDeliveriesPageCommand(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
+    }
 
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
@@ -39,7 +43,6 @@ public class AdminDeliveriesPageCommand implements Command {
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
-        DeliveryService deliveryService = (DeliveryService) ServiceFactory.createService(ServiceType.DELIVERY_SERVICE);
         int deliveriesNumber = deliveryService.countAllDeliveries();
         LOG.trace("Number of deliveries : " + deliveriesNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
