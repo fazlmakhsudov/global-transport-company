@@ -6,12 +6,13 @@
                                                   <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                                     <button type="button" class="btn btn-outline-primary mr-5" id="addnewbutton">Add</button>
 
-                                                   <div class='form-group ml-5 mr-2'>
-                                                        <select class="form-control" id='sortparameter' name='sortparameter'>
+                                                    <div class='form-group ml-5 mr-2'>
+                                                        <select class="form-control" id='sortparameter' name='sortparameter'
+                                                            value='${sortparameter}'>
                                                                 <option value=''>Choose..</option>
-                                                                <option value='ID'>Id</option>
-                                                                <option value='requestcityfromId'>City from</option>
-                                                                <option value='requestcitytoId' >City to</option>
+                                                                <option value='requestid'>Id</option>
+                                                                <option value='requestcityfromid'>City from</option>
+                                                                <option value='requestcitytoid' >City to</option>
                                                                 <option value='requestdeliverydate'>Delivery date</option>
                                                         </select>
                                                    </div>

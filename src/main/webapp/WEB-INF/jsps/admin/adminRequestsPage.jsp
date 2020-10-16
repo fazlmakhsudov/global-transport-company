@@ -28,10 +28,24 @@
                   <!-- DataTales Example -->
                   <div class="card shadow mb-4">
                     <div class="card-header py-3 row">
-                      <h5 class="m-0 font-weight-bold text-primary ml-3 col">Requests</h5>
+                      <h5 class="m-0 font-weight-bold text-primary ml-3">Requests</h5>
                       <div class='col'>
                                   <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
+
                                     <button type="button" class="btn btn-outline-primary mr-5" id="addnewbutton">Add</button>
+                                    <div class='form-group ml-5 mr-2'>
+                                        <select class="form-control" id='sortparameter' name='sortparameter'
+                                              value='${sortparameter}'>
+                                            <option value=''>Choose..</option>
+                                            <option value='requestid'>Id</option>
+                                            <option value='requestcityfromid'>City from</option>
+                                            <option value='requestcitytoid' >City to</option>
+                                            <option value='requestdeliverydate'>Delivery date</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="form-control btn btn-outline-primary mr-5" >Sort</button>
+
+
                                     <input type='text' name='command' value='adminRequestsPage' style='display:none;'/>
                                     <input type='text' name='page' value='${page}' style='display:none;'/>
                                     <div class="form-group">

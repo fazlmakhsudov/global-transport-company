@@ -34,6 +34,7 @@ public final class Path {
     public static final String COMMAND_USER_INVOICES_TAB = "controller?command=userInvoicesTab";
     public static final String COMMAND_USER_DELIVERIES_TAB = "controller?command=userDeliveriesTab";
 
+    public static final String COMMAND_ADMIN_MAIN_PAGE = "controller?command=adminMainPage";
     public static final String COMMAND_ADMIN_USERS_PAGE = "controller?command=adminUsersPage";
     public static final String COMMAND_ADMIN_CITIES_PAGE = "controller?command=adminCitiesPage";
     public static final String COMMAND_ADMIN_DELIVERIES_PAGE = "controller?command=adminDeliveriesPage";

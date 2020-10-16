@@ -45,6 +45,7 @@ public class LoginCommand implements Command {
         if (Method.isPost(request)) {
             forward = handlePostRequest(request);
         }
+        LOG.debug(String.format("Redirect to page -> %s",forward));
         LOG.debug("Command finished");
         return forward;
     }
@@ -74,13 +75,13 @@ public class LoginCommand implements Command {
                 LOG.trace("userRole --> " + userRole);
 
                 if (userRole == Role.ADMIN) {
-                    forward = Path.PAGE_ADMIN_HOME;
+                    forward = Path.COMMAND_ADMIN_MAIN_PAGE;
                 }
                 if (userRole == Role.MANAGER) {
-                    forward = Path.PAGE_ADMIN_HOME;
+                    forward = Path.COMMAND_ADMIN_MAIN_PAGE;
                 }
                 if (userRole == Role.USER) {
-                    forward = Path.PAGE_USER_CABINET;
+                    forward = Path.COMMAND_USER_CABINET;;
                 }
                 userModel = new UserModelBuilder().create(userDomain);
                 session.setAttribute("user", userModel);

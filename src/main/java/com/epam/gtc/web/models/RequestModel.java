@@ -141,4 +141,14 @@ public class RequestModel implements Serializable {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
+
+    @Override
+    public String toString() {
+        return "RequestModel{" +
+                "id=" + id +
+                ", cityFromId=" + cityFromId +
+                ", cityToId=" + cityToId +
+                ", deliveryDate=" + deliveryDate +
+                '}';
+    }
 }

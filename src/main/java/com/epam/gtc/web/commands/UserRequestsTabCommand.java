@@ -24,10 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -55,6 +52,7 @@ public class UserRequestsTabCommand implements Command {
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
             throws AppException {
         LOG.debug("UserRequestsTabCommand starts");
+        supplyRequestWithCities(request);
         String forward;
         Object sessionUser = request.getSession().getAttribute("user");
         LOG.trace("Session user --> " + sessionUser);
@@ -63,7 +61,7 @@ public class UserRequestsTabCommand implements Command {
         } else {
             forward = handleRequest(request, sessionUser);
         }
-        supplyRequestWithCities(request);
+
         LOG.debug("UserRequestsTabCommand finished");
         return forward;
     }
@@ -90,6 +88,7 @@ public class UserRequestsTabCommand implements Command {
         request.setAttribute("itemsPerPage", itemsPerPage);
         request.setAttribute("currentPage", page);
         request.setAttribute("requestsNumber", requestsNumber);
+        requestModels = sortRequestModelsList(request, requestModels);
         request.setAttribute("userRequests", requestModels);
         return forward;
     }
@@ -199,8 +198,38 @@ public class UserRequestsTabCommand implements Command {
         }
     }
 
-    private void sortRequestModelsList(HttpServletRequest request, List<RequestModel> requestModels) {
-        String sortparameter = FormRequestParametersNames.SORT_PARAMETER;
-        
+    private List<RequestModel> sortRequestModelsList(HttpServletRequest request, List<RequestModel> requestModels) {
+        final String sortparameter = request.getParameter(FormRequestParametersNames.SORT_PARAMETER);
+        LOG.trace(String.format("Sort parameter --> %s", sortparameter));
+        if (!Validator.isValidString(sortparameter)) {
+            return requestModels;
+        }
+        Map<Integer, String> citiesMap = (Map<Integer, String>) request.getAttribute("citiesMap");
+        switch (sortparameter) {
+            case FormRequestParametersNames.REQUEST_ID:
+                requestModels.sort(Comparator.comparingInt(RequestModel::getId));
+                break;
+            case FormRequestParametersNames.REQUEST_CITY_FROM_ID:
+                requestModels.sort((r1, r2) -> {
+                    String city1 = citiesMap.get(r1.getCityFromId());
+                    String city2 = citiesMap.get(r2.getCityFromId());
+                    return city1.compareTo(city2);
+                });
+                break;
+            case FormRequestParametersNames.REQUEST_CITY_TO_ID:
+                requestModels.sort((r1, r2) -> {
+                    String city1 = citiesMap.get(r1.getCityToId());
+                    String city2 = citiesMap.get(r2.getCityToId());
+                    return city1.compareTo(city2);
+                });
+                break;
+            case FormRequestParametersNames.REQUEST_DELIVERY_DATE:
+                requestModels.sort(Comparator.comparing(RequestModel::getDeliveryDate));
+                break;
+            default:
+        }
+        request.setAttribute("sortparameter", sortparameter);
+        LOG.trace(String.format("Sorted requestModels list --> %s", requestModels));
+        return requestModels;
     }
 }

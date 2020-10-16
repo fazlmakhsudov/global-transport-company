@@ -48,18 +48,27 @@ public class AdminMainPageCommand implements Command {
 
 
         Map<String, List<String>> dashboard = new HashMap<>();
+        Map<String, Integer> alerts = new HashMap<>();
         try {
             dashboard.put("Requests", formRequestsReport(requestService));
             dashboard.put("Invoices", formInvoiceReport(invoiceService));
             dashboard.put("Deliveries", formDeliveryReport(deliveryService));
+            alerts.put(formatStatusName(RequestStatus.WAITING_FOR_MANAGER_REVIEW.getName()),
+                    requestService.countRequests(RequestStatus.WAITING_FOR_MANAGER_REVIEW));
+            alerts.put(formatStatusName(InvoiceStatus.PAID.getName()),
+                    invoiceService.countInvoices(InvoiceStatus.PAID));
+            alerts.put(formatStatusName(InvoiceStatus.REJECTED.getName()),
+                    invoiceService.countInvoices(InvoiceStatus.REJECTED));
         } catch (ServiceException e) {
             LOG.error(e.getMessage(), e);
+            request.setAttribute("errorMessage", e.getMessage());
         }
 
         LOG.trace("requests --> " + dashboard.get("Requests"));
         LOG.trace("invoices --> " + dashboard.get("Invoices"));
         LOG.trace("deliveries --> " + dashboard.get("Deliveries"));
-
+        LOG.trace("alerts --> " + alerts);
+        request.setAttribute("alerts", alerts);
         request.setAttribute("dashboard", dashboard);
     }
 
