@@ -68,6 +68,7 @@ public class AdminDeliveriesPageCommand implements Command {
     private String doPost(HttpServletRequest request, DeliveryService deliveryService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
+        request.getSession().removeAttribute("errorDelivery");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
         int deliveryId = action.equalsIgnoreCase("add") ? -1 :
@@ -79,13 +80,19 @@ public class AdminDeliveriesPageCommand implements Command {
 
         switch (action) {
             case "add":
-                DeliveryDomain newDeliveryDomain = new DeliveryDomain();
-                newDeliveryDomain.setDeliveryStatus(DeliveryStatus.getEnumFromName(deliveryStatusName));
-                int requestId = Integer.parseInt(request.getParameter(FormRequestParametersNames.DELIVERY_REQUEST_ID));
-                LOG.trace("Delivery request id --> " + requestId);
-                newDeliveryDomain.setRequestId(requestId);
-                int newId = deliveryService.add(newDeliveryDomain);
-                LOG.trace("Added status(new id) --> " + newId);
+                String requestIdString = request.getParameter(FormRequestParametersNames.DELIVERY_REQUEST_ID);
+                LOG.trace("Delivery request id --> " + requestIdString);
+                if (Validator.isValidNumber(requestIdString) && Validator.isValidString(deliveryStatusName) ||
+                    deliveryService.countDeliveriesOfRequest(Integer.parseInt(requestIdString)) == 0) {
+                    DeliveryDomain newDeliveryDomain = new DeliveryDomain();
+                    newDeliveryDomain.setDeliveryStatus(DeliveryStatus.getEnumFromName(deliveryStatusName));
+                    newDeliveryDomain.setRequestId(Integer.parseInt(requestIdString));
+                    int newId = deliveryService.add(newDeliveryDomain);
+                    LOG.trace("Added status(new id) --> " + newId);
+                } else  {
+                    LOG.error("Invalid delivery status/request, or request has delivey already");
+                    request.getSession().setAttribute("errorDelivery", "Invalid delivery status/request, or request has delivey already");
+                }
                 break;
             case "save":
                 DeliveryDomain deliveryDomain = deliveryService.find(deliveryId);
@@ -97,8 +104,6 @@ public class AdminDeliveriesPageCommand implements Command {
                 boolean removedFlag = deliveryService.remove(deliveryId);
                 LOG.trace("Deleted status --> " + removedFlag);
                 break;
-            default:
-                //TODO no action error
         }
 
         forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_DELIVERIES_PAGE,

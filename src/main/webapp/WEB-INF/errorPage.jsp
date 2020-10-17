@@ -19,7 +19,7 @@
 
 	<div class="container">
 		<div class="col-6 justify-content-center h-50">
-					<div class="bg-info h3 font-weight-bold text-center">The following error occurred</div>
+					<div class="bg-info h3 font-weight-bold text-center mt-5">The following error occurred</div>
 					<c:set var="code"
 						value="${requestScope['javax.servlet.error.status_code']}" />
 					<c:set var="message"

@@ -16,9 +16,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -74,32 +72,44 @@ public class AdminDistancesPageCommand implements Command {
     }
 
     private String doPost(HttpServletRequest request, DistanceService distanceService, int page, int itemsPerPage) throws ServiceException {
-        String forward;
+        String forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_DISTANCES_PAGE,
+                page, itemsPerPage);
+
         LOG.trace("Method is Post");
+        request.getSession().removeAttribute("errorDistance");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
-
+        Enumeration<String> list = request.getParameterNames();
+        while (list.hasMoreElements()) System.out.println(list.nextElement() + "  ->>>>");
+        System.out.println(request.getParameter("test") + "  test");
         int fromCityId = action.equalsIgnoreCase("remove") ? -1 :
                 Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_FROM_CITY_ID));
         LOG.trace("Distance from city id --> " + fromCityId);
         int toCityId = action.equalsIgnoreCase("remove") ? -1 :
                 Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_TO_CITY_ID));
         LOG.trace("Distance to city id --> " + toCityId);
-        double distance = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.DISTANCE_DISTANCE));
+        String distanceString = request.getParameter(FormRequestParametersNames.DISTANCE_DISTANCE);
+        if (!action.equalsIgnoreCase("remove") && !Validator.isValidNumber(distanceString)) {
+            request.getSession().setAttribute("errorDistance", "Invalid distance value");
+            return forward;
+        }
+        double distance = action.equalsIgnoreCase("remove") ? -1d : Double.parseDouble(distanceString);
         LOG.trace("Distance between cities --> " + distance);
-
         int distanceId = action.equalsIgnoreCase("add") ? -1 :
                 Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_ID));
         LOG.trace("Distance id --> " + distanceId);
         switch (action) {
             case "add":
-                DistanceDomain newDistanceDomain = new DistanceDomain();
-                newDistanceDomain.setFromCityId(fromCityId);
-                newDistanceDomain.setToCityId(toCityId);
-                newDistanceDomain.setDistance(distance);
-                int newId = distanceService.add(newDistanceDomain);
-                LOG.trace("Added status(new id) --> " + newId);
+                if (Objects.isNull(distanceService.find(fromCityId, toCityId))) {
+                    DistanceDomain newDistanceDomain = new DistanceDomain();
+                    newDistanceDomain.setFromCityId(fromCityId);
+                    newDistanceDomain.setToCityId(toCityId);
+                    newDistanceDomain.setDistance(distance);
+                    int newId = distanceService.add(newDistanceDomain);
+                    LOG.trace("Added status(new id) --> " + newId);
+                } else {
+                    request.getSession().setAttribute("errorDistance", "Distance between these cities exists already.");
+                }
                 break;
             case "save":
                 DistanceDomain distanceDomain = distanceService.find(distanceId);
@@ -113,26 +123,17 @@ public class AdminDistancesPageCommand implements Command {
                 boolean removedFlag = distanceService.remove(distanceId);
                 LOG.trace("Removed status --> " + removedFlag);
                 break;
-            default:
-                //TODO no action error
         }
-
-        forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_DISTANCES_PAGE,
-                page, itemsPerPage);
         return forward;
     }
 
     private void supplyRequestWithCities(HttpServletRequest request) {
-
         try {
             List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll());
-            List<DistanceModel> distanceModels = new DistanceModelBuilder().create(distanceService.findAll());
-            List<Integer> distanceIdFilterList = distanceModels.stream().map(DistanceModel::getFromCityId).collect(Collectors.toList());
-            List<String> cityNames = cityModels.stream()
+              List<String> cityNames = cityModels.stream()
                     .map(CityModel::getName)
                     .collect(Collectors.toList());
             Map<Integer, String> citiesMap = cityModels.stream()
-                    .filter(cityModel -> distanceIdFilterList.contains(cityModel.getId()))
                     .collect(Collectors.toMap(CityModel::getId,
                             CityModel::getName));
             request.setAttribute("citiesNames", cityNames);
@@ -146,5 +147,4 @@ public class AdminDistancesPageCommand implements Command {
             throw new CommandException(e.getMessage(), e);
         }
     }
-
 }

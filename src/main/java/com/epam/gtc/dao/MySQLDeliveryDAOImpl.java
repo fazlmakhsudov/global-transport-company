@@ -370,6 +370,38 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         }
         return deliveryList;
     }
+    /**
+     * Counts deliveries of certain request
+     *
+     * @param requestId request
+     * @return number of deliveries
+     */
+    @Override
+    public int countDeliveriesOfRequest(int requestId) throws DAOException {
+        final String query = "select count(*) from deliveries where request_id = ?;";
+        DBManager dbm;
+        Connection con = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int deliveriesNumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, requestId);
+            rs = psmt.executeQuery();
+            rs.next();
+            deliveriesNumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_DELIVERIES_WITH_CONDITION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return deliveriesNumber;
+    }
 
     /**
      * Extracts DeliveryEntity from Resultset

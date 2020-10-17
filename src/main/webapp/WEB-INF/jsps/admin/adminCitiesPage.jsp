@@ -24,7 +24,8 @@
                   <!-- Page Heading -->
                   <h1 class="h3 mb-2 text-gray-800">Tables</h1>
                   <p class="mb-4">All data represent actual information. Any change is fulfilled immediately. Pay your attention on any operation.</p>
-
+                  <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorCity} </p>
+                  <c:remove var = "errorCity"/>
                   <!-- DataTales Example -->
                   <div class="card shadow mb-4">
                     <div class="card-header py-3 row">

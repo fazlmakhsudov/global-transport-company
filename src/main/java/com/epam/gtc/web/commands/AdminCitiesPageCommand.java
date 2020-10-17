@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -53,6 +54,7 @@ public class AdminCitiesPageCommand implements Command {
         int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
         String forward = Path.PAGE_ADMIN_CITIES;
         if (Method.isPost(request)) {
+            request.getSession().removeAttribute("errorCity");
             forward = doPost(request, cityService, page, itemsPerPage);
         }
         List<CityModel> cityModels = new CityModelBuilder().create(cityService.findAll(page, itemsPerPage));
@@ -68,6 +70,7 @@ public class AdminCitiesPageCommand implements Command {
     private String doPost(HttpServletRequest request, CityService cityService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
+
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
         int cityId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(request.getParameter(FormRequestParametersNames.CITY_ID));
@@ -76,10 +79,15 @@ public class AdminCitiesPageCommand implements Command {
         LOG.trace("City name --> " + name);
         switch (action) {
             case "add":
-                CityDomain newCity = new CityDomain();
-                newCity.setName(name);
-                int newId = cityService.add(newCity);
-                LOG.trace("Added status(new id) --> " + newId);
+                if (Validator.isValidString(name) && Objects.isNull(cityService.find(name))) {
+                    CityDomain newCity = new CityDomain();
+                    newCity.setName(name);
+                    int newId = cityService.add(newCity);
+                    LOG.trace("Added status(new id) --> " + newId);
+                } else {
+                   LOG.error("Invalid city name or such city exists already.");
+                   request.getSession().setAttribute("errorCity", "Invalid city name or such city exists already.");
+                }
                 break;
             case "save":
                 CityDomain cityDomain = cityService.find(cityId);
@@ -91,8 +99,6 @@ public class AdminCitiesPageCommand implements Command {
                 boolean removedFlag = cityService.remove(cityId);
                 LOG.trace("Removed status --> " + removedFlag);
                 break;
-            default:
-                //TODO no action error
         }
         forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_CITIES_PAGE,
                 page, itemsPerPage);

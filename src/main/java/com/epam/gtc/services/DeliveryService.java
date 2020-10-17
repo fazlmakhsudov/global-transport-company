@@ -2,6 +2,7 @@ package com.epam.gtc.services;
 
 
 import com.epam.gtc.dao.entities.constants.DeliveryStatus;
+import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.domains.DeliveryDomain;
 
@@ -65,5 +66,14 @@ public interface DeliveryService extends BaseService<DeliveryDomain> {
      * @throws ServiceException exception
      */
     List<DeliveryDomain> findAll(int page, int itemsPerPage, int userId) throws ServiceException;
+
+    /**
+     * Counts delivery domains with certain request identifier
+     * @param requestId request identifier
+     * @return number of delivery domains
+     * @throws ServiceException exception
+     */
+    int countDeliveriesOfRequest(int requestId) throws ServiceException;
+
 }
 

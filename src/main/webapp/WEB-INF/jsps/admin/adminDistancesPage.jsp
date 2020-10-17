@@ -24,7 +24,8 @@
                   <!-- Page Heading -->
                   <h1 class="h3 mb-2 text-gray-800">Tables</h1>
                   <p class="mb-4">All data represent actual information. Any change is fulfilled immediately. Pay your attention on any operation.</p>
-
+                  <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorDistance} </p>
+                  <c:remove var = "errorDistance"/>
                   <!-- DataTales Example -->
                   <div class="card shadow mb-4">
                     <div class="card-header py-3 row">
@@ -163,7 +164,6 @@
                                         <option value='${cityid}'>${citiesMap.get(cityid)}</option>
                                    </c:forEach>
                                 </select><br/>
-
                            </div>
                            <div class='form-group'>
                                 <label for='distancetocityid'>To city</label>
@@ -174,6 +174,7 @@
                                    </c:forEach>
                                 </select>
                            </div>
+                         <input type='number' id='test' name='test' style='display:none;'/>
                          <div class="form-group">
                            <label for="distancedistance">Distance</label>
                            <input type="number" class="form-control" id="distancedistance" name='distancedistance'
@@ -204,8 +205,8 @@
                              <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
                              <input type='text' name='action' value='add' style='display:none;'/>
                            <div class='form-group'>
-                                <label for='distancefromcityid'>From city</label>
-                                <select class="form-control" id='distancefromcityid' name='distancefromcityid'>
+                                <label for='distancefromcityidadd'>From city</label>
+                                <select class="form-control" id='distancefromcityidadd' name='distancefromcityid'>
                                    <option value=''>Choose...</option>
                                    <c:forEach var="cityid" items="${citiesMap.keySet()}">
                                         <option value='${cityid}'>${citiesMap.get(cityid)}</option>
@@ -213,8 +214,8 @@
                                 </select>
                            </div>
                            <div class='form-group'>
-                                <label for='distancetocityid'>To city</label>
-                                <select class="form-control" id='distancetocityid' name='distancetocityid'>
+                                <label for='distancetocityidadd'>To city</label>
+                                <select class="form-control" id='distancetocityidadd' name='distancetocityid'>
                                    <option value=''>Choose...</option>
                                    <c:forEach var="cityid" items="${citiesMap.keySet()}">
                                         <option value='${cityid}'>${citiesMap.get(cityid)}</option>
@@ -222,8 +223,8 @@
                                 </select>
                            </div>
                          <div class="form-group">
-                           <label for="distancedistance">Distance</label>
-                           <input type="number" class="form-control" id="distancedistance" name='distancedistance'
+                           <label for="distancedistanceadd">Distance</label>
+                           <input type="number" class="form-control" id="distancedistanceadd" name='distancedistance'
                              placeholder="Enter distance" min="5" />
                          </div>
                       </div>
@@ -245,7 +246,6 @@
        let distancefromcityid = $(this).data('distancefromcityid');
        let distancetocityid = $(this).data('distancetocityid');
        let distancedistance = $(this).data('distancedistance');
-
       
        let rowClass = '.distance' + distanceid;
        let removeSubmit = '#removeSubmit' + distanceid;
@@ -254,8 +254,9 @@
            $(rowClass).css({"color":"black"})
            $("#distanceid").val(distanceid);
            $("#distancefromcityid").val(distancefromcityid);
-            $("#distancetocityid").val(distancetocityid);
-             $("#distancedistance").val(distancedistance);
+           $("#test").val(distancefromcityid);
+           $("#distancetocityid").val(distancetocityid);
+           $("#distancedistance").val(distancedistance);
            $("#myModalUpdate").modal('show');
        } else if ($(this).find(":selected").val() == 'remove') {
 

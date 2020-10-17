@@ -12,6 +12,7 @@ import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Distance service implementation
@@ -135,7 +136,7 @@ public class DistanceServiceImpl implements DistanceService {
         DistanceEntity distance;
         try {
             distance = distanceDAO.read(fromCityId, toCityId);
-            return distanceDomainBuilder.create(distance);
+            return Objects.isNull(distance) ? null : distanceDomainBuilder.create(distance);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_DISTANCE_BY_ITS_FIELDS, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_DISTANCE_BY_ITS_FIELDS, e);
