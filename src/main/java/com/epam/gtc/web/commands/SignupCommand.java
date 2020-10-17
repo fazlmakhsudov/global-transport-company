@@ -77,23 +77,23 @@ public class SignupCommand implements Command {
         LOG.trace("Request parameter: password --> " + encryptPassword(password));
         boolean requestParametersFlag = true;
         if (!Validator.isValidString(name)) {
-            errors.add(String.format("Type proper name"));
-            LOG.trace("Type proper name");
+            errors.add("Invalid name");
+            LOG.trace("Invalid name");
             requestParametersFlag = false;
         }
         if (!Validator.isValidString(surname)) {
-            errors.add(String.format("Type proper surname"));
-            LOG.trace("Type proper surname");
+            errors.add("Invalid surname");
+            LOG.trace("Invalid surname");
             requestParametersFlag = false;
         }
         if (!Validator.isValidEmail(email)) {
-            errors.add(String.format("Type proper email"));
-            LOG.trace("Type proper email");
+            errors.add("Invalid email");
+            LOG.trace("Invalid email");
             requestParametersFlag = false;
         }
         if (!Validator.isValidString(password)) {
-            errors.add(String.format("Type proper password"));
-            LOG.trace("Type proper password");
+            errors.add("Invalid password");
+            LOG.trace("Invalid password");
             requestParametersFlag = false;
         }
         UserModel newUser = new UserModel();
@@ -103,7 +103,7 @@ public class SignupCommand implements Command {
         if (!requestParametersFlag) {
             LOG.debug("Post parameters validation failed");
             session.setAttribute("newUser", newUser);
-            session.setAttribute("errorSignUp", errors.stream().reduce((s, s2) -> s + System.lineSeparator() + s2));
+            session.setAttribute("errorSignUp", errors.stream().reduce((error1, error2) -> error1 + "<br/>" + error2).get());
             return Path.COMMAND_SIGNUP;
         }
         boolean isEmailOccupied = Objects.isNull(userService.find(email)) ? false : true;

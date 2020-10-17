@@ -11,6 +11,7 @@ import com.epam.gtc.utils.Builder;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * City service implementation
@@ -65,7 +66,7 @@ public class CityServiceImpl implements CityService {
         CityEntity city;
         try {
             city = cityDAO.read(name);
-            return cityDomainBuilder.create(city);
+            return Objects.isNull(city) ? null : cityDomainBuilder.create(city);
         } catch (DAOException e) {
             LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_CITY_BY_NAME, e);
             throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_OBTAIN_CITY_BY_NAME, e);

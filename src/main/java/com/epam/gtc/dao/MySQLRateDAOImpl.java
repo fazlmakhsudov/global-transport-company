@@ -313,6 +313,40 @@ public class MySQLRateDAOImpl implements RateDAO {
     }
 
     /**
+     * Reads all rates with distance less given
+     * @param maxDistance distance
+     * @return list of rate entities
+     * @throws DAOException exception
+     */
+    @Override
+    public List<RateEntity> readAll(double maxDistance) throws DAOException {
+        final String query = "SELECT * FROM rates where max_distance<=?;";
+        List<RateEntity> rateList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setDouble(1, maxDistance);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                rateList.add(RateExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_RATES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_RATES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return rateList;
+    }
+
+    /**
      * Extracts RateEntity from Resultset
      */
     private static class RateExtractor extends Extractor<RateEntity> {

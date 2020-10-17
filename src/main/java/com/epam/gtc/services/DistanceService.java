@@ -15,7 +15,7 @@ public interface DistanceService extends BaseService<DistanceDomain> {
     /**
      * Counts number of all distance domains
      *
-     * @return number of distance enitities
+     * @return number of distance domains
      *
      * @throws ServiceException exception
      */
@@ -33,11 +33,11 @@ public interface DistanceService extends BaseService<DistanceDomain> {
     List<DistanceDomain> findAll(int page, int itemsPerPage) throws ServiceException;
 
     /**
-     * Finds distance entity between two city domains
+     * Finds distance domain between two city domains
      *
-     * @param fromCityId city entity identifier
-     * @param toCityId   city entity identifier
-     * @return distance entity
+     * @param fromCityId city domain identifier
+     * @param toCityId   city domain identifier
+     * @return distance domain
      *
      * @throws ServiceException exception
      */
@@ -52,5 +52,15 @@ public interface DistanceService extends BaseService<DistanceDomain> {
      * @throws ServiceException exception
      */
     List<DistanceDomain> findAll(double distance) throws ServiceException;
+
+    /**
+     * Finds distance domains for certain city
+     *
+     * @param fromCityId city domain identifier
+     * @return list of distance domain
+     *
+     * @throws ServiceException exception
+     */
+    List<DistanceDomain> findAll(int fromCityId) throws ServiceException;
 }
 

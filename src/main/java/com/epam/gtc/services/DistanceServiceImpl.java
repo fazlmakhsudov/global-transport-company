@@ -160,4 +160,19 @@ public class DistanceServiceImpl implements DistanceService {
             throw new ServiceException(Messages.ERR_CANNOT_MAP_DISTANCE, e);
         }
     }
+
+    @Override
+    public List<DistanceDomain> findAll(int fromCityId) throws ServiceException {
+        List<DistanceEntity> distanceList;
+        try {
+            distanceList = distanceDAO.readAll(fromCityId);
+            return distanceDomainBuilder.create(distanceList);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_DISTANCES_WITH_LIMITATION, e);
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_DISTANCE, e);
+        }
+    }
 }

@@ -79,9 +79,7 @@ public class AdminDistancesPageCommand implements Command {
         request.getSession().removeAttribute("errorDistance");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
-        Enumeration<String> list = request.getParameterNames();
-        while (list.hasMoreElements()) System.out.println(list.nextElement() + "  ->>>>");
-        System.out.println(request.getParameter("test") + "  test");
+
         int fromCityId = action.equalsIgnoreCase("remove") ? -1 :
                 Integer.parseInt(request.getParameter(FormRequestParametersNames.DISTANCE_FROM_CITY_ID));
         LOG.trace("Distance from city id --> " + fromCityId);

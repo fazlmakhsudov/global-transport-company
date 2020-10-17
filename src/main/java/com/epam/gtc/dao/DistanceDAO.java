@@ -3,6 +3,8 @@ package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.DistanceEntity;
 import com.epam.gtc.exceptions.DAOException;
+import com.epam.gtc.exceptions.ServiceException;
+import com.epam.gtc.services.domains.DistanceDomain;
 
 import java.util.List;
 
@@ -52,4 +54,14 @@ public interface DistanceDAO extends BaseDAO<DistanceEntity> {
      * @throws DAOException exception
      */
     List<DistanceEntity> readAll(double distance) throws DAOException;
+
+    /**
+     * Reads distance entities for certain city
+     *
+     * @param fromCityId city entity identifier
+     * @return list of distance entities
+     *
+     * @throws DAOException exception
+     */
+    List<DistanceEntity> readAll(int fromCityId) throws DAOException;
 }

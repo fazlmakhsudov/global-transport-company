@@ -20,7 +20,14 @@
 					<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
 						<a class="nav-link" href="/gtc/controller?command=rates">Rates</a>
 					</li>
-					<li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
+					<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+						<a class="nav-link" href="#" id='pricecounternav' >Calculator</a>
+					</li>
+					<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
+						<a class="nav-link" href="/gtc/controller?command=deliveryMap" >Delivery Map</a>
+					</li>
+
+					<!--li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Request
 						</a>
@@ -28,7 +35,8 @@
 							<a class="dropdown-item" id='pricecounternav' href='#'>Private counter</a>
 
 						</div>
-					</li>
+					</li-->
+
 					<li class="nav-item mr-lg-2 mb-lg-0 mb-2">
 						<a class="nav-link" href="/gtc/controller?command=gallery">Gallery</a>
 					</li>

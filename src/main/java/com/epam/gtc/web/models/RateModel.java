@@ -87,10 +87,6 @@ public class RateModel implements Serializable {
         return "RateModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", maxWeight=" + maxWeight +
-                ", maxLength=" + maxLength +
-                ", maxWidth=" + maxWidth +
-                ", maxHeight=" + maxHeight +
                 ", maxDistance=" + maxDistance +
                 ", cost=" + cost +
                 '}';

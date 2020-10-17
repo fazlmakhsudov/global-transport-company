@@ -40,6 +40,10 @@ public final class CommandContainer {
         commands.put("contactUs", new ContactUsCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
                 (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
 
+        commands.put("deliveryMap", new DeliveryMapPageCommand((DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE),
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
+                (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE)));
+
         commands.put("userCabinet", new UserCabinetCommand((CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),
                 (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
         commands.put("userProfileTab", new UserProfileTabCommand((UserService) ServiceFactory.createService(ServiceType.USER_SERVICE)));

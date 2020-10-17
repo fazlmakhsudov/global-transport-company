@@ -4,6 +4,8 @@ import com.epam.gtc.dao.entities.DistanceEntity;
 import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
+import com.epam.gtc.exceptions.ServiceException;
+import com.epam.gtc.services.domains.DistanceDomain;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -347,6 +349,40 @@ public class MySQLDistanceDAOImpl implements DistanceDAO {
             con = dbm.getConnection();
             psmt = con.prepareStatement(query);
             psmt.setDouble(1, distance);
+            rs = psmt.executeQuery();
+            while (rs.next()) {
+                distanceList.add(distanceExtractor.extract(rs));
+            }
+            con.commit();
+        } catch (SQLException | DAOException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_READ_DISTANCES_WITH_LIMITATION, ex);
+            throw new DAOException(Messages.ERR_CANNOT_READ_DISTANCES_WITH_LIMITATION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return distanceList;
+    }
+
+    /**
+     * Reads distances for certain city from
+     *
+     * @param fromCityId city from
+     * @return list of DistanceEntities
+     */
+    @Override
+    public List<DistanceEntity> readAll(int fromCityId) throws DAOException {
+        final String query = "SELECT * FROM distances where from_city_id=?;";
+        List<DistanceEntity> distanceList = new ArrayList<>();
+        DBManager dbm;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setDouble(1, fromCityId);
             rs = psmt.executeQuery();
             while (rs.next()) {
                 distanceList.add(distanceExtractor.extract(rs));

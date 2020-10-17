@@ -149,7 +149,7 @@
                       <h5 class="modal-title">Save changes</h5>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                   </div>
-                   <form action='${urlForPage}'  method='POST'>
+                   <form action='${urlForPage}'  method='POST' class='updateform'>
                   <div class="modal-body">
                          <input type='text' name='command' value='adminDistancesPage' style='display:none;'/>
                          <input type='text' name='page' value='${page}' style='display:none;'/>
@@ -158,23 +158,25 @@
                          <input type='text' name='action' value='save' style='display:none;'/>
                            <div class='form-group'>
                                 <label for='distancefromcityid'>From city</label>
-                                <select class="form-control" id='distancefromcityid' name='distancefromcityid' disabled>
-                                   <option value=''>Choose...</option>
-                                   <c:forEach var="cityid" items="${citiesMap.keySet()}">
-                                        <option value='${cityid}'>${citiesMap.get(cityid)}</option>
-                                   </c:forEach>
-                                </select><br/>
-                           </div>
-                           <div class='form-group'>
-                                <label for='distancetocityid'>To city</label>
-                                <select class="form-control" id='distancetocityid' name='distancetocityid' disabled>
+                                <select class="form-control" id='distancefromcityid' disabled>
                                    <option value=''>Choose...</option>
                                    <c:forEach var="cityid" items="${citiesMap.keySet()}">
                                         <option value='${cityid}'>${citiesMap.get(cityid)}</option>
                                    </c:forEach>
                                 </select>
+                                <input type='hidden' id='fromcityid'  name='distancefromcityid'/>
                            </div>
-                         <input type='number' id='test' name='test' style='display:none;'/>
+                           <div class='form-group'>
+                                <label for='distancetocityid'>To city</label>
+                                <select class="form-control" id='distancetocityid' disabled>
+                                   <option value=''>Choose...</option>
+                                   <c:forEach var="cityid" items="${citiesMap.keySet()}">
+                                        <option value='${cityid}'>${citiesMap.get(cityid)}</option>
+                                   </c:forEach>
+                                </select>
+                                <input type='hidden' id='tocityid'  name='distancetocityid'/>
+                           </div>
+
                          <div class="form-group">
                            <label for="distancedistance">Distance</label>
                            <input type="number" class="form-control" id="distancedistance" name='distancedistance'
@@ -183,7 +185,7 @@
                   </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-primary">Save</button>
+                      <button type="submit" id='updatebutton' class="btn btn-primary">Save</button>
                   </div>
                   </form>
               </div>
@@ -254,8 +256,9 @@
            $(rowClass).css({"color":"black"})
            $("#distanceid").val(distanceid);
            $("#distancefromcityid").val(distancefromcityid);
-           $("#test").val(distancefromcityid);
+           $("#fromcityid").val(distancefromcityid);
            $("#distancetocityid").val(distancetocityid);
+           $("#tocityid").val(distancetocityid);
            $("#distancedistance").val(distancedistance);
            $("#myModalUpdate").modal('show');
        } else if ($(this).find(":selected").val() == 'remove') {

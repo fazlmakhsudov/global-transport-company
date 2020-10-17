@@ -56,7 +56,7 @@
         <init-param>
             <param-name>out-of-control</param-name>
             <param-value>index logout signup noCommand login rates gallery aboutUs contactUs
-                personalCounterForm
+                personalCounterForm deliveryMap
             </param-value>
         </init-param>
     </filter>

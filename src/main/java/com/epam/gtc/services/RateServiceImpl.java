@@ -146,4 +146,21 @@ public class RateServiceImpl implements RateService {
 
         }
     }
+
+    @Override
+    public List<RateDomain> findAll(double distance) throws ServiceException {
+        List<RateEntity> rateList ;
+        try {
+            rateList = rateDAO.readAll(distance);
+            return rateDomainBuilder.create(rateList);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_SERVICE_LAYER_CANNOT_READ_RATES_WITH_LIMITATION, e);
+            throw new ServiceException(Messages.ERR_SERVICE_LAYER_CANNOT_READ_RATES_WITH_LIMITATION, e);
+
+        } catch (BuilderException e) {
+            LOG.error(Messages.ERR_CANNOT_MAP_RATE, e);
+            throw new ServiceException(Messages.ERR_CANNOT_MAP_RATE, e);
+
+        }
+    }
 }

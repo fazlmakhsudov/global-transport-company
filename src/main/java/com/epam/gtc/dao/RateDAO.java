@@ -40,4 +40,12 @@ public interface RateDAO extends BaseDAO<RateEntity> {
      * @throws DAOException exception
      */
     List<RateEntity> readRates(int offset, int limit) throws DAOException;
+
+    /**
+     * Reads all rate entities with distance less given distance
+     * @param maxDistance distance
+     * @return list of rate entities
+     * @throws DAOException exception
+     */
+    List<RateEntity> readAll(double maxDistance) throws DAOException;
 }

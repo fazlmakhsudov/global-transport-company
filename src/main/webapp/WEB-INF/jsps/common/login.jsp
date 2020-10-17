@@ -5,11 +5,7 @@
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body style="background-color: #666666;">
-	<!-- header -->
-       	<header>
-            <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-        </header>
-        <!-- header -->
+
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
@@ -62,8 +58,8 @@
 			</div>
 		</div>
 	</div>
-
-
+    <c:remove var = "errorSignIn" />
+    <c:remove var = "newUser" />
 
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 

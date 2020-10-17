@@ -10,9 +10,7 @@
                                           <div class='row m-3'>
                                             <h5>Email</h5>
                                           </div>
-                                          <div class='row m-3'>
-                                            <h5>Password</h5>
-                                          </div>
+
                                      </div>
                                      <div class='col col-9' id = 'readprofile'>
                                          <div class='row m-3'>
@@ -24,9 +22,7 @@
                                           <div class='row m-3'>
                                             <h5>${user.email}</h5>
                                           </div>
-                                          <div class='row m-3'>
-                                            <h5>${user.password}</h5>
-                                          </div>
+
                                           <div class='row m-3'>
                                             <button type="button" class='btn btn-outline-info w-25' id='editbutton'>
                                                 <h5>Edit</h5>

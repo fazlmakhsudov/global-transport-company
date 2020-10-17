@@ -41,9 +41,8 @@ public class EncodingFilter implements Filter {
         String requestEncoding = request.getCharacterEncoding();
         if (requestEncoding == null) {
             LOG.trace("Request encoding = null, set encoding --> " + encoding);
-//            request.setCharacterEncoding(encoding);
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
+            request.setCharacterEncoding(encoding);
+            response.setCharacterEncoding(encoding);
 
         }
 

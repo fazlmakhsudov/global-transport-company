@@ -41,5 +41,15 @@ public interface RateService extends BaseService<RateDomain> {
      * @throws ServiceException exception
      */
     List<RateDomain> findAll(int page, int itemsPerPage) throws ServiceException;
+
+    /**
+     * Finds all rate domains with distance less  given distance
+     *
+     * @param maxDistance distance
+     * @return list of rate domains
+     *
+     * @throws ServiceException exception
+     */
+    List<RateDomain> findAll(double maxDistance) throws ServiceException;
 }
 
