@@ -47,65 +47,71 @@ public class CostCounter {
      * @return cost
      */
     public static double countCost(RequestModel requestModel) {
-       LOG.trace("Start counting cost for request: ");
-       LOG.trace(requestModel);
+        LOG.trace("Start counting cost for request: ");
+        LOG.trace(requestModel);
         double distance = getDistance(requestModel);
-       LOG.trace(String.format("Distance between %s and %s is %.2f", requestModel.getCityFromId(),
-               requestModel.getCityToId(), distance));
-       List<RateDomain> rates = getRates();
-       LOG.trace(String.format("Sorted on cost all rates : %s", rates));
-       Map<Integer, List<RateDomain>> appropriateRates = new HashMap<>();
-       for (RateDomain rate : rates) {
-           if (rate.getMaxDistance() < distance) {
-               continue;
-           }
-           checkRequestWithRate(requestModel, appropriateRates, rate);
-       }
-       LOG.trace(String.format("Appropriate rates : %s", appropriateRates));
-       Double cost;
-        if (appropriateRates.get(0).size() > 0) {
-           System.out.println("1 F");
-            cost = appropriateRates.get(0).stream().map(RateDomain::getCost).min(Double::compareTo).get();
-       } else if (appropriateRates.get(1).size() > 0) {
-           System.out.println("2 F");
-           cost = appropriateRates.get(0).stream().map(RateDomain::getCost).min(Double::compareTo).get();
-           cost *= fineFor1Criteria;
-       } else if () {
-           System.out.println("3 F");
-           cost = appropriateRates.get(0).stream().map(RateDomain::getCost).min(Double::compareTo).get();
-           cost *= fineFor2Criteria;
-       } else if (appropriateRates.size() == 0) {
-            System.out.println("0 F");
+        LOG.trace(String.format("Distance between %s and %s is %.2f", requestModel.getCityFromId(),
+                requestModel.getCityToId(), distance));
+        List<RateDomain> rates = getRates();
+        LOG.trace(String.format("Sorted on cost all rates : %s", rates));
+        Map<Integer, List<RateDomain>> appropriateRates = new HashMap<>();
+        for (RateDomain rate : rates) {
+            if (rate.getMaxDistance() < distance) {
+                continue;
+            }
+            checkRequestWithRate(requestModel, appropriateRates, rate);
+        }
+        LOG.trace(String.format("Appropriate rates : %s", appropriateRates));
+        List<Double> costs = new ArrayList<>();
+        if (appropriateRates.containsKey(0) && appropriateRates.get(0).size() > 0) {
+
+            double cost = appropriateRates.get(0).stream().map(RateDomain::getCost).min(Double::compareTo).get();
+            costs.add(cost);
+        }
+        if (appropriateRates.containsKey(1) && appropriateRates.get(1).size() > 0) {
+
+            double cost = appropriateRates.get(1).stream().map(RateDomain::getCost).min(Double::compareTo).get();
+            cost *= fineFor1Criteria;
+
+            costs.add(cost);
+
+        }
+        if (appropriateRates.containsKey(2) && appropriateRates.get(2).size() > 0) {
+
+            double cost = appropriateRates.get(2).stream().map(RateDomain::getCost).min(Double::compareTo).get();
+            cost *= fineFor2Criteria;
+            costs.add(cost);
+        }
+        if (appropriateRates.size() == 0) {
+
             RateDomain rate = rates.get(rates.size() - 1);
-            cost = rate.getCost();
+            double cost = rate.getCost();
 
             double fineCost = rate.getCost() * fineForCub;
-            System.out.println("cost " + cost);
-            System.out.println("finecost " + fineCost);
+
             double fineWeight = rate.getMaxWeight() * fineForWeight;
-            System.out.println("fineweight " + fineWeight);
+
             double rateCub = rate.getMaxLength() * rate.getMaxWidth() * rate.getMaxHeight() * 0.000001d;
-            System.out.println("ratecub " + rateCub);
+
             double requestCub = requestModel.getLength() * requestModel.getWidth() * requestModel.getHeight() * 0.000001d;
-            System.out.println("requestcub " + requestCub);
+
             while (rateCub < requestCub) {
                 cost += fineCost;
                 rateCub += 0.05d;
             }
-            System.out.println("rate cub ** " + rateCub);
-            System.out.println("cost " + cost);
+
             double rateWeight = rate.getMaxWeight();
-            System.out.println("rate weight " + rateWeight);
+
             while (rateWeight < requestModel.getWeight()) {
                 cost += fineWeight;
                 rateWeight += 1;
             }
-            System.out.println("rateweight ** " + rateWeight);
-            System.out.println("cost **** " + cost);
+            costs.add(cost);
+
         }
-        System.out.println(" FF cost " + cost);
-       LOG.trace(String.format("Counting is completed with value %.3f", cost));
-       return cost;
+
+        LOG.trace(String.format("Counting is completed with value %.3f", costs.stream().min(Double::compareTo).get()));
+        return costs.stream().min(Double::compareTo).get();
     }
 
     private static void checkRequestWithRate(RequestModel requestModel, Map<Integer, List<RateDomain>> appropriateRates, RateDomain rate) {
@@ -148,10 +154,10 @@ public class CostCounter {
         } catch (ServiceException e) {
             LOG.error(e.getMessage());
         }
-        return Objects.isNull(distanceDomain) ? 10d : distanceDomain.getDistance();
+        return Objects.isNull(distanceDomain) ? 300d : distanceDomain.getDistance();
     }
 
-    private  static List<RateDomain> getRates() {
+    private static List<RateDomain> getRates() {
         RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
         try {
             List<RateDomain> rates = rateService.findAll();

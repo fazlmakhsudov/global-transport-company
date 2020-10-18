@@ -94,13 +94,13 @@
 
                     <div class="form-group">
                         <label for="requestdeliverydate">${lang.Delivery_date}</label>
-                        <input type="datetime-local" class="form-control requestfield" id='requestdeliverydate'
+                        <input type="datetime-local" class="form-control " id='requestdeliverydate'
                             name='requestdeliverydate' placeholder="Enter date" />
                     </div>
 
                     <div class='form-group'>
                         <label for='requestcontenttypename'>${lang.Content_type}</label>
-                        <select class="form-control requestfield  text-center" id='requestcontenttypename'
+                        <select class="form-control  text-center" id='requestcontenttypename'
                             name='requestcontenttypename'>
                             <option value='cargo'>${lang.cargo}</option>
                             <option value='parcel_post'>${lang.parcel_post}</option>
