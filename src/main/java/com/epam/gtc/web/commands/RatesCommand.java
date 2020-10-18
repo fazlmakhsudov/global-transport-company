@@ -98,8 +98,6 @@ public class RatesCommand implements Command {
     }
 
     private void handleRequest(HttpServletRequest request) {
-        CityService cityService = (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE);
-        RateService rateService = (RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE);
         List<RateModel> rates;
         List<CityModel> cityModels;
         try {

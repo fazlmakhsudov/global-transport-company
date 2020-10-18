@@ -90,7 +90,7 @@ public class AdminInvoicesPageCommand implements Command {
                 LOG.trace("Request id --> " + requestId);
                 boolean costFlag = Objects.isNull(costString) || costString.isEmpty()
                         || Double.parseDouble(costString) <= 1d;
-                newInvoiceDomain.setCost(costFlag ? CostCounter.countCost(requestId) : Double.parseDouble(costString));
+                newInvoiceDomain.setCost(costFlag ? CostCounter3.countCost(requestId) : Double.parseDouble(costString));
                 newInvoiceDomain.setInvoiceStatus(InvoiceStatus.getEnumFromName(invoiceStatusName));
                 newInvoiceDomain.setRequestId(requestId);
 
