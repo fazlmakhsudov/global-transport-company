@@ -34,7 +34,22 @@
         <filter-name>IndexPageFilter</filter-name>
         <url-pattern>/</url-pattern>
     </filter-mapping>
-
+    <filter>
+        <filter-name>JspFilter</filter-name>
+        <filter-class>com.epam.gtc.web.filters.JspFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JspFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>LanguageFilter</filter-name>
+        <filter-class>com.epam.gtc.web.filters.LanguageFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LanguageFilter</filter-name>
+        <url-pattern>/changeLocale</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>CommandAccessFilter</filter-name>
         <filter-class>com.epam.gtc.web.filters.CommandAccessFilter</filter-class>
@@ -69,6 +84,9 @@
     </session-config>
     <listener>
         <listener-class>com.epam.gtc.web.listeners.ContextListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.epam.gtc.web.listeners.InitializeLanguage</listener-class>
     </listener>
     <resource-ref>
         <description>DB Connection</description>

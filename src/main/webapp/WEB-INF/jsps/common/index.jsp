@@ -12,16 +12,18 @@
       <%@ include file="/WEB-INF/jspf/service-carusel.jspf"%>
   </header>
 <!-- header -->
-
+    <div>
+           ${lang.Fazliddin}
+    </div>
   <div class="container mt-5">
     <h3 class="title text-center mb-lg-5 mb-sm-4 mb-3">
       <span>W</span>e
       <span>S</span>uggest
       <span>R</span>ates</h3>
     <div class="card-deck mb-3 text-center">
-           <c:if test = "ratesList != null && ratesList.size() >= 4">
-              ${ctg:showrates(ratesList, 4)}
-           </c:if>
+
+                ${ctg:showrates(ratesList, 4)}
+
     </div>
   </div>
 

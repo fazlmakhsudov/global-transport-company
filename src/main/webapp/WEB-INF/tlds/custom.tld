@@ -4,11 +4,6 @@
     <jsp-version>1.2</jsp-version>
     <short-name>ctg</short-name>
     <uri>http://tomcat.apache.org/example-taglib</uri>
-    <tag>
-        <name>safe-mail</name>
-        <tag-class>com.epam.gtc.web.customtags.MailTag</tag-class>
-        <body-content>scriptless</body-content>
-    </tag>
     <function>
         <name>showrates</name>
         <function-class>com.epam.gtc.web.customtags.ShowRatesFunction</function-class>

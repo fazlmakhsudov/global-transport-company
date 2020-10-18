@@ -16,25 +16,18 @@
 
 
 					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-						<input class="input100" type="email" name="email" value='${email}'>
+						<input class="input100" type="email" name="email" value='${email}' placeholder='Email'>
 						<span class="focus-input100"></span>
-						<span class="label-input100">Email</span>
+
 					</div>
 
 
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="password" minlength="4">
+						<input class="input100" type="password" name="password" minlength="4" placeholder='Password'>
 						<span class="focus-input100"></span>
-						<span class="label-input100">Password</span>
 					</div>
 
-					<div class="flex-sb-m w-full p-t-3 p-b-32">
-						<div>
-							<a href="#" class="txt1">
-								Forgot Password?
-							</a>
-						</div>
-					</div>
+
 
 
 					<div class="container-login100-form-btn">
@@ -59,7 +52,7 @@
 		</div>
 	</div>
     <c:remove var = "errorSignIn" />
-    <c:remove var = "newUser" />
+    <c:remove var = "email" />
 
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 

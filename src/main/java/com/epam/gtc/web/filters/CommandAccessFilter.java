@@ -63,7 +63,10 @@ public class CommandAccessFilter implements Filter {
 
     private boolean accessAllowed(final ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
+        if (httpRequest.getRequestURI().equalsIgnoreCase("/gtc/changeLocale")) {
+            LOG.trace("Accessed allowed for changing language");
+            return true;
+        }
         String commandName = request.getParameter("command");
         if (commandName == null || commandName.isEmpty()) {
             return false;

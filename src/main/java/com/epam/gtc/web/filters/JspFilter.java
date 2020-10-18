@@ -4,6 +4,7 @@ import com.epam.gtc.Path;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -12,9 +13,9 @@ import java.io.IOException;
  *
  * @author Fazliddin Makhsudov
  */
-public class IndexPageFilter implements Filter {
+public class JspFilter implements Filter {
     private static final Logger LOG =
-            Logger.getLogger(IndexPageFilter.class);
+            Logger.getLogger(JspFilter.class);
 
     @Override
     public void init(final FilterConfig filterConfig) {
@@ -25,11 +26,19 @@ public class IndexPageFilter implements Filter {
     @Override
     public final void doFilter(final ServletRequest request,
                                final ServletResponse response, final FilterChain chain)
-            throws IOException {
+            throws IOException, ServletException {
         LOG.debug("Filter starts");
-        LOG.debug("Filter finished");
-        ((HttpServletResponse) response).sendRedirect(
-                Path.COMMAND_INDEX);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String path = httpRequest.getRequestURI();
+        if (path.contains("error.jsp") || path.contains("404.jsp")) {
+            chain.doFilter(request, response);
+            LOG.debug("Filter finished");
+        } else {
+            LOG.debug("Filter finished");
+            ((HttpServletResponse) response).sendRedirect(
+                    Path.COMMAND_INDEX);
+        }
+
     }
 
     @Override
