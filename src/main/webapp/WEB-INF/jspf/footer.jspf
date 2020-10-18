@@ -3,14 +3,14 @@
     <div class="container">
         <div class="row w3ls_footer_grid text-lg-left text-center pb-lg-5 pb-4 mt-xl-4 mt-1 mb-xl-5 mb-4">
             <div class="col-lg-5 footer-w3l">
-                <h5>World wide Transport with in 24 hours</h5>
+                <h5>${lang.World_wide_Transport_with_in_24_hours}</h5>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3 col-6 w3ls_footer_grid_right">
                 <h1>
                     <a href="/gtc">
-                        <i class="fas fa-truck mr-2"></i>GTC<h6>The Transport Company</h6>
+                        <i class="fas fa-truck mr-2"></i>${lang.GTC}<h6>${lang.The_Transport_Company}</h6>
                     </a>
                 </h1>
             </div>
@@ -18,17 +18,17 @@
                 <ul>
                     <li class="mr-3">
                         <a href="https://www.facebook.com" class="facebook">
-                            <i class="fab fa-facebook-f mr-2"></i>Facebook</a>
+                            <i class="fab fa-facebook-f mr-2"></i>${lang.Facebook}</a>
                     </li>
                     <li>
                         <a href="https://twitter.com" class="twitter">
-                            <i class="fab fa-twitter mr-2"></i>Twitter
+                            <i class="fab fa-twitter mr-2"></i>${lang.Twitter}
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="col-lg-6 w3ls_footer_grid1_left mt-lg-2 mt-4 text-lg-right text-center">
-                <p>&copy; <span id="year"></span> GTC. All rights reserved</p>
+                <p>&copy; <span id="year"></span> ${lang.GTC}. ${lang.All_rights_reserved}</p>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Personal counter</h5>
+                <h5 class="modal-title">${lang.Calculator}</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <form action='/gtc/controller' method='POST'>
@@ -51,20 +51,20 @@
 
 
                     <div class='form-group'>
-                        <label for='requestcityfromid'>City from</label>
+                        <label for='requestcityfromid'>${lang.City_from}</label>
                         <select class="form-control requestfield text-center" id='requestcityfromid'
                             name='requestcityfromid'>
-                            <option value=''>Choose...</option>
+                            <option value=''>${lang.Choose}...</option>
                             <c:forEach var="cityid" items="${citiesMap.keySet()}">
                                 <option value='${cityid}'>${citiesMap.get(cityid)}</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class='form-group'>
-                        <label for='requestcitytoid'>City to</label>
+                        <label for='requestcitytoid'>${lang.City_to}</label>
                         <select class="form-control requestfield text-center" id='requestcitytoid'
                             name='requestcitytoid'>
-                            <option value=''>Choose...</option>
+                            <option value=''>${lang.Choose}...</option>
                             <c:forEach var="cityid" items="${citiesMap.keySet()}">
                                 <option value='${cityid}'>${citiesMap.get(cityid)}</option>
                             </c:forEach>
@@ -72,54 +72,54 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="requestweight">Weight</label>
+                        <label for="requestweight">${lang.Weight}</label>
                         <input type="number" class="form-control requestfield  text-center" id='requestweight'
                             name='requestweight' placeholder="Enter value" min='1' />
                     </div>
                     <div class="form-group">
-                        <label for="requestlength">Length</label>
+                        <label for="requestlength">${lang.Length}</label>
                         <input type="number" class="form-control requestfield  text-center" id='requestlength'
                             name='requestlength' placeholder="Enter value" min='1' />
                     </div>
                     <div class="form-group">
-                        <label for="requestwidth">Width</label>
+                        <label for="requestwidth">${lang.Width}</label>
                         <input type="number" class="form-control requestfield  text-center" id='requestwidth'
                             name='requestwidth' placeholder="Enter value" min='1' />
                     </div>
                     <div class="form-group">
-                        <label for="requestheight">Height</label>
+                        <label for="requestheight">${lang.Height}</label>
                         <input type="number" class="form-control requestfield  text-center" id='requestheight'
                             name='requestheight' placeholder="Enter value" min='1' />
                     </div>
 
                     <div class="form-group">
-                        <label for="requestdeliverydate">Delivery date</label>
+                        <label for="requestdeliverydate">${lang.Delivery_date}</label>
                         <input type="datetime-local" class="form-control requestfield" id='requestdeliverydate'
                             name='requestdeliverydate' placeholder="Enter date" />
                     </div>
 
                     <div class='form-group'>
-                        <label for='requestcontenttypename'>Content type</label>
+                        <label for='requestcontenttypename'>${lang.Content_type}</label>
                         <select class="form-control requestfield  text-center" id='requestcontenttypename'
                             name='requestcontenttypename'>
-                            <option value='cargo'>cargo</option>
-                            <option value='parcel_post'>parcel_post</option>
-                            <option value='document'>document</option>
-                            <option value='jewelery'>jewelery</option>
+                            <option value='cargo'>${lang.cargo}</option>
+                            <option value='parcel_post'>${lang.parcel_post}</option>
+                            <option value='document'>${lang.document}</option>
+                            <option value='jewelery'>${lang.jewelery}</option>
                         </select>
                     </div>
                     <div class='form-group pl-3 pr-3 pb-1' id='showrequestcost'
                         style='border: 2px teal solid;display:none;'>
-                        <label class='ml-2' for='requestcost'>Cost</label>
+                        <label class='ml-2' for='requestcost'>${lang.Cost}</label>
                         <p class="form-control text-center" id='requestcost' name='requestcost'
                             value='${requestcost}' />
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">${lang.Cancel}</button>
                     <c:if test="${user != null}">
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary">${lang.Add}</button>
                     </c:if>
                 </div>
             </form>

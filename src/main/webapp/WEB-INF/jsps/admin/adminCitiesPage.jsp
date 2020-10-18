@@ -23,15 +23,14 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">All data represent actual information. Any change is fulfilled immediately. Pay your
-                        attention on any operation.</p>
+                    <h1 class="h3 mb-2 text-gray-800">${lang.Tables}</h1>
+                    <p class="mb-4">${lang.admin_tables_info}</p>
                     <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorCity} </p>
                     <c:remove var="errorCity" />
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 row">
-                            <h5 class="m-0 font-weight-bold text-primary ml-3 col">Cities</h5>
+                            <h5 class="m-0 font-weight-bold text-primary ml-3 col">${lang.Cities}</h5>
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                     <button type="button" class="btn btn-outline-primary mr-5"
@@ -45,7 +44,7 @@
                                             data-previous='${itemsPerPage}' />
                                     </div>
                                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                                        <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                                     </div>
                                 </form>
                             </div>
@@ -57,16 +56,16 @@
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Name}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Name}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </tfoot>
 
@@ -98,11 +97,11 @@
                                                             </div>
                                                             <select class="custom-select form-control" name='action'
                                                                 data-cityid='${city.id}' data-cityname='${city.name}'>
-                                                                <option selected>Choose...</option>
+                                                                <option selected>${lang.Choose}</option>
                                                                 <option value="save"><i class="fa fa-pencil-square-o"
-                                                                        aria-hidden="true"></i>Save</option>
+                                                                        aria-hidden="true"></i>${lang.Save}</option>
                                                                 <option value="remove"><i class="fa fa-trash-o"
-                                                                        aria-hidden="true"></i> Remove</option>
+                                                                        aria-hidden="true"></i> ${lang.Remove}</option>
                                                             </select>
                                                         </div>
                                                     </form>
@@ -197,7 +196,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary">${lang.Add}</button>
                     </div>
                 </form>
             </div>

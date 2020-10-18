@@ -18,29 +18,29 @@
     <div class="py-sm-5 py-4" style="position:relative;">
         <div class="ml-5 mr-5 py-xl-5 py-lg-3">
             <h3 class="title mb-sm-4 mb-3 text-center">
-                <span>M</span>y
-                <span>C</span>abinet
+                ${lang.My}
+                ${lang.Cabinet}
             </h3>
             <div class="row">
                 <div class='col col-2 text-left'>
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link ${profiletab}" id="v-pills-profile-tab" data-toggle="pill"
                             href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-                            <h5>Profile</h5>
+                            <h5>${lang.Profile}</h5>
                         </a>
                         <a class="nav-link ${requeststab}" id="v-pills-requests-tab" data-toggle="pill"
                             href="#v-pills-requests" role="tab" aria-controls="v-pills-requests" aria-selected="false">
-                            <h5>Requests</h5>
+                            <h5>${lang.Requests}</h5>
                         </a>
                         <a class="nav-link ${invoicestab}" id="v-pills-invoices-tab" data-toggle="pill"
                             href="#v-pills-invoices" role="tab" aria-controls="v-pills-invoices" aria-selected="false">
-                            <h5>Invoices</h5>
+                            <h5>${lang.Invoices}</h5>
                         </a>
 
                         <a class="nav-link ${deliveriestab}" id="v-pills-deliveries-tab" data-toggle="pill"
                             href="#v-pills-deliveries" role="tab" aria-controls="v-pills-deliveries"
                             aria-selected="false">
-                            <h5>Deliveries</h5>
+                            <h5>${lang.Deliveries}</h5>
                         </a>
 
                     </div>

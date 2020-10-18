@@ -11,8 +11,8 @@
             <div class="w3l-overlay">
                 <div class="container">
                     <div class="slider-text text-white p-lg-5 p-4">
-                        <h6>Transport your goods</h6>
-                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">Around the World</h3>
+                        <h6>${lang.Transport_your_goods}</h6>
+                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">${lang.Around_the_World}</h3>
                         <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                             quis nostrud exercitation</p>
                     </div>
@@ -20,15 +20,15 @@
                 <div class="row carousel-caption">
                     <div class="col-4 banner-bot">
                         <i class="fas fa-globe mb-2"></i>
-                        <h5>World wide transport</h5>
+                        <h5>${lang.World_wide_transport}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="fab fa-dropbox mb-2"></i>
-                        <h5>Safety</h5>
+                        <h5>${lang.Safety}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="far fa-thumbs-up mb-2"></i>
-                        <h5>100% guaranteed </h5>
+                        <h5>${lang.g100_guaranteed} </h5>
                     </div>
                 </div>
             </div>
@@ -37,8 +37,8 @@
             <div class="w3l-overlay">
                 <div class="container">
                     <div class="slider-text text-white  p-lg-5 p-4">
-                        <h6>With help from our fleet</h6>
-                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">Send it anywhere</h3>
+                        <h6>${lang.With_help_from_our_fleet}</h6>
+                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">${lang.Send_it_anywhere}</h3>
                         <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                             quis nostrud exercitation</p>
                     </div>
@@ -46,15 +46,15 @@
                 <div class="row carousel-caption">
                     <div class="col-4 banner-bot">
                         <i class="fas fa-globe mb-2"></i>
-                        <h5>World wide transport</h5>
+                        <h5>${lang.World_wide_transport}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="fab fa-dropbox mb-2"></i>
-                        <h5>Safety</h5>
+                        <h5>${lang.Safety}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="far fa-thumbs-up mb-2"></i>
-                        <h5>100% guaranteed </h5>
+                        <h5>${lang.g100_guaranteed} </h5>
                     </div>
                 </div>
             </div>
@@ -63,8 +63,8 @@
             <div class="w3l-overlay">
                 <div class="container">
                     <div class="slider-text text-white  p-lg-5 p-4">
-                        <h6>Transport your goods</h6>
-                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">Around the World</h3>
+                        <h6>${lang.Transport_your_goods}</h6>
+                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">${lang.Around_the_World}</h3>
                         <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                             quis nostrud exercitation</p>
                     </div>
@@ -72,15 +72,15 @@
                 <div class="row carousel-caption">
                     <div class="col-4 banner-bot">
                         <i class="fas fa-globe mb-2"></i>
-                        <h5>World wide transport</h5>
+                        <h5>${lang.World_wide_transport}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="fab fa-dropbox mb-2"></i>
-                        <h5>Safety</h5>
+                        <h5>${lang.Safety}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="far fa-thumbs-up mb-2"></i>
-                        <h5>100% guaranteed </h5>
+                        <h5>${lang.g100_guaranteed} </h5>
                     </div>
                 </div>
             </div>
@@ -89,8 +89,8 @@
             <div class="w3l-overlay">
                 <div class="container">
                     <div class="slider-text text-white  p-lg-5 p-4">
-                        <h6>With help from our fleet</h6>
-                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">Send it anywhere</h3>
+                        <h6>${lang.With_help_from_our_fleet}</h6>
+                        <h3 class="mt-lg-3 mt-2 mb-lg-4 mb-3">${lang.Send_it_anywhere}</h3>
                         <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                             quis nostrud exercitation</p>
                     </div>
@@ -98,15 +98,15 @@
                 <div class="row carousel-caption">
                     <div class="col-4 banner-bot">
                         <i class="fas fa-globe mb-2"></i>
-                        <h5>World wide transport</h5>
+                        <h5>${lang.World_wide_transport}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="fab fa-dropbox mb-2"></i>
-                        <h5>Safety</h5>
+                        <h5>${lang.Safety}</h5>
                     </div>
                     <div class="col-4 banner-bot">
                         <i class="far fa-thumbs-up mb-2"></i>
-                        <h5>100% guaranteed </h5>
+                        <h5>${lang.g100_guaranteed} </h5>
                     </div>
                 </div>
             </div>
@@ -114,11 +114,11 @@
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
+        <span class="sr-only">${lang.Previous}</span>
     </a>
     <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
+        <span class="sr-only">${lang.Next}</span>
     </a>
 </div>
 <!-- //carousel slider -->

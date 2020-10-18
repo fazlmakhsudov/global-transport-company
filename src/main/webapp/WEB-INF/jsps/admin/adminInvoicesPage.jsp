@@ -23,14 +23,13 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">All data represent actual information. Any change is fulfilled immediately. Pay your
-                        attention on any operation.</p>
+                    <h1 class="h3 mb-2 text-gray-800">${lang.Tables}</h1>
+                    <p class="mb-4">${lang.admin_tables_info}</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 row">
-                            <h5 class="m-0 font-weight-bold text-primary ml-3 col">Invoices</h5>
+                            <h5 class="m-0 font-weight-bold text-primary ml-3 col">${lang.Invoices}</h5>
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                     <button type="button" class="btn btn-outline-primary mr-5"

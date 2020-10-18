@@ -25,7 +25,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800 ml-5">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800 ml-5">${lang.Dashboard}</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
@@ -44,7 +44,7 @@
                                         <li class="list-group-item">${rowValue} </li>
                                     </c:forEach>
                                 </ul>
-                                <a href="#" class="btn align-center ">Details</a>
+                                <a href="#" class="btn align-center ">${lang.Details}</a>
                             </div>
                         </c:forEach>
 

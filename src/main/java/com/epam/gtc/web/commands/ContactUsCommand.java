@@ -5,6 +5,7 @@ import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
+import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
@@ -38,11 +39,14 @@ public class ContactUsCommand implements Command {
     @Override
     public final String execute(final HttpServletRequest request,
                                 final HttpServletResponse response) {
-        LOG.debug("Command starts");
-        supplyRequestWithCities(request);
-        LOG.debug(String.format("forward --> %s", Path.PAGE_CONTACT_US));
-        LOG.debug("Command finished");
-        return Path.PAGE_CONTACT_US;
+        if (Method.isGet(request)) {
+            LOG.debug("Command starts");
+            supplyRequestWithCities(request);
+            LOG.debug(String.format("forward --> %s", Path.PAGE_CONTACT_US));
+            LOG.debug("Command finished");
+            return Path.PAGE_CONTACT_US;
+        }
+        return Path.COMMAND_INDEX;
     }
 
     private void supplyRequestWithCities(HttpServletRequest request) {

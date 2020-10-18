@@ -1,7 +1,7 @@
 <div class="inner-banner text-center text-white">
     <ul class="w3_short">
         <li>
-            <a href="/gtc">Home</a>
+            <a href="/gtc">${lang.Home}</a>
             <i>||</i>
         </li>
         <li>${navmenu}</li>

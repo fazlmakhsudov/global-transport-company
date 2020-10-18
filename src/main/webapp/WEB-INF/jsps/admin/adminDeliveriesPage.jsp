@@ -23,19 +23,18 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-                    <p class="mb-4">All data represent actual information. Any change is fulfilled immediately. Pay your
-                        attention on any operation.</p>
+                    <h1 class="h3 mb-2 text-gray-800">${lang.Tables}</h1>
+                    <p class="mb-4">${lang.admin_tables_info}</p>
                     <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorDelivery} </p>
                     <c:remove var="errorDelivery" />
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 row">
-                            <h5 class="m-0 font-weight-bold text-primary ml-3 col">Deliveries</h5>
+                            <h5 class="m-0 font-weight-bold text-primary ml-3 col">${lang.Deliveries}</h5>
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                     <button type="button" class="btn btn-outline-primary mr-5"
-                                        id="addnewbutton">Add</button>
+                                        id="addnewbutton">${lang.Add}</button>
                                     <input type='text' name='command' value='adminDeliveriesPage'
                                         style='display:none;' />
                                     <input type='text' name='page' value='${page}' style='display:none;' />
@@ -46,7 +45,7 @@
                                             data-previous='${itemsPerPage}' />
                                     </div>
                                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                                        <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                                     </div>
                                 </form>
                             </div>
@@ -115,8 +114,8 @@
                                                                 data-deliveryid='${delivery.id}'
                                                                 data-deliverystatusname='${delivery.deliveryStatusName}'>
                                                                 <option selected>Choose...</option>
-                                                                <option value="save">Save</option>
-                                                                <option value="remove">Remove</option>
+                                                                <option value="save">${lang.Save}</option>
+                                                                <option value="remove">${lang.Remove}</option>
                                                             </select>
                                                         </div>
                                                     </form>

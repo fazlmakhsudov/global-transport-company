@@ -8,6 +8,7 @@ import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RateService;
+import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.RateModel;
@@ -43,12 +44,15 @@ public class IndexCommand implements Command {
     @Override
     public final String execute(final HttpServletRequest request,
                                 final HttpServletResponse response) {
-        LOG.debug("Command starts");
-        LOG.trace("Set request attribute: command index");
-        supplyRequestWithRates(request);
-        supplyRequestWithCities(request);
-        LOG.debug("Command finished");
-        return Path.PAGE_HOME;
+        if (Method.isGet(request)) {
+            LOG.debug("Command starts");
+            LOG.trace("Set request attribute: command index");
+            supplyRequestWithRates(request);
+            supplyRequestWithCities(request);
+            LOG.debug("Command finished");
+            return Path.PAGE_HOME;
+        }
+        return Path.COMMAND_INDEX;
     }
 
     private void supplyRequestWithRates(HttpServletRequest request) {

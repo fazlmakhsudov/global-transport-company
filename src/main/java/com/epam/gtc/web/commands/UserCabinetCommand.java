@@ -5,6 +5,7 @@ import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
+import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
@@ -40,29 +41,33 @@ public class UserCabinetCommand implements Command {
     @Override
     public final String execute(final HttpServletRequest request,
                                 final HttpServletResponse response) {
-        LOG.debug("Command starts");
-        HttpSession session = request.getSession();
-        Object sessionUser = session.getAttribute("user");
-        LOG.trace("Session user --> " + sessionUser);
-        String forward;
-        if (Objects.isNull(sessionUser)) {
-            forward = Path.COMMAND_INDEX;
-            LOG.debug(String.format("forward --> %s", Path.COMMAND_INDEX));
-        } else {
-            session.removeAttribute("requeststab");
-            session.removeAttribute("requeststabbody");
-            session.removeAttribute("invoicestab");
-            session.removeAttribute("invoicestabbody");
-            session.removeAttribute("deliveriestab");
-            session.removeAttribute("deliveriestabbody");
-            session.setAttribute("profiletab", "active");
-            session.setAttribute("profiletabbody", "show active");
-            forward = Path.PAGE_USER_CABINET;
-            LOG.debug(String.format("forward --> %s", Path.PAGE_USER_CABINET));
+
+        if (Method.isGet(request)) {
+            LOG.debug("Command starts");
+            HttpSession session = request.getSession();
+            Object sessionUser = session.getAttribute("user");
+            LOG.trace("Session user --> " + sessionUser);
+            String forward;
+            if (Objects.isNull(sessionUser)) {
+                forward = Path.COMMAND_INDEX;
+                LOG.debug(String.format("forward --> %s", Path.COMMAND_INDEX));
+            } else {
+                session.removeAttribute("requeststab");
+                session.removeAttribute("requeststabbody");
+                session.removeAttribute("invoicestab");
+                session.removeAttribute("invoicestabbody");
+                session.removeAttribute("deliveriestab");
+                session.removeAttribute("deliveriestabbody");
+                session.setAttribute("profiletab", "active");
+                session.setAttribute("profiletabbody", "show active");
+                forward = Path.PAGE_USER_CABINET;
+                LOG.debug(String.format("forward --> %s", Path.PAGE_USER_CABINET));
+            }
+            supplyRequestWithCities(request);
+            LOG.debug("Command finished");
+            return forward;
         }
-        supplyRequestWithCities(request);
-        LOG.debug("Command finished");
-        return forward;
+        return Path.COMMAND_INDEX;
     }
 
     private void supplyRequestWithCities(HttpServletRequest request) {

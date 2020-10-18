@@ -9,6 +9,7 @@ import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RateService;
 import com.epam.gtc.services.factory.ServiceFactory;
 import com.epam.gtc.services.factory.ServiceType;
+import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.RateModel;
@@ -46,18 +47,21 @@ public class RatesCommand implements Command {
     @Override
     public final String execute(final HttpServletRequest request,
                                 final HttpServletResponse response) {
-        LOG.debug("Command starts");
+        if (Method.isGet(request)) {
+            LOG.debug("Command starts");
 
-        String rateName = request.getParameter(FormRequestParametersNames.RATE_NAME);
-        boolean rateNameFlag = !Objects.isNull(rateName) && !rateName.isEmpty();
-        if (rateNameFlag) {
-            handleRequest(request, rateName);
-        } else {
-            handleRequest(request);
+            String rateName = request.getParameter(FormRequestParametersNames.RATE_NAME);
+            boolean rateNameFlag = !Objects.isNull(rateName) && !rateName.isEmpty();
+            if (rateNameFlag) {
+                handleRequest(request, rateName);
+            } else {
+                handleRequest(request);
+            }
+            LOG.debug(String.format("forward --> %s", Path.PAGE_RATES));
+            LOG.debug("Command finished");
+            return Path.PAGE_RATES;
         }
-        LOG.debug(String.format("forward --> %s", Path.PAGE_RATES));
-        LOG.debug("Command finished");
-        return Path.PAGE_RATES;
+        return Path.COMMAND_INDEX;
     }
 
     private void handleRequest(HttpServletRequest request, String rateName) {

@@ -12,9 +12,6 @@
         <%@ include file="/WEB-INF/jspf/service-carusel.jspf"%>
     </header>
     <!-- header -->
-    <div>
-        ${lang.Fazliddin}
-    </div>
     <div class="container mt-5">
         <h3 class="title text-center mb-lg-5 mb-sm-4 mb-3">
             <span>W</span>e

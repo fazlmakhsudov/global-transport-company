@@ -7,7 +7,7 @@
     </button>
 
     <!-- Topbar Search -->
-    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <!--<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
         <div class="input-group">
             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                 aria-label="Search" aria-describedby="basic-addon2">
@@ -17,7 +17,7 @@
                 </button>
             </div>
         </div>
-    </form>
+    </form>-->
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
@@ -51,13 +51,17 @@
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+                <c:set var='alertValue' value='0'/>
+                <c:forEach var='value' items='${alerts.values()}'>
+                    <c:set var='alertValue' value='${alertValue + value}' />
+                </c:forEach>
+                <span class="badge badge-danger badge-counter">${alertValue}</span>
             </a>
             <!-- Dropdown - Alerts -->
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
-                    Alerts Center
+                    ${lang.Alerts_Center}
                 </h6>
                 <c:if test="${alerts.get('Waiting for manager review') > 0 }">
                     <a class="dropdown-item d-flex align-items-center" href="/gtc/controller?command=adminRequestsPage">
@@ -68,8 +72,7 @@
                         </div>
                         <div>
                             <div class="small text-gray-500"></div>
-                            <span class="font-weight-bold">Waiting for manager review : ${alerts.get('Waiting for
-                                manager review')}</span>
+                            <span class="font-weight-bold">${lang.Waiting_for_manager_review} : ${alerts.get('Waiting for manager review')}</span>
                         </div>
                     </a>
                 </c:if>
@@ -82,7 +85,7 @@
                         </div>
                         <div>
 
-                            <span class="font-weight-bold">Paid : ${alerts.get('Paid')}</span>
+                            <span class="font-weight-bold">${lang.Paid} : ${alerts.get('Paid')}</span>
                         </div>
                     </a>
                 </c:if>
@@ -94,7 +97,7 @@
                             </div>
                         </div>
                         <div>
-                            <span class="font-weight-bold">Rejected : ${alerts.get('Rejected')}</span>
+                            <span class="font-weight-bold">${lang.Rejected} : ${alerts.get('Rejected')}</span>
                         </div>
                     </a>
                 </c:if>
@@ -114,13 +117,13 @@
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="/gtc/controller?command=userCabinet">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    My Cabinet
+                   ${lang.My_cabinet}
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/gtc/controller?command=logout" data-toggle="modal"
                     data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
+                    ${lang.Log_out}
                 </a>
             </div>
         </li>

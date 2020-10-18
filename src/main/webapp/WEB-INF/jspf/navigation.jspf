@@ -1,7 +1,7 @@
 <!-- navigation -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/gtc">
-        <i class="fas fa-truck mr-2"></i>GTC<h6>The Transport Company</h6></a>
+        <i class="fas fa-truck mr-2"></i>${lang.GTC}<h6>${lang.The_Transport_Company}</h6></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -10,40 +10,36 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto text-center mr-lg-5">
             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                <a class="nav-link" href="/gtc">Home
+                <a class="nav-link" href="/gtc">${lang.Home}
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/gtc/controller?command=aboutUs">About Us</a>
+                <a class="nav-link" href="/gtc/controller?command=aboutUs">${lang.About_Us}</a>
             </li>
             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                <a class="nav-link" href="/gtc/controller?command=rates">Rates</a>
+                <a class="nav-link" href="/gtc/controller?command=rates">${lang.Rates}</a>
             </li>
             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                <a class="nav-link" href="#" id='pricecounternav'>Calculator</a>
+                <a class="nav-link" href="#" id='pricecounternav'>${lang.Calculator}</a>
             </li>
             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                <a class="nav-link" href="/gtc/controller?command=deliveryMap">Delivery Map</a>
+                <a class="nav-link" href="/gtc/controller?command=deliveryMap">${lang.Delivery_Map}</a>
             </li>
 
-            <!--li class="nav-item dropdown mr-lg-2 mb-lg-0 mb-2">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Request
-						</a>
-						<div class="dropdown-menu pull-right">
-							<a class="dropdown-item" id='pricecounternav' href='#'>Private counter</a>
-
-						</div>
-					</li-->
-
             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
-                <a class="nav-link" href="/gtc/controller?command=gallery">Gallery</a>
+                <a class="nav-link" href="/gtc/controller?command=gallery">${lang.Gallery}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/gtc/controller?command=contactUs">Contact Us</a>
+                <a class="nav-link" href="/gtc/controller?command=contactUs">${lang.Contact_Us}</a>
             </li>
-
+            <li class="nav-item">
+                <p class="nav-link">
+                   <a href='/gtc/changeLocale' class='langstyle'>${lang.EN}</a>
+                   <strong style='width:2px'>|</strong>
+                   <a href='/gtc/changeLocale?locale=ru' class='langstyle'>${lang.RU}</a>
+                </a>
+            </li>
             <li class="nav-item">
                 <c:choose>
                     <c:when test="${sessionScope['user'] != null}">
@@ -53,17 +49,11 @@
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i> ${user.name}
                             </button>
                             <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="/gtc/controller?command=userCabinet">My cabinet</a>
+                                <a class="dropdown-item" href="/gtc/controller?command=userCabinet">${lang.My_cabinet}</a>
                                 <c:if test="${user.roleName =='admin' }">
-                                    <a class="dropdown-item" href="/gtc/controller?command=adminMainPage">Management</a>
+                                    <a class="dropdown-item" href="/gtc/controller?command=adminMainPage">${lang.Management}</a>
                                 </c:if>
-                                <a class="dropdown-item" href="/gtc/controller?command=logout">Log out</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-item">
-                                    <a href='/gtc/changeLocale'>EN</a>
-                                    <strong>/</strong>
-                                    <a href='/gtc/changeLocale?locale=ru'>RU</a>
-                                </div>
+                                <a class="dropdown-item" href="/gtc/controller?command=logout">${lang.Log_out}</a>
                             </div>
                         </div>
                     </c:when>
@@ -74,40 +64,15 @@
                                 <i class="fa fa-user-secret text-white" aria-hidden="true"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item text-center" href="/gtc/controller?command=login">Login</a>
+                                <a class="dropdown-item text-center" href="/gtc/controller?command=login">${lang.Login}</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-center" href="/gtc/controller?command=signup">Sign up</a>
-
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-item">
-                                    <strong> <a href='/gtc/changeLocale'>EN</a>
-                                        /
-                                        <a href='/gtc/changeLocale?locale=ru'>RU</a>
-                                    </strong>
-                                </div>
+                                <a class="dropdown-item text-center" href="/gtc/controller?command=signup">${lang.Sign_up}</a>
                             </div>
                         </div>
                     </c:otherwise>
                 </c:choose>
             </li>
         </ul>
-        <form class="navbar-form" role="search" action="#" method="post">
-            <div class="input-group">
-                <input type="search" class="form-control pull-right" placeholder="Search" required="">
-                <span class="input-group-btn">
-                    <button type="reset" class="btn btn-default">
-                        <span class="glyphicon fas fa-times">
-                            <span class="sr-only">Close</span>
-                        </span>
-                    </button>
-                    <button type="submit" class="btn btn-default">
-                        <span class="fas fa-search">
-                            <span class="sr-only">Search</span>
-                        </span>
-                    </button>
-                </span>
-            </div>
-        </form>
     </div>
 </nav>
 <!-- //navigation -->

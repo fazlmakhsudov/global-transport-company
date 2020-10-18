@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-lg-7 contact-grid-agiles-w3l">
                     <div class="contact-grid-agile">
-                        <form action="#" method="post">
+                        <!--<form action="#" method="post">
                             <div class="form-group">
                                 <input class="form-control" type="text" placeholder="Name" name="name" required="">
                             </div>
@@ -38,7 +38,7 @@
                                     required=""></textarea>
                             </div>
                             <input type="submit" class="btn" value="Send Now">
-                        </form>
+                        </form> -->
                     </div>
                     <div class="contact-right2 mt-4">
                         <div class="row call ">

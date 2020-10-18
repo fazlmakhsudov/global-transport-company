@@ -1,9 +1,9 @@
 <div class="middle-w3l py-sm-5 py-4">
     <div class="container py-xl-5 py-lg-3">
-        <h2>reach your destination 100% sure and safe</h2>
+        <h2>${lang.reach_your_destination_100_sure_and_safe}</h2>
         <p class="my-md-4 my-2">Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod
             mazim.</p>
         <a href="/gtc/controller?command=contactUs" class="btn btn-secondary btn-lg button2-w3l mt-4" role="button"
-            aria-pressed="true">Contact Us</a>
+            aria-pressed="true">${lang.Contact_Us}</a>
     </div>
 </div>

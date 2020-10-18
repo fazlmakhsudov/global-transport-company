@@ -16,7 +16,7 @@
     <li class="nav-item active">
         <a class="nav-link" href="/gtc/controller?command=adminMainPage">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>${lang.Dashboard}</span></a>
     </li>
 
     <!-- Divider -->
@@ -24,50 +24,50 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Tables
+        ${lang.Tables}
     </div>
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminCitiesPage">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
-            <span>Cities</span>
+            <span>${lang.Cities}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminDeliveriesPage">
             <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-            <span>Deliveries</span>
+            <span>${lang.Deliveries}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminDistancesPage">
             <i class="fa fa-globe" aria-hidden="true"></i>
-            <span>Distances</span>
+            <span>${lang.Distances}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminInvoicesPage">
             <i class="fa fa-list" aria-hidden="true"></i>
-            <span>Invoices</span>
+            <span>${lang.Invoices}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminRatesPage">
             <i class="fa fa-list-alt" aria-hidden="true"></i>
-            <span>Rates</span>
+            <span>${lang.Rates}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminRequestsPage">
             <i class="fa fa-check" aria-hidden="true"></i>
-            <span>Requests</span>
+            <span>${lang.Requests}</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/gtc/controller?command=adminUsersPage">
             <i class="fa fa-users" aria-hidden="true"></i>
-            <span>Users</span>
+            <span>${lang.Users}</span>
         </a>
     </li>
 
@@ -83,13 +83,19 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
             aria-controls="collapseTwo">
             <i class="fa fa-address-book" aria-hidden="true"></i>
-            <span>Pages</span>
+            <span>${lang.Pages}</span>
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">ALL PAGES</h6>
-                <a class="collapse-item" href="#">Home</a>
-                <a class="collapse-item" href="#">Rates</a>
+                <h6 class="collapse-header">${lang.ALL_PAGES}</h6>
+                <a class="collapse-item" href="/gtc/controller?command=index">${lang.Home}</a>
+                <a class="collapse-item" href="/gtc/controller?command=userCabinet">${lang.My_cabinet}</a>
+                <a class="collapse-item" href="/gtc/controller?command=aboutUs">${lang.About_Us}</a>
+                <a class="collapse-item" href="/gtc/controller?command=rates">${lang.Rates}</a>
+                <a class="collapse-item" href="/gtc/controller?command=personalCounterForm">${lang.Calculator}</a>
+                <a class="collapse-item" href="/gtc/controller?command=deliveryMap">${lang.Delivery_Map}</a>
+                <a class="collapse-item" href="/gtc/controller?command=gallery">${lang.Gallery}</a>
+                <a class="collapse-item" href="/gtc/controller?command=contactUs">${lang.Contact_Us}</a>
             </div>
         </div>
     </li>

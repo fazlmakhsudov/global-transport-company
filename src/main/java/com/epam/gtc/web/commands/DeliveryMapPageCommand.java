@@ -23,10 +23,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -54,33 +51,40 @@ public class DeliveryMapPageCommand implements Command {
     @Override
     public final String execute(final HttpServletRequest request, final HttpServletResponse response)
             throws AppException {
-        LOG.debug("DeliveryMapPageCommand starts");
-        supplyRequestWithCities(request);
-        String forward = handleRequest(request);
-        LOG.debug("DeliveryMapPageCommand finished");
-        return forward;
+        if (Method.isGet(request)) {
+            LOG.debug("DeliveryMapPageCommand starts");
+            supplyRequestWithCities(request);
+            String forward = handleRequest(request);
+            LOG.debug("DeliveryMapPageCommand finished");
+            return forward;
+        }
+        return Path.COMMAND_INDEX;
+
     }
 
     private String handleRequest(final HttpServletRequest request) throws AppException {
         Map<Integer, String> citiesMap = (Map<Integer, String>) request.getAttribute("citiesMap");
-        String deliveryMapCityFrom = request.getParameter("deliveryMapCityFrom");
-        if (Validator.isValidNumber(deliveryMapCityFrom)) {
 
-        } else {
+        List<String> sortedCitiesNames = citiesMap.values().stream().collect(Collectors.toList());
+        sortedCitiesNames.sort(String::compareTo);
 
-        }
+        Map<String, Integer> cities = citiesMap.keySet().stream()
+                .collect(Collectors.toMap(cityId -> citiesMap.get(cityId), cityId -> cityId));
 
+        Map<String, List<RateModel>> deliveryMapRates = new HashMap<>();
+        Map<String, List<DistanceModel>> deliveryMapDestinations = new HashMap<>();
 
-        Map<Integer, List<RateModel>> deliveryMapRates = new HashMap<>();
-        Map<Integer, List<DistanceModel>> deliveryMapDestinations = new HashMap<>();
         DistanceModelBuilder distanceModelBuilder = new DistanceModelBuilder();
         RateModelBuilder rateModelBuilder = new RateModelBuilder();
-        for (Integer cityId : citiesMap.keySet()) {
+
+        for (String cityName : sortedCitiesNames) {
+            int cityId = cities.get(cityName);
+            System.out.println(cityId + "  " + cityName);
             List<DistanceModel> distanceModels = distanceModelBuilder.create(distanceService.findAll(cityId));
-            deliveryMapDestinations.put(cityId, distanceModels);
+            deliveryMapDestinations.put(cityName, distanceModels);
             double maxDistance = distanceModels.stream().map(DistanceModel::getDistance).max(Double::compareTo).get();
             List<RateModel> rateModels = rateModelBuilder.create( rateService.findAll(maxDistance));
-            deliveryMapRates.put(cityId, rateModels);
+            deliveryMapRates.put(cityName, rateModels);
         }
         LOG.trace(String.format("Delivery map rates -> %s", deliveryMapRates));
         LOG.trace(String.format("Delivery map destinations -> %s", deliveryMapDestinations));
@@ -107,7 +111,7 @@ public class DeliveryMapPageCommand implements Command {
 
             LOG.trace(String.format("Cities names --> %s", cityNames));
             LOG.trace(String.format("Cities map --> %s", citiesMap));
-            LOG.trace("all cities has been downloaded to context");
+            LOG.trace("all cities has been downloaded");
         } catch (AppException e) {
             LOG.trace("city downloading is failed", e);
             throw new CommandException(e.getMessage(), e);
