@@ -1,58 +1,58 @@
-                              <div class='container'>
-                                  <div class='row'>
-                                     <div class='col col-3'>
-                                          <div class='row m-3'>
-                                            <h5>Name</h5>
-                                          </div>
-                                          <div class='row m-3'>
-                                            <h5>Surname</h5>
-                                          </div>
-                                          <div class='row m-3'>
-                                            <h5>Email</h5>
-                                          </div>
+<div class='container'>
+    <div class='row'>
+        <div class='col col-3'>
+            <div class='row m-3'>
+                <h5>Name</h5>
+            </div>
+            <div class='row m-3'>
+                <h5>Surname</h5>
+            </div>
+            <div class='row m-3'>
+                <h5>Email</h5>
+            </div>
 
-                                     </div>
-                                     <div class='col col-9' id = 'readprofile'>
-                                         <div class='row m-3'>
-                                            <h5>${user.name}</h5>
-                                          </div>
-                                          <div class='row m-3'>
-                                            <h5>${user.surname}</h5>
-                                          </div>
-                                          <div class='row m-3'>
-                                            <h5>${user.email}</h5>
-                                          </div>
+        </div>
+        <div class='col col-9' id='readprofile'>
+            <div class='row m-3'>
+                <h5>${user.name}</h5>
+            </div>
+            <div class='row m-3'>
+                <h5>${user.surname}</h5>
+            </div>
+            <div class='row m-3'>
+                <h5>${user.email}</h5>
+            </div>
 
-                                          <div class='row m-3'>
-                                            <button type="button" class='btn btn-outline-info w-25' id='editbutton'>
-                                                <h5>Edit</h5>
-                                            </button>
-                                          </div>
-                                     </div>
-                                      <div class='col col-9' id = 'editprofile' style='display:none;'>
-                                        <form action='${urlForPage}' method='POST'>
-                                          <input type="text" name='command' value='userProfileTab' style='display:none'/>
-                                          <div class='form-group row m-3'>
-                                             <h5><input type="text" class="form-control" id='username' name='username' value='${user.name}' placeholder='Enter name'
-                                                minlength='4'/></h5>
-                                           </div>
-                                          <div class='form-group row m-3'>
-                                             <h5><input type="text" class="form-control" id='usersurname' name='usersurname' value='${user.surname}' placeholder='Enter surname'
-                                                minlength='4'/></h5>
-                                           </div>
-                                          <div class='form-group row m-3'>
-                                             <h5><input type="email" class="form-control" id='useremail' name='useremail' value='${user.email}' placeholder='Enter email'
-                                                minlength='8' readonly/></h5>
-                                           </div>
-                                          <div class='form-group row m-3'>
-                                             <h5><input type="password" class="form-control" id='userpassword' value='' name='userpassword' placeholder='Enter password'
-                                                minlength='4'/></h5>
-                                           </div>
+            <div class='row m-3'>
+                <button type="button" class='btn btn-outline-info w-25' id='editbutton'>
+                    <h5>Edit</h5>
+                </button>
+            </div>
+        </div>
+        <div class='col col-9' id='editprofile' style='display:none;'>
+            <form action='${urlForPage}' method='POST'>
+                <input type="text" name='command' value='userProfileTab' style='display:none' />
+                <div class='form-group row m-3'>
+                    <h5><input type="text" class="form-control" id='username' name='username' value='${user.name}'
+                            placeholder='Enter name' minlength='4' /></h5>
+                </div>
+                <div class='form-group row m-3'>
+                    <h5><input type="text" class="form-control" id='usersurname' name='usersurname'
+                            value='${user.surname}' placeholder='Enter surname' minlength='4' /></h5>
+                </div>
+                <div class='form-group row m-3'>
+                    <h5><input type="email" class="form-control" id='useremail' name='useremail' value='${user.email}'
+                            placeholder='Enter email' minlength='8' readonly /></h5>
+                </div>
+                <div class='form-group row m-3'>
+                    <h5><input type="password" class="form-control" id='userpassword' value='' name='userpassword'
+                            placeholder='Enter password' minlength='4' /></h5>
+                </div>
 
-                                             <button type="submit" class='btn btn-outline-primary w-75 ml-3 mb-3'>Save</button>
-                                             <button type="button" class='btn btn-outline-secondary w-75 ml-3' id='cancelbutton'>Cancel</button>
+                <button type="submit" class='btn btn-outline-primary w-75 ml-3 mb-3'>Save</button>
+                <button type="button" class='btn btn-outline-secondary w-75 ml-3' id='cancelbutton'>Cancel</button>
 
-                                        </form>
-                                      </div>
-                                  </div>
-                              </div>
+            </form>
+        </div>
+    </div>
+</div>

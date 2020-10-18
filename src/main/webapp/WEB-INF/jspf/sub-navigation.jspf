@@ -1,9 +1,9 @@
 <div class="inner-banner text-center text-white">
     <ul class="w3_short">
-    	<li>
+        <li>
             <a href="/gtc">Home</a>
             <i>||</i>
-   		</li>
-   	    <li>${navmenu}</li>
+        </li>
+        <li>${navmenu}</li>
     </ul>
 </div>

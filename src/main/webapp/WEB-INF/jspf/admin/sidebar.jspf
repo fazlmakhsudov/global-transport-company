@@ -1,106 +1,107 @@
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+            <i class="fas fa-laugh-wink"></i>
         </div>
         <div class="sidebar-brand-text mx-3">${user.name} ${user.surname}</div>
-      </a>
+    </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
         <a class="nav-link" href="/gtc/controller?command=adminMainPage">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
+    <!-- Heading -->
+    <div class="sidebar-heading">
         Tables
-      </div>
+    </div>
 
-      <!-- Nav Item - Tables -->
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminCitiesPage">
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-              <span>Cities</span>
-           </a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminDeliveriesPage">
-              <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-              <span>Deliveries</span>
-           </a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminDistancesPage">
-              <i class="fa fa-globe" aria-hidden="true"></i>
-              <span>Distances</span>
-           </a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminInvoicesPage">
-              <i class="fa fa-list" aria-hidden="true"></i>
-              <span>Invoices</span>
-           </a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminRatesPage">
-              <i class="fa fa-list-alt" aria-hidden="true"></i>
-              <span>Rates</span>
-           </a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminRequestsPage">
-              <i class="fa fa-check" aria-hidden="true"></i>
-              <span>Requests</span>
-           </a>
-       </li>
-       <li class="nav-item">
-           <a class="nav-link collapsed" href="/gtc/controller?command=adminUsersPage">
-              <i class="fa fa-users" aria-hidden="true"></i>
-              <span>Users</span>
-           </a>
-       </li>
+    <!-- Nav Item - Tables -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminCitiesPage">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <span>Cities</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminDeliveriesPage">
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+            <span>Deliveries</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminDistancesPage">
+            <i class="fa fa-globe" aria-hidden="true"></i>
+            <span>Distances</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminInvoicesPage">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            <span>Invoices</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminRatesPage">
+            <i class="fa fa-list-alt" aria-hidden="true"></i>
+            <span>Rates</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminRequestsPage">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <span>Requests</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/gtc/controller?command=adminUsersPage">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            <span>Users</span>
+        </a>
+    </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
+    <!-- Heading -->
+    <div class="sidebar-heading">
         Addons
-      </div>
-       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fa fa-address-book" aria-hidden="true"></i>
-          <span>Pages</span>
+    </div>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
+            aria-controls="collapseTwo">
+            <i class="fa fa-address-book" aria-hidden="true"></i>
+            <span>Pages</span>
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-           <div class="bg-white py-2 collapse-inner rounded">
-             <h6 class="collapse-header">ALL PAGES</h6>
-             <a class="collapse-item" href="#">Home</a>
-             <a class="collapse-item" href="#">Rates</a>
-          </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">ALL PAGES</h6>
+                <a class="collapse-item" href="#">Home</a>
+                <a class="collapse-item" href="#">Rates</a>
+            </div>
         </div>
-      </li>
+    </li>
 
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+    </div>
 
-    </ul>
-    <!-- End of Sidebar -->
+</ul>
+<!-- End of Sidebar -->

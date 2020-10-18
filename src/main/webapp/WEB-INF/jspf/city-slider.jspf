@@ -1,21 +1,21 @@
 <div class="w3agile-spldishes py-sm-5 py-4">
-		<div class="container  py-xl-3">
-			<h3 class="title text-white text-center mb-lg-5 mb-sm-4 mb-3">
-				<span>W</span>e
-				<span>W</span>ork
-				<span>I</span>n
-			</h3>
-			<div class="spldishes-grids">
-				<div class="large-12 columns">
-					<!-- Owl-Carousel -->
-					<div id="owl-demo" class="owl-carousel owl-theme text-center agileinfo-gallery-row">
-                        <c:forEach var="city" items="${citiesNames}">
-                            <mytags:city name = "${city}" />
-                        </c:forEach>
-					</div>
-					<a class="button secondary btn py-2 px-4 play">Play</a>
-					<a class="button secondary btn py-2 px-4 stop">Stop</a>
-				</div>
-			</div>
-		</div>
+    <div class="container  py-xl-3">
+        <h3 class="title text-white text-center mb-lg-5 mb-sm-4 mb-3">
+            <span>W</span>e
+            <span>W</span>ork
+            <span>I</span>n
+        </h3>
+        <div class="spldishes-grids">
+            <div class="large-12 columns">
+                <!-- Owl-Carousel -->
+                <div id="owl-demo" class="owl-carousel owl-theme text-center agileinfo-gallery-row">
+                    <c:forEach var="city" items="${citiesNames}">
+                        <mytags:city name="${city}" />
+                    </c:forEach>
+                </div>
+                <a class="button secondary btn py-2 px-4 play">Play</a>
+                <a class="button secondary btn py-2 px-4 stop">Stop</a>
+            </div>
+        </div>
+    </div>
 </div>

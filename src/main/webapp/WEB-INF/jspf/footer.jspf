@@ -1,154 +1,158 @@
-		<!-- footer -->
-    	<footer class="py-md-5 py-4">
-    		<div class="container">
-    			<div class="row w3ls_footer_grid text-lg-left text-center pb-lg-5 pb-4 mt-xl-4 mt-1 mb-xl-5 mb-4">
-    				<div class="col-lg-5 footer-w3l">
-    			        <h5>World wide Transport with in 24 hours</h5>
-    				</div>
-    			</div>
-    			<div class="row">
-    				<div class="col-lg-3 col-6 w3ls_footer_grid_right">
-    					<h1>
-    						<a href="/gtc">
-    							<i class="fas fa-truck mr-2"></i>GTC<h6>The Transport Company</h6>
-    						</a>
-    					</h1>
-    				</div>
-    				<div class="col-lg-3 col-6 w3ls_footer_grid_left1_pos mt-2 text-lg-left text-sm-right text-center">
-    					<ul>
-    						<li class="mr-3">
-    							<a href="https://www.facebook.com" class="facebook">
-    								<i class="fab fa-facebook-f mr-2"></i>Facebook</a>
-    						</li>
-    						<li>
-    							<a href="https://twitter.com" class="twitter">
-    								<i class="fab fa-twitter mr-2"></i>Twitter
-    							</a>
-    						</li>
-    					</ul>
-    				</div>
-    				<div class="col-lg-6 w3ls_footer_grid1_left mt-lg-2 mt-4 text-lg-right text-center">
-    					<p>&copy; <span id="year"></span> GTC. All rights reserved</p>
-    				</div>
-    			</div>
-    		</div>
-    	</footer>
-    	<!-- //footer -->
-    	<!--Personal counter modal form-->
-                  <div id="myModalPersonalCounter" class="modal fade" tabindex="-1">
-                      <div class="modal-dialog">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <h5 class="modal-title">Personal counter</h5>
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-                              <form action='/gtc/controller'  method='POST'>
-                              <div class="modal-body">
-                                     <input type='text' name='command' value='userRequestsTab' style='display:none;'/>
-                                     <input type='text' name='page' value='${page}' style='display:none;'/>
-                                     <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;'/>
-                                     <input type='text' name='action' value='add' style='display:none;'/>
+<!-- footer -->
+<footer class="py-md-5 py-4">
+    <div class="container">
+        <div class="row w3ls_footer_grid text-lg-left text-center pb-lg-5 pb-4 mt-xl-4 mt-1 mb-xl-5 mb-4">
+            <div class="col-lg-5 footer-w3l">
+                <h5>World wide Transport with in 24 hours</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-6 w3ls_footer_grid_right">
+                <h1>
+                    <a href="/gtc">
+                        <i class="fas fa-truck mr-2"></i>GTC<h6>The Transport Company</h6>
+                    </a>
+                </h1>
+            </div>
+            <div class="col-lg-3 col-6 w3ls_footer_grid_left1_pos mt-2 text-lg-left text-sm-right text-center">
+                <ul>
+                    <li class="mr-3">
+                        <a href="https://www.facebook.com" class="facebook">
+                            <i class="fab fa-facebook-f mr-2"></i>Facebook</a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com" class="twitter">
+                            <i class="fab fa-twitter mr-2"></i>Twitter
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-6 w3ls_footer_grid1_left mt-lg-2 mt-4 text-lg-right text-center">
+                <p>&copy; <span id="year"></span> GTC. All rights reserved</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- //footer -->
+<!--Personal counter modal form-->
+<div id="myModalPersonalCounter" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Personal counter</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form action='/gtc/controller' method='POST'>
+                <div class="modal-body">
+                    <input type='text' name='command' value='userRequestsTab' style='display:none;' />
+                    <input type='text' name='page' value='${page}' style='display:none;' />
+                    <input type='text' name='itemsPerPage' value='${itemsPerPage}' style='display:none;' />
+                    <input type='text' name='action' value='add' style='display:none;' />
 
 
-                                   <div class='form-group'>
-                                        <label for='requestcityfromid'>City from</label>
-                                        <select class="form-control requestfield text-center" id='requestcityfromid' name='requestcityfromid'>
-                                           <option value=''>Choose...</option>
-                                           <c:forEach var="cityid" items="${citiesMap.keySet()}">
-                                                <option value='${cityid}'>${citiesMap.get(cityid)}</option>
-                                           </c:forEach>
-                                        </select>
-                                   </div>
-                                   <div class='form-group'>
-                                        <label for='requestcitytoid'>City to</label>
-                                        <select class="form-control requestfield text-center" id='requestcitytoid' name='requestcitytoid'>
-                                           <option value=''>Choose...</option>
-                                           <c:forEach var="cityid" items="${citiesMap.keySet()}">
-                                                <option value='${cityid}'>${citiesMap.get(cityid)}</option>
-                                           </c:forEach>
-                                        </select>
-                                   </div>
-        
-                                 <div class="form-group">
-                                   <label for="requestweight">Weight</label>
-                                   <input type="number" class="form-control requestfield  text-center" id='requestweight' name='requestweight'
-                                     placeholder="Enter value" min='1' />
-                                 </div>
-                                 <div class="form-group">
-                                   <label for="requestlength">Length</label>
-                                   <input type="number" class="form-control requestfield  text-center" id='requestlength' name='requestlength'
-                                     placeholder="Enter value" min='1' />
-                                 </div>
-                                 <div class="form-group">
-                                   <label for="requestwidth">Width</label>
-                                   <input type="number" class="form-control requestfield  text-center" id='requestwidth' name='requestwidth'
-                                     placeholder="Enter value" min='1' />
-                                 </div>
-                                 <div class="form-group">
-                                   <label for="requestheight">Height</label>
-                                   <input type="number" class="form-control requestfield  text-center" id='requestheight' name='requestheight'
-                                     placeholder="Enter value" min='1' />
-                                 </div>
-        
-                                 <div class="form-group">
-                                   <label for="requestdeliverydate">Delivery date</label>
-                                   <input type="datetime-local" class="form-control requestfield" id='requestdeliverydate' name='requestdeliverydate'
-                                     placeholder="Enter date" />
-                                 </div>
-        
-                                    <div class='form-group'>
-                                        <label for='requestcontenttypename'>Content type</label>
-                                        <select class="form-control requestfield  text-center" id='requestcontenttypename' name='requestcontenttypename'>
-                                                <option value='cargo'>cargo</option>
-                                                <option value='parcel_post'>parcel_post</option>
-                                                <option value='document' >document</option>
-                                                <option value='jewelery'>jewelery</option>
-                                        </select>
-                                   </div>
-                                   <div class='form-group pl-3 pr-3 pb-1' id='showrequestcost' style='border: 2px teal solid;display:none;'>
-                                        <label class='ml-2' for='requestcost'>Cost</label>
-                                       <p class="form-control text-center" id='requestcost' name='requestcost'
-                                          value='${requestcost}'/>
-                                   </div>
-        
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                  <c:if test = "${user != null}">
-                                    <button type="submit" class="btn btn-primary">Add</button>
-                                  </c:if>
-                              </div>
-                              </form>
-                          </div>
-                      </div>
-                  </div>
+                    <div class='form-group'>
+                        <label for='requestcityfromid'>City from</label>
+                        <select class="form-control requestfield text-center" id='requestcityfromid'
+                            name='requestcityfromid'>
+                            <option value=''>Choose...</option>
+                            <c:forEach var="cityid" items="${citiesMap.keySet()}">
+                                <option value='${cityid}'>${citiesMap.get(cityid)}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label for='requestcitytoid'>City to</label>
+                        <select class="form-control requestfield text-center" id='requestcitytoid'
+                            name='requestcitytoid'>
+                            <option value=''>Choose...</option>
+                            <c:forEach var="cityid" items="${citiesMap.keySet()}">
+                                <option value='${cityid}'>${citiesMap.get(cityid)}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
 
-    	<!-- Js files -->
-        	<!-- JavaScript -->
-        	<script src="js/jquery-3.3.1.min.js"></script>
-        	<!-- Default-JavaScript-File -->
+                    <div class="form-group">
+                        <label for="requestweight">Weight</label>
+                        <input type="number" class="form-control requestfield  text-center" id='requestweight'
+                            name='requestweight' placeholder="Enter value" min='1' />
+                    </div>
+                    <div class="form-group">
+                        <label for="requestlength">Length</label>
+                        <input type="number" class="form-control requestfield  text-center" id='requestlength'
+                            name='requestlength' placeholder="Enter value" min='1' />
+                    </div>
+                    <div class="form-group">
+                        <label for="requestwidth">Width</label>
+                        <input type="number" class="form-control requestfield  text-center" id='requestwidth'
+                            name='requestwidth' placeholder="Enter value" min='1' />
+                    </div>
+                    <div class="form-group">
+                        <label for="requestheight">Height</label>
+                        <input type="number" class="form-control requestfield  text-center" id='requestheight'
+                            name='requestheight' placeholder="Enter value" min='1' />
+                    </div>
 
-        	<script src="js/bootstrap.js"></script>
-        	<!-- Necessary-JavaScript-File-For-Bootstrap -->
+                    <div class="form-group">
+                        <label for="requestdeliverydate">Delivery date</label>
+                        <input type="datetime-local" class="form-control requestfield" id='requestdeliverydate'
+                            name='requestdeliverydate' placeholder="Enter date" />
+                    </div>
 
-        	<!-- search -->
-        	<script src="js/search.js"></script>
+                    <div class='form-group'>
+                        <label for='requestcontenttypename'>Content type</label>
+                        <select class="form-control requestfield  text-center" id='requestcontenttypename'
+                            name='requestcontenttypename'>
+                            <option value='cargo'>cargo</option>
+                            <option value='parcel_post'>parcel_post</option>
+                            <option value='document'>document</option>
+                            <option value='jewelery'>jewelery</option>
+                        </select>
+                    </div>
+                    <div class='form-group pl-3 pr-3 pb-1' id='showrequestcost'
+                        style='border: 2px teal solid;display:none;'>
+                        <label class='ml-2' for='requestcost'>Cost</label>
+                        <p class="form-control text-center" id='requestcost' name='requestcost'
+                            value='${requestcost}' />
+                    </div>
 
-        	<!-- Owl-Carousel-JavaScript -->
-        	<script src="js/owl.carousel.js"></script>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <c:if test="${user != null}">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </c:if>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-        	<!-- //Owl-Carousel-JavaScript -->
+<!-- Js files -->
+<!-- JavaScript -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Default-JavaScript-File -->
 
-        	<!-- smooth scrolling -->
-        	<script src="js/SmoothScroll.min.js"></script>
-        	<!-- //smooth scrolling -->
+<script src="js/bootstrap.js"></script>
+<!-- Necessary-JavaScript-File-For-Bootstrap -->
 
-        	<!-- start-smoth-scrolling -->
-        	<script src="js/move-top.js"></script>
-        	<script src="js/easing.js"></script>
+<!-- search -->
+<script src="js/search.js"></script>
 
-        	<a href="#" id="toTop" style="display: block;">
-        		<span id="toTopHover" style="opacity: 1;"> </span>
-        	</a>
+<!-- Owl-Carousel-JavaScript -->
+<script src="js/owl.carousel.js"></script>
 
-	        <script src="js/main.js"></script>
+<!-- //Owl-Carousel-JavaScript -->
+
+<!-- smooth scrolling -->
+<script src="js/SmoothScroll.min.js"></script>
+<!-- //smooth scrolling -->
+
+<!-- start-smoth-scrolling -->
+<script src="js/move-top.js"></script>
+<script src="js/easing.js"></script>
+
+<a href="#" id="toTop" style="display: block;">
+    <span id="toTopHover" style="opacity: 1;"> </span>
+</a>
+
+<script src="js/main.js"></script>
