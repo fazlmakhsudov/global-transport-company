@@ -82,7 +82,7 @@ public class AdminDeliveriesPageCommand implements Command {
             case "add":
                 String requestIdString = request.getParameter(FormRequestParametersNames.DELIVERY_REQUEST_ID);
                 LOG.trace("Delivery request id --> " + requestIdString);
-                if (Validator.isValidNumber(requestIdString) && Validator.isValidString(deliveryStatusName) ||
+                if (Validator.isValidNumber(requestIdString) &&
                     deliveryService.countDeliveriesOfRequest(Integer.parseInt(requestIdString)) == 0) {
                     DeliveryDomain newDeliveryDomain = new DeliveryDomain();
                     newDeliveryDomain.setDeliveryStatus(DeliveryStatus.getEnumFromName(deliveryStatusName));
@@ -91,7 +91,7 @@ public class AdminDeliveriesPageCommand implements Command {
                     LOG.trace("Added status(new id) --> " + newId);
                 } else  {
                     LOG.error("Invalid delivery status/request, or request has delivey already");
-                    request.getSession().setAttribute("errorDelivery", "Invalid delivery status/request, or request has delivey already");
+                    request.getSession().setAttribute("errorDelivery", "Invalid request id, or request has delivery already");
                 }
                 break;
             case "save":

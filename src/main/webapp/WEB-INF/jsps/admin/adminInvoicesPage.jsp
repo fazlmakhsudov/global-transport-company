@@ -25,7 +25,8 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">${lang.Tables}</h1>
                     <p class="mb-4">${lang.admin_tables_info}</p>
-
+                    <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorInvoices} </p>
+                    <c:remove var="errorInvoices" />
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 row">

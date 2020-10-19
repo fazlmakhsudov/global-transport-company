@@ -64,4 +64,13 @@ public interface InvoiceDAO extends BaseDAO<InvoiceEntity> {
      */
 
     List<InvoiceEntity> readInvoices(int offset, int limit, int userId) throws DAOException;
+
+    /**
+     * Counts invoice entities with certain request identifier
+     * @param requestId request identifier
+     * @return number of invoice entities
+     * @throws DAOException exception
+     */
+    int countInvoicesOfRequest(int requestId) throws DAOException;
+
 }

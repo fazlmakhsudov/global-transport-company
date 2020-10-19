@@ -167,4 +167,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
     }
 
+    @Override
+    public int countDeliveriesOfRequest(int requestId) throws ServiceException {
+        try {
+            return invoiceDAO.countInvoicesOfRequest(requestId);
+        } catch (DAOException e) {
+            LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, e);
+            throw new ServiceException(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, e);
+        }
+    }
+
 }

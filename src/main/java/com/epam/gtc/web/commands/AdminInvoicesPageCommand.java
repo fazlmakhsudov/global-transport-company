@@ -70,6 +70,7 @@ public class AdminInvoicesPageCommand implements Command {
     private String doPost(HttpServletRequest request, InvoiceService invoiceService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
         LOG.trace("Method is Post");
+        request.getSession().removeAttribute("errorInvoices");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
 
@@ -83,19 +84,27 @@ public class AdminInvoicesPageCommand implements Command {
 
         switch (action) {
             case "add":
-                InvoiceDomain newInvoiceDomain = new InvoiceDomain();
-                String costString = request.getParameter(FormRequestParametersNames.INVOICE_COST);
-                LOG.trace("invoice cost --> " + costString);
-                int requestId = Integer.parseInt(request.getParameter(FormRequestParametersNames.INVOICE_REQUEST_ID));
-                LOG.trace("Request id --> " + requestId);
-                boolean costFlag = Objects.isNull(costString) || costString.isEmpty()
-                        || Double.parseDouble(costString) <= 1d;
-                newInvoiceDomain.setCost(costFlag ? CostCounter.countCost(requestId) : Double.parseDouble(costString));
-                newInvoiceDomain.setInvoiceStatus(InvoiceStatus.getEnumFromName(invoiceStatusName));
-                newInvoiceDomain.setRequestId(requestId);
+                String requestIdString = request.getParameter(FormRequestParametersNames.INVOICE_REQUEST_ID);
+                LOG.trace("Request id --> " + requestIdString);
+                if (Validator.isValidNumber(requestIdString) &&
+                    invoiceService.countDeliveriesOfRequest(Integer.parseInt(requestIdString))== 0) {
+                    InvoiceDomain newInvoiceDomain = new InvoiceDomain();
+                    String costString = request.getParameter(FormRequestParametersNames.INVOICE_COST);
+                    LOG.trace("invoice cost --> " + costString);
+                    int requestId = Integer.parseInt(requestIdString);
 
-                int newId = invoiceService.add(newInvoiceDomain);
-                LOG.trace("Added status(new id) --> " + newId);
+                    boolean costFlag = Objects.isNull(costString) || costString.isEmpty()
+                            || Double.parseDouble(costString) <= 1d;
+                    newInvoiceDomain.setCost(costFlag ? CostCounter.countCost(requestId) : Double.parseDouble(costString));
+                    newInvoiceDomain.setInvoiceStatus(InvoiceStatus.getEnumFromName(invoiceStatusName));
+                    newInvoiceDomain.setRequestId(requestId);
+
+                    int newId = invoiceService.add(newInvoiceDomain);
+                    LOG.trace("Added status(new id) --> " + newId);
+                } else {
+                    LOG.error("Invalid request id, or request has invoice already");
+                    request.getSession().setAttribute("errorInvoices", "Invalid request id, or request has invoice already");
+                }
                 break;
             case "save":
                 InvoiceDomain invoiceDomain = invoiceService.find(invoiceId);

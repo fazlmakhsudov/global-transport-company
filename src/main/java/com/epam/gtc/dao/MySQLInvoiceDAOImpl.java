@@ -276,7 +276,7 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
         Connection con = null;
         PreparedStatement psmt = null;
         ResultSet rs = null;
-        int invoicesnumber = 0;
+        int invoicesnumber;
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -371,6 +371,39 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
             DBManager.close(con, psmt, rs);
         }
         return invoiceList;
+    }
+
+    /**
+     * Counts invoices of certain request
+     * @param requestId request identifier
+     * @return number of invoices
+     * @throws DAOException exception
+     */
+    @Override
+    public int countInvoicesOfRequest(int requestId) throws DAOException {
+        final String query = "select count(*) from invoices where request_id = ?;";
+        DBManager dbm;
+        Connection con = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        int invoicesnumber = 0;
+        try {
+            dbm = DBManager.getInstance();
+            con = dbm.getConnection();
+            psmt = con.prepareStatement(query);
+            psmt.setInt(1, requestId);
+            rs = psmt.executeQuery();
+            rs.next();
+            invoicesnumber = rs.getInt(1);
+            con.commit();
+        } catch (SQLException ex) {
+            DBManager.rollback(con);
+            LOG.error(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION);
+            throw new DAOException(Messages.ERR_CANNOT_COUNT_INVOICES_WITH_CONDITION, ex);
+        } finally {
+            DBManager.close(con, psmt, rs);
+        }
+        return invoicesnumber;
     }
 
     /**
