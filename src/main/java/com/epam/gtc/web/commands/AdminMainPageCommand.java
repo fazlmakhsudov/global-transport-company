@@ -68,7 +68,7 @@ public class AdminMainPageCommand implements Command {
         LOG.trace("invoices --> " + dashboard.get("Invoices"));
         LOG.trace("deliveries --> " + dashboard.get("Deliveries"));
         LOG.trace("alerts --> " + alerts);
-        request.setAttribute("alerts", alerts);
+        request.getSession().setAttribute("alerts", alerts);
         request.setAttribute("dashboard", dashboard);
     }
 

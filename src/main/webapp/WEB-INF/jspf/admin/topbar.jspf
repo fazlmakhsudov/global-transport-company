@@ -46,6 +46,13 @@
         </li>
 
         <!-- Nav Item - Alerts -->
+        <li class="nav-item">
+            <p class="nav-link">
+                <a href='/gtc/changeLocale' class='langstyle'>${lang.EN}</a>
+                <strong class='ml-1 mr-3' style='width:2px'>|</strong>
+                <a href='/gtc/changeLocale?locale=ru' class='langstyle'>${lang.RU}</a>
+            </p>
+        </li>
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">

@@ -39,7 +39,7 @@
                                         style='display:none;' />
                                     <input type='text' name='page' value='${page}' style='display:none;' />
                                     <div class="form-group">
-                                        <label class='mr-3' for="itemsperpage">Items per page</label>
+                                        <label class='mr-3' for="itemsperpage">${lang.Items_per_page}</label>
                                         <input type="number" class="form-control text-center" id="itemsperpage"
                                             value='${itemsPerPage}' name='itemsPerPage' min='2' max='20'
                                             data-previous='${itemsPerPage}' />
@@ -57,22 +57,22 @@
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Delivery status</th>
-                                            <th>Request id</th>
-                                            <th>Created date</th>
-                                            <th>Updated date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Delivery_status}</th>
+                                            <th>${lang.Request_id}</th>
+                                            <th>${lang.Created_date}</th>
+                                            <th>${lang.Updated_date}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Delivery status</th>
-                                            <th>Request id</th>
-                                            <th>Created date</th>
-                                            <th>Updated date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Delivery_status}</th>
+                                            <th>${lang.Request_id}</th>
+                                            <th>${lang.Created_date}</th>
+                                            <th>${lang.Updated_date}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </tfoot>
 
@@ -113,9 +113,9 @@
                                                             <select class="custom-select form-control" name='action'
                                                                 data-deliveryid='${delivery.id}'
                                                                 data-deliverystatusname='${delivery.deliveryStatusName}'>
-                                                                <option selected>Choose...</option>
-                                                                <option value="save">${lang.Save}</option>
-                                                                <option value="remove">${lang.Remove}</option>
+                                                                <option selected>${lang.Choose}</option>
+                                                                <option value="save">${lang.Update}</option>
+
                                                             </select>
                                                         </div>
                                                     </form>
@@ -177,7 +177,7 @@
                         <div class="form-group">
                             <label for="deliverystatusname">Delivery status</label>
                             <select class="form-control" id='deliverystatusname' name='deliverystatusname'>
-                                <option value='waiting_for_packaging'>waiting_for_packaging</option>
+                                <option value='waiting_for_packaging' style='display:none;'>waiting_for_packaging</option>
                                 <option value='under_transportation'>under_transportation</option>
                                 <option value='delivered'>delivered</option>
                             </select>

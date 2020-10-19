@@ -34,11 +34,11 @@
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                     <button type="button" class="btn btn-outline-primary mr-5"
-                                        id="addnewbutton">Add</button>
+                                        id="addnewbutton">${lang.Add}</button>
                                     <input type='text' name='command' value='adminCitiesPage' style='display:none;' />
                                     <input type='text' name='page' value='${page}' style='display:none;' />
                                     <div class="form-group">
-                                        <label class='mr-3' for="itemsperpage">Items per page</label>
+                                        <label class='mr-3' for="itemsperpage">${lang.Items_per_page}</label>
                                         <input type="number" class="form-control text-center" id="itemsperpage"
                                             value='${itemsPerPage}' name='itemsPerPage' min='2' max='20'
                                             data-previous='${itemsPerPage}' />
@@ -99,7 +99,7 @@
                                                                 data-cityid='${city.id}' data-cityname='${city.name}'>
                                                                 <option selected>${lang.Choose}</option>
                                                                 <option value="save"><i class="fa fa-pencil-square-o"
-                                                                        aria-hidden="true"></i>${lang.Save}</option>
+                                                                        aria-hidden="true"></i>${lang.Update}</option>
                                                                 <option value="remove"><i class="fa fa-trash-o"
                                                                         aria-hidden="true"></i> ${lang.Remove}</option>
                                                             </select>

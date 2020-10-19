@@ -41,7 +41,7 @@
                                             data-previous='${itemsPerPage}' />
                                     </div>
                                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                                        <button type="submit" class="btn btn-outline-primary ml-3">Update</button>
+                                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                                     </div>
                                 </form>
                             </div>
@@ -53,24 +53,24 @@
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Surname</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
+                                            <th>${lang.Name}</th>
+                                            <th>${lang.Surname}</th>
+                                            <th>${lang.Email}</th>
+                                            <th>${lang.Role}</th>
                                             <th>Created date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Surname</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
+                                            <th>${lang.Name}</th>
+                                            <th>${lang.Surname}</th>
+                                            <th>${lang.Email}</th>
+                                            <th>${lang.Role}</th>
                                             <th>Created date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </tfoot>
 
@@ -110,9 +110,9 @@
                                                                 data-userid='${user.id}' data-username='${user.name}'
                                                                 data-usersurname='${user.surname}'
                                                                 data-userrolename='${user.roleName}' }>
-                                                                <option selected>Choose...</option>
-                                                                <option value="update">Update</option>
-                                                                <option value="delete">Delete</option>
+                                                                <option selected>${lang.Choose}</option>
+                                                                <option value="update">${lang.Update}</option>
+
                                                             </select>
                                                         </div>
                                                     </form>

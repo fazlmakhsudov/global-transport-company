@@ -33,7 +33,7 @@
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                     <button type="button" class="btn btn-outline-primary mr-5"
-                                        id="addnewbutton">Add</button>
+                                        id="addnewbutton">${lang.Add}</button>
                                     <input type='text' name='command' value='adminInvoicesPage' style='display:none;' />
                                     <input type='text' name='page' value='${page}' style='display:none;' />
                                     <div class="form-group">
@@ -43,7 +43,7 @@
                                             data-previous='${itemsPerPage}' />
                                     </div>
                                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                                        <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                                     </div>
                                 </form>
                             </div>
@@ -55,24 +55,24 @@
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Cost</th>
+                                            <th>${lang.Cost}</th>
                                             <th>Invoice status</th>
-                                            <th>Request id</th>
-                                            <th>Created date</th>
-                                            <th>Updated date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Request_id}</th>
+                                            <th>${lang.Created_date}</th>
+                                            <th>${lang.Updated_date}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>Cost</th>
+                                            <th>${lang.Cost}</th>
                                             <th>Invoice status</th>
-                                            <th>Request id</th>
-                                            <th>Created date</th>
-                                            <th>Updated date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Request_id}</th>
+                                            <th>${lang.Created_date}</th>
+                                            <th>${lang.Updated_date}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </tfoot>
 
@@ -118,13 +118,13 @@
                                                                 data-invoicecost='${invoice.cost}'
                                                                 data-invoicestatusname='${invoice.invoiceStatusName}'
                                                                 data-requestid='${invoice.requestId}'>
-                                                                <option selected>Choose...</option>
+                                                                <option selected>${lang.Choose}</option>
 
                                                                 <option value="createdelivery"><i
                                                                         class="fa fa-pencil-square-o"
                                                                         aria-hidden="true"></i>Create delivery</option>
                                                                 <option value="remove"><i class="fa fa-trash-o"
-                                                                        aria-hidden="true"></i> Remove</option>
+                                                                        aria-hidden="true"></i>${lang.Remove}</option>
                                                             </select>
                                                         </div>
                                                     </form>
@@ -258,8 +258,6 @@
                             <label for="deliverystatusname">Delivery status</label>
                             <select class="form-control" id='deliverystatusname' name='deliverystatusname'>
                                 <option value='waiting_for_packaging'>waiting_for_packaging</option>
-                                <option value='under_transportation'>under_transportation</option>
-                                <option value='delivered'>delivered</option>
                             </select>
                         </div>
                         <div class="form-group">

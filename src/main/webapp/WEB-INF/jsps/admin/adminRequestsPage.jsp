@@ -37,7 +37,7 @@
                                     <div class='form-group ml-5 mr-2'>
                                         <select class="form-control" id='sortparameter' name='sortparameter'
                                             value='${sortparameter}'>
-                                            <option value=''>Choose..</option>
+                                            <option value=''>${lang.Choose}</option>
                                             <option value='requestid'>Id</option>
                                             <option value='requestcityfromid'>City from</option>
                                             <option value='requestcitytoid'>City to</option>
@@ -57,7 +57,7 @@
                                             data-previous='${itemsPerPage}' />
                                     </div>
                                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                                        <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                                     </div>
                                 </form>
                             </div>
@@ -69,38 +69,38 @@
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>City From</th>
-                                            <th>City To</th>
-                                            <th>Weight</th>
-                                            <th>Length</th>
-                                            <th>Width</th>
-                                            <th>Height</th>
-                                            <th>Delivery date</th>
+                                            <th>${lang.City_from}</th>
+                                            <th>${lang.City_to}</th>
+                                            <th>${lang.Weight}</th>
+                                            <th>${lang.Length}</th>
+                                            <th>${lang.Width}</th>
+                                            <th>${lang.Height}</th>
+                                            <th>${lang.Delivery_date}</th>
                                             <th>User id</th>
-                                            <th>Content type</th>
-                                            <th>Request status</th>
-                                            <th>Created date</th>
-                                            <th>Updated date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Content_type}</th>
+                                            <th>${lang.Request_status}</th>
+                                            <th>${lang.Created_date}</th>
+                                            <th>${lang.Updated_date}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>City From</th>
-                                            <th>City To</th>
-                                            <th>Weight</th>
-                                            <th>Length</th>
-                                            <th>Width</th>
-                                            <th>Height</th>
-                                            <th>Delivery date</th>
+                                            <th>${lang.City_from}</th>
+                                            <th>${lang.City_to}</th>
+                                            <th>${lang.Weight}</th>
+                                            <th>${lang.Length}</th>
+                                            <th>${lang.Width}</th>
+                                            <th>${lang.Height}</th>
+                                            <th>${lang.Delivery_date}</th>
                                             <th>User id</th>
-                                            <th>Content type</th>
-                                            <th>Request status</th>
-                                            <th>Created date</th>
-                                            <th>Updated date</th>
-                                            <th>Actions</th>
+                                            <th>${lang.Content_type}</th>
+                                            <th>${lang.Request_status}</th>
+                                            <th>${lang.Created_date}</th>
+                                            <th>${lang.Updated_date}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </tfoot>
 
@@ -159,14 +159,13 @@
                                                                 data-requestid='${request.id}'
                                                                 data-requestdeliverydate='${request.deliveryDate}'
                                                                 data-requestStatusName='${request.requestStatusName}'>
-                                                                <option selected>Choose...</option>
+                                                                <option selected>${lang.Choose}</option>
                                                                 <option value="save"><i class="fa fa-pencil-square-o"
-                                                                        aria-hidden="true"></i>Save</option>
+                                                                        aria-hidden="true"></i>${lang.Update}</option>
                                                                 <option value="createinvoice"><i
                                                                         class="fa fa-pencil-square-o"
                                                                         aria-hidden="true"></i>Create invoice</option>
-                                                                <option value="remove"><i class="fa fa-trash-o"
-                                                                        aria-hidden="true"></i> Remove</option>
+
                                                             </select>
                                                         </div>
                                                     </form>

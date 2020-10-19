@@ -34,18 +34,18 @@
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
                                     <button type="button" class="btn btn-outline-primary mr-5"
-                                        id="addnewbutton">Add</button>
+                                        id="addnewbutton">${lang.Add}</button>
                                     <input type='text' name='command' value='adminDistancesPage'
                                         style='display:none;' />
                                     <input type='text' name='page' value='${page}' style='display:none;' />
                                     <div class="form-group">
-                                        <label class='mr-3' for="itemsperpage">Items per page</label>
+                                        <label class='mr-3' for="itemsperpage">${lang.Items_per_page}</label>
                                         <input type="number" class="form-control text-center" id="itemsperpage"
                                             value='${itemsPerPage}' name='itemsPerPage' min='2' max='20'
                                             data-previous='${itemsPerPage}' />
                                     </div>
                                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                                        <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                                     </div>
                                 </form>
                             </div>
@@ -57,20 +57,20 @@
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>From city</th>
-                                            <th>To city</th>
-                                            <th>Distance</th>
-                                            <th>Actions</th>
+                                            <th>${lang.City_from}</th>
+                                            <th>${lang.City_to}</th>
+                                            <th>${lang.Distance}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr class='text-center align-middle'>
                                             <th>#</th>
                                             <th>ID</th>
-                                            <th>From city</th>
-                                            <th>To city</th>
-                                            <th>Distance</th>
-                                            <th>Actions</th>
+                                            <th>${lang.City_from}</th>
+                                            <th>${lang.City_to}</th>
+                                            <th>${lang.Distance}</th>
+                                            <th>${lang.Actions}</th>
                                         </tr>
                                     </tfoot>
 
@@ -111,11 +111,11 @@
                                                                 data-distancefromcityid='${distance.fromCityId}'
                                                                 data-distancetocityid='${distance.toCityId}'
                                                                 data-distancedistance='${distance.distance}'>
-                                                                <option selected>Choose...</option>
+                                                                <option selected>${lang.Choose}</option>
                                                                 <option value="save"><i class="fa fa-pencil-square-o"
-                                                                        aria-hidden="true"></i>Save</option>
+                                                                        aria-hidden="true"></i>${lang.Update}</option>
                                                                 <option value="remove"><i class="fa fa-trash-o"
-                                                                        aria-hidden="true"></i> Remove</option>
+                                                                        aria-hidden="true"></i>${lang.Remove}</option>
                                                             </select>
                                                         </div>
                                                     </form>
