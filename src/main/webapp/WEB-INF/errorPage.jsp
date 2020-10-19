@@ -12,14 +12,14 @@
     <!-- header -->
     <header>
         <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-        <c:set var="navmenu" value="Error" />
+        <c:set var="navmenu" value="${lang.Error}" />
         <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
     </header>
     <!-- header -->
 
     <div class="container">
         <div class="col-6 justify-content-center h-50">
-            <div class="bg-info h3 font-weight-bold text-center mt-5">The following error occurred</div>
+            <div class="bg-info h3 font-weight-bold text-center mt-5">${lang.The_following_error_occurred}</div>
             <c:set var="code" value="${requestScope['javax.servlet.error.status_code']}" />
             <c:set var="message" value="${requestScope['javax.servlet.error.message']}" />
             <c:set var="exception" value="${requestScope['javax.servlet.error.exception']}" />

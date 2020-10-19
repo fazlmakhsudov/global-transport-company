@@ -119,8 +119,7 @@
                                                                 data-invoicestatusname='${invoice.invoiceStatusName}'
                                                                 data-requestid='${invoice.requestId}'>
                                                                 <option selected>Choose...</option>
-                                                                <option value="save"><i class="fa fa-pencil-square-o"
-                                                                        aria-hidden="true"></i>Save</option>
+
                                                                 <option value="createdelivery"><i
                                                                         class="fa fa-pencil-square-o"
                                                                         aria-hidden="true"></i>Create delivery</option>
@@ -168,7 +167,7 @@
 
     <%@ include file="/WEB-INF/jspf/admin/logoutmodal.jspf"%>
 
-    <!-- Modal HTML -->
+    <!-- Modal HTML
     <div id="myModalUpdate" class="modal fade" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -188,8 +187,6 @@
                         <div class="form-group">
                             <label for="invoicestatusname">Invoice status</label>
                             <select class="form-control" id='invoicestatusname' name='invoicestatusname'>
-                                <option value='paid'>Paid</option>
-                                <option value='rejected'>Rejected</option>
                                 <option value='unpaid'>Unpaid</option>
                             </select>
                         </div>
@@ -201,7 +198,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Modal HTML -->
     <div id="myModalAdd" class="modal fade" tabindex="-1">
@@ -225,8 +222,6 @@
                         <div class="form-group">
                             <label for="invoicestatusname">Invoice status</label>
                             <select class="form-control" id='invoicestatusname' name='invoicestatusname'>
-                                <option value='paid'>Paid</option>
-                                <option value='rejected'>Rejected</option>
                                 <option value='unpaid'>Unpaid</option>
                             </select>
                         </div>

@@ -2,14 +2,14 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 
 <html lang="en">
-<c:set var="title" value="Gallery page" />
+<c:set var="title" value="${lang.Gallery}" />
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
     <!-- header -->
     <header>
         <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-        <c:set var="navmenu" value="Gallery" />
+        <c:set var="navmenu" value="${lang.Gallery}" />
         <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
     </header>
     <!-- header -->
@@ -17,8 +17,9 @@
     <div class="gallery py-sm-5 py-4">
         <div class="container py-xl-5 py-lg-3">
             <h3 class="title mb-sm-4 mb-3">
-                <span>O</span>ur
-                <span>G</span>allery</h3>
+                ${lang.Our}
+                ${lang.GGallery}
+            </h3>
             <div class="row gallery-grids">
                 <div class="col-sm-4 gallery-grid wow fadeInUp animated" data-wow-delay=".5s">
                     <div class="grid">

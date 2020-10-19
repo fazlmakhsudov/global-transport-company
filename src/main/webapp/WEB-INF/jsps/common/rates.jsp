@@ -1,14 +1,14 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf"%>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 <html lang="en">
-<c:set var="title" value="Rates" />
+<c:set var="title" value="${lang.Rates}" />
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
     <!-- header -->
     <header>
         <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-        <c:set var="navmenu" value="Rates" />
+        <c:set var="navmenu" value="${lang.Rates}" />
         <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
     </header>
     <!-- header -->
@@ -19,8 +19,10 @@
     <c:if test="${myRate != null}">
         <div class="container">
             <h3 class="title mb-sm-4 text-center">
-                <span>R</span>ate
-                <span>C</span>ounter</h3>
+                ${lang.Rate}
+                ${lang.Counter}
+
+            </h3>
         </div>
         <div class='container col col-sm-5 col-md-3 col-lg-3 justify-content-center'>
             <form action='/gtc/controller'>
@@ -83,8 +85,9 @@
     <div class="py-sm-5 py-4" style="position:relative;">
         <div class="container py-xl-5 py-lg-3">
             <h3 class="title mb-sm-4 mb-3 text-center">
-                <span>A</span>ll
-                <span>R</span>ates</h3>
+                ${lang.All}
+                ${lang.RRates}
+            </h3>
             <div class="row">
                 ${ctg:showrates(ratesList, ratesList.size())}
             </div>

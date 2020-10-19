@@ -1,14 +1,14 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf"%>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 <html lang="en">
-<c:set var="title" value="About Us" />
+<c:set var="title" value="${lang.About_Us}" />
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
     <!-- header -->
     <header>
         <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-        <c:set var="navmenu" value="About Us" />
+        <c:set var="navmenu" value="${lang.About_Us}" />
         <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
     </header>
     <!-- header -->
@@ -17,14 +17,15 @@
     <div class="about-w3l py-sm-5 py-4">
         <div class="container py-xl-5 py-lg-3">
             <h3 class="title mb-lg-5 mb-sm-4 mb-3">
-                <span>A</span>bout
-                <span>U</span>s</h3>
+                ${lang.About}
+                ${lang.Us}
+            </h3>
             <div class="row">
                 <div class="col-xl-7 ab-left">
                     <img src="images/ab.jpg" alt=" " class="img-fluid" />
                 </div>
                 <div class="col-xl-5 ab-right">
-                    <h3 class="mb-4 pb-4">Welcome to Our Transports</h3>
+                    <h3 class="mb-4 pb-4">${lang.Welcome_to_Our_Transports}</h3>
                     <p>Thank you for taking the time to visit our site! sed do eiusmod tempor incididunt ut labore et
                         dolore magna aliqua.
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo

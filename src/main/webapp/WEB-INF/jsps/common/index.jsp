@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 
 <html lang="en">
-<c:set var="title" value="Main page" />
+<c:set var="title" value="${lang.Main_Page}" />
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
@@ -14,9 +14,10 @@
     <!-- header -->
     <div class="container mt-5">
         <h3 class="title text-center mb-lg-5 mb-sm-4 mb-3">
-            <span>W</span>e
-            <span>S</span>uggest
-            <span>R</span>ates</h3>
+            ${lang.We}
+            ${lang.Suggest}
+            ${lang.RRates}
+         </h3>
         <div class="card-deck mb-3 text-center">
 
             ${ctg:showrates(ratesList, 4)}

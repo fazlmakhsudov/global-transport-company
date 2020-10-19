@@ -33,8 +33,7 @@
                             <div class='col'>
                                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
 
-                                    <button type="button" class="btn btn-outline-primary mr-5"
-                                        id="addnewbutton">Add</button>
+
                                     <div class='form-group ml-5 mr-2'>
                                         <select class="form-control" id='sortparameter' name='sortparameter'
                                             value='${sortparameter}'>
@@ -226,18 +225,14 @@
                         <input type='text' id="requestid" name='requestid' value="${request.id}"
                             style='display:none;' />
                         <input type='text' name='action' value='save' style='display:none;' />
-                        <div class="form-group">
-                            <label for="requestdeliverydate">Delivery date</label>
-                            <input type="datetime-local" class="form-control" id="requestdeliverydate"
-                                name='requestdeliverydate' placeholder="Enter date" />
-                        </div>
+
                         <div class='form-group'>
                             <label for='requeststatusname'>Request status</label>
                             <select class="form-control" id='requeststatusname' name='requeststatusname'>
-                                <option value='waiting_for_manager_review'>waiting_for_manager_review</option>
+                                <option value='waiting_for_manager_review' style='display:none;'>waiting_for_manager_review</option>
                                 <option value='waiting_for_payment'>waiting_for_payment</option>
                                 <option value='processed'>processed</option>
-                                <option value='cancelled'>cancelled</option>
+
                             </select>
                         </div>
                     </div>
@@ -370,8 +365,7 @@
                             <label for="invoicestatusname">Invoice status</label>
                             <select class="form-control" id='invoicestatusname' name='invoicestatusname'>
                                 <option value='unpaid'>Unpaid</option>
-                                <option value='paid'>Paid</option>
-                                <option value='rejected'>Rejected</option>
+
                             </select>
                         </div>
                         <div class="form-group">
@@ -402,18 +396,19 @@
             let rowClass = '.request' + requestid;
             let removeSubmit = '#removeSubmit' + requestid;
             $(removeSubmit).css('display', 'none');
-            if ($(this).find(":selected").val() == 'save') {
+            if ($(this).find(":selected").val() == 'save'
+                && requeststatusname != 'cancelled') {
                 $(rowClass).css({ "color": "black" })
                 $("#requestid").val(requestid);
                 $("#requestdeliverydate").val(requestdeliverydate);
                 $("#requeststatusname").val(requeststatusname);
-
                 $("#myModalUpdate").modal('show');
             } else if ($(this).find(":selected").val() == 'remove') {
 
                 $(removeSubmit).css('display', 'inherit');
                 $(rowClass).css({ "color": "red" });
-            } else if ($(this).find(":selected").val() == 'createinvoice') {
+            } else if ($(this).find(":selected").val() == 'createinvoice'
+                 && requeststatusname != 'cancelled') {
 
                 $("#invoicerequestid").val(requestid);
 

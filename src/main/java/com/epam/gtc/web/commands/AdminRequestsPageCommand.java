@@ -93,9 +93,6 @@ public class AdminRequestsPageCommand implements Command {
         String deliveryDateString = action.equalsIgnoreCase("remove") ? "" :
                 request.getParameter(FormRequestParametersNames.REQUEST_DELIVERY_DATE);
         LOG.trace("Request delivery date string --> " + deliveryDateString);
-        LocalDateTime deliveryDate = action.equalsIgnoreCase("remove") ? LocalDateTime.now() :
-                LocalDateTime.parse(deliveryDateString);
-        LOG.trace("Request delivery date --> " + deliveryDate);
 
         String requestStatusName = action.equalsIgnoreCase("remove") ? "" :
                 request.getParameter(FormRequestParametersNames.REQUEST_STATUS_NAME);
@@ -128,6 +125,9 @@ public class AdminRequestsPageCommand implements Command {
                 String contentTypeName = request.getParameter(FormRequestParametersNames.REQUEST_CONTENT_TYPE_NAME);
                 LOG.trace("Request content type id --> " + contentTypeName);
 
+                LocalDateTime deliveryDate = LocalDateTime.parse(deliveryDateString);
+                LOG.trace("Request delivery date --> " + deliveryDate);
+
                 newRequestDomain.setCityFromId(cityFromId);
                 newRequestDomain.setCityToId(cityToId);
                 newRequestDomain.setWeight(weight);
@@ -144,7 +144,6 @@ public class AdminRequestsPageCommand implements Command {
                 break;
             case "save":
                 RequestDomain requestDomain = requestService.find(requestId);
-                requestDomain.setDeliveryDate(deliveryDate);
                 requestDomain.setRequestStatus(RequestStatus.getEnumFromName(requestStatusName));
                 boolean savedFlag = requestService.save(requestDomain);
                 LOG.trace("Saved status --> " + savedFlag);
@@ -153,8 +152,6 @@ public class AdminRequestsPageCommand implements Command {
                 boolean removedFlag = requestService.remove(requestId);
                 LOG.trace("Removed status --> " + removedFlag);
                 break;
-            default:
-                //TODO no action error
         }
         forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_REQUESTS_PAGE,
                 page, itemsPerPage);

@@ -108,8 +108,7 @@ public class AdminInvoicesPageCommand implements Command {
                 boolean removedFlag = invoiceService.remove(invoiceId);
                 LOG.trace("Removed status --> " + removedFlag);
                 break;
-            default:
-                //TODO no action error
+
         }
 
         forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_INVOICES_PAGE,

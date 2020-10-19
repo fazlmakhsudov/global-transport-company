@@ -209,8 +209,6 @@
                             <label for="deliverystatusname">Delivery status</label>
                             <select class="form-control" id='deliverystatusname' name='deliverystatusname'>
                                 <option value='waiting_for_packaging'>waiting_for_packaging</option>
-                                <option value='under_transportation'>under_transportation</option>
-                                <option value='delivered'>delivered</option>
                             </select>
                         </div>
                         <div class="form-group">

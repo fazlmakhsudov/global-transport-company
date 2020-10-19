@@ -1,14 +1,14 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf"%>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 <html lang="en">
-<c:set var="title" value="Contact Us" />
+<c:set var="title" value="${lang.Contact_Us}" />
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body>
     <!-- header -->
     <header>
         <%@ include file="/WEB-INF/jspf/navigation.jspf"%>
-        <c:set var="navmenu" value="Contact Us" />
+        <c:set var="navmenu" value="${lang.Contact_Us}" />
         <%@ include file="/WEB-INF/jspf/sub-navigation.jspf"%>
     </header>
     <!-- header -->
@@ -17,8 +17,9 @@
     <div class="contact py-sm-5 py-4">
         <div class="container py-xl-5 py-lg-3">
             <h3 class="title mb-sm-4 mb-3">
-                <span>C</span>ontact
-                <span>U</span>s</h3>
+                ${lang.Contact}
+                ${lang.Us}
+              </h3>
             <div class="row">
                 <div class="col-lg-7 contact-grid-agiles-w3l">
                     <div class="contact-grid-agile">

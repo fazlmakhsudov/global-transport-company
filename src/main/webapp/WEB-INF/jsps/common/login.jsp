@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf"%>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf"%>
 <html lang="en">
-<c:set var="title" value="Login" />
+<c:set var="title" value="${lang.Login}" />
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
 
 <body style="background-color: #666666;">
