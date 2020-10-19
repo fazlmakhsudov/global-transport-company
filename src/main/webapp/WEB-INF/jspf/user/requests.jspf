@@ -1,18 +1,18 @@
 <div class="container-fluid">
     <div class="card mb-4">
         <div class="card-header py-3 row">
-            <h5 class="m-0 font-weight-bold text-primary ml-3">Requests</h5>
+            <h5 class="m-0 font-weight-bold text-primary ml-3">${lang.Requests}</h5>
             <div class='col'>
                 <form class='form-inline justify-content-end' action="${urlForPage}" method='GET'>
-                    <button type="button" class="btn btn-outline-primary mr-5" id="addnewbutton">Add</button>
+                    <button type="button" class="btn btn-outline-primary mr-5" id="addnewbutton">${lang.Add}</button>
 
                     <div class='form-group ml-5 mr-2'>
                         <select class="form-control" id='sortparameter' name='sortparameter' value='${sortparameter}'>
-                            <option value=''>Choose..</option>
+                            <option value=''>${lang.Choose}</option>
                             <option value='requestid'>Id</option>
-                            <option value='requestcityfromid'>City from</option>
-                            <option value='requestcitytoid'>City to</option>
-                            <option value='requestdeliverydate'>Delivery date</option>
+                            <option value='requestcityfromid'>${lang.City_from}</option>
+                            <option value='requestcitytoid'>${lang.City_to}</option>
+                            <option value='requestdeliverydate'>${lang.Delivery_date}</option>
                         </select>
                     </div>
                     <button type="submit" class="form-control btn btn-outline-primary mr-5">Sort</button>
@@ -20,12 +20,12 @@
                     <input type='text' name='command' value='userRequestsTab' style='display:none;' />
                     <input type='text' name='page' value='${page}' style='display:none;' />
                     <div class="form-group">
-                        <label class='mr-3' for="itemsperpage">Items per page</label>
+                        <label class='mr-3' for="itemsperpage">${lang.Items_per_page}</label>
                         <input type="number" class="form-control text-center" id="itemsperpage" value='${itemsPerPage}'
                             name='itemsPerPage' min='2' max='20' data-previous='${itemsPerPage}' />
                     </div>
                     <div class="form-group" id='filtersubmit' style='display:none;'>
-                        <button type="submit" class="btn btn-outline-primary ml-3">Save</button>
+                        <button type="submit" class="btn btn-outline-primary ml-3">${lang.Save}</button>
                     </div>
                 </form>
             </div>
@@ -37,38 +37,38 @@
                         <tr class='text-center align-middle'>
                             <th>#</th>
                             <th>ID</th>
-                            <th>City From</th>
-                            <th>City To</th>
-                            <th>Weight</th>
-                            <th>Length</th>
-                            <th>Width</th>
-                            <th>Height</th>
-                            <th>Delivery date</th>
+                            <th>${lang.City_from}</th>
+                            <th>${lang.City_to}</th>
+                            <th>${lang.Weight}</th>
+                            <th>${lang.Length}</th>
+                            <th>${lang.Width}</th>
+                            <th>${lang.Height}</th>
+                            <th>${lang.Delivery_date}</th>
 
-                            <th>Content type</th>
-                            <th>Request status</th>
-                            <th>Created date</th>
-                            <th>Updated date</th>
-                            <th>Actions</th>
+                            <th>${lang.Content_type}</th>
+                            <th>${lang.Request_status}</th>
+                            <th>${lang.Created_date}</th>
+                            <th>${lang.Updated_date}</th>
+                            <th>${lang.Actions}</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr class='text-center align-middle'>
                             <th>#</th>
                             <th>ID</th>
-                            <th>City From</th>
-                            <th>City To</th>
-                            <th>Weight</th>
-                            <th>Length</th>
-                            <th>Width</th>
-                            <th>Height</th>
-                            <th>Delivery date</th>
+                            <th>${lang.City_from}</th>
+                            <th>${lang.City_to}</th>
+                            <th>${lang.Weight}</th>
+                            <th>${lang.Length}</th>
+                            <th>${lang.Width}</th>
+                            <th>${lang.Height}</th>
+                            <th>${lang.Delivery_date}</th>
 
-                            <th>Content type</th>
-                            <th>Request status</th>
-                            <th>Created date</th>
-                            <th>Updated date</th>
-                            <th>Actions</th>
+                            <th>${lang.Content_type}</th>
+                            <th>${lang.Request_status}</th>
+                            <th>${lang.Created_date}</th>
+                            <th>${lang.Updated_date}</th>
+                            <th>${lang.Actions}</th>
                         </tr>
                     </tfoot>
 

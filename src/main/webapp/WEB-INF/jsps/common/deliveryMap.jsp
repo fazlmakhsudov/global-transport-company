@@ -99,7 +99,7 @@
                     if (cityname.indexOf(searchtext) !== -1) {
                         let id = '#city' + cityname;
 
-                        html = html + "<div class='row'>" + $(id).html() + "</div>";
+                        html = html + "<div class='row'>" + $(id).html() + "</div><br/>";
                     }
                 }
                 $('#searchresult').html(html);
@@ -119,7 +119,7 @@
 
                     if (cityname.indexOf(searchtext) !== -1) {
                         let id = '#city' + $(cities[i]).data('cityhostname');
-                        html = html + "<div class='row'>" + $(id).html() + "</div>";
+                        html = html + "<div class='row'>" + $(id).html() + "</div><br/>";
                     }
                 }
                 $('#searchresult').html(html);

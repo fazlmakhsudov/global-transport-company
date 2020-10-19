@@ -84,7 +84,7 @@
                     </a>
                 </c:if>
                 <c:if test="${alerts.get('Paid') > 0 }">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                    <a class="dropdown-item d-flex align-items-center" href="/gtc/controller?command=adminInvoicesPage">
                         <div class="mr-3">
                             <div class="icon-circle bg-success">
                                 <i class="fas fa-donate text-white"></i>
@@ -97,7 +97,7 @@
                     </a>
                 </c:if>
                 <c:if test="${alerts.get('Rejected') > 0 }">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                    <a class="dropdown-item d-flex align-items-center" href="/gtc/controller?command=adminInvoicesPage">
                         <div class="mr-3">
                             <div class="icon-circle bg-warning">
                                 <i class="fas fa-exclamation-triangle text-white"></i>

@@ -75,8 +75,10 @@ public class UserRequestsTabCommand implements Command {
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.map(Integer::parseInt).orElse(1);
-        int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
+        int page = optionalPage.isPresent() && Validator.isValidString(optionalPage.get()) ?
+                optionalPage.map(Integer::parseInt).orElse(1) : 1;
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidString(optionalPage.get()) ?
+                optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
         String forward = Path.PAGE_USER_CABINET;
         if (Method.isPost(request)) {
             forward = doPost(request, requestService, page, itemsPerPage, userModel);
