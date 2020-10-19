@@ -25,6 +25,8 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">${lang.Tables}</h1>
                     <p class="mb-4">${lang.admin_tables_info}</p>
+                    <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorRequests} </p>
+                    <c:remove var="errorRequests" />
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -432,6 +434,10 @@
         });
         $('#addnewbutton').on('click', function () {
             $("#myModalAdd").modal('show');
+        });
+
+        $("#requestdeliverydate").on('load', function(){
+            $(this).min(new Date());
         });
     </script>
 </body>

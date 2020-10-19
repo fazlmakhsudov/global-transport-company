@@ -76,6 +76,7 @@ public class AdminRatesPageCommand implements Command {
         boolean errorFlag = false;
 
         LOG.trace("Method is Post");
+        request.getSession().removeAttribute("errorRates");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
         if (!Validator.isValidString(action)) {

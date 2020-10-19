@@ -102,6 +102,10 @@ function hideValidate(input) {
 // Personal form
 $(document).ready(
     function () {
+            $("#requestdeliverydate").on('focus', function(){
+                  $(this).attr('min', new Date());
+            });
+
         $("#year").text(new Date().getFullYear());
         // Personal counter
         let inputs = $('.requestfield');
@@ -125,18 +129,22 @@ $(document).ready(
                     $(inputs[i]).css({ "border": "1px solid red", "border-radius": "5%" });
                     check = false;
                 } else {
-                    $(inputs[i]).css({ "border": "none" });
+                    $(inputs[i]).css({ "border": "inherit" });
                 }
             }
-            if ($('#requestcityfromid').val().trim() == $('#requestcitytoid').val().trim()) {
+            if ($('#requestcityfromid').val().trim() == $('#requestcitytoid').val().trim()
+                || $('#requestcityfromid').val().trim() == 'Choose...'
+                || $('#requestcitytoid').val().trim() == 'Choose...') {
                 $('#requestcityfromid').css({ "border": "1px solid yellow", "border-radius": "5%" });
                 $('#requestcitytoid').css({ "border": "1px solid yellow", "border-radius": "5%" });
+                check = false;
             }
+
 
             let values = getData(inputs);
             let i = 0;
             if (check) {
-
+                $("#buttonrequest").css({'display':'block'});
                 $.ajax({
                     url: "/gtc/controller?command=personalCounterForm",
                     data: {
@@ -158,6 +166,9 @@ $(document).ready(
                         check = false;
                     }
                 });
+
+            } else {
+                $("#buttonrequest").css({'display':'none'});
             }
             if (check) {
                 $('#showrequestcost').css({ 'display': 'inherit' });

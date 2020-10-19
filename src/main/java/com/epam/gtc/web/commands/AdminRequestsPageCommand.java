@@ -89,49 +89,136 @@ public class AdminRequestsPageCommand implements Command {
     }
 
     private String doPost(HttpServletRequest request, RequestService requestService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
-        String forward;
+        String forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_REQUESTS_PAGE,
+                page, itemsPerPage);
+        StringBuilder errorRequests = new StringBuilder();
+        boolean errorFlag = false;
+
         LOG.trace("Method is Post");
+        request.getSession().removeAttribute("errorRequests");
+
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
+        if (!Validator.isValidString(action)) {
+            errorFlag = true;
+            errorRequests.append("Invalid action").append("<br/>");
+        }
+
+        boolean isRemoveMethod = action.equalsIgnoreCase("remove");
 
 
-        String deliveryDateString = action.equalsIgnoreCase("remove") ? "" :
-                request.getParameter(FormRequestParametersNames.REQUEST_DELIVERY_DATE);
-        LOG.trace("Request delivery date string --> " + deliveryDateString);
-
-        String requestStatusName = action.equalsIgnoreCase("remove") ? "" :
+        String requestStatusName = isRemoveMethod ? "" :
                 request.getParameter(FormRequestParametersNames.REQUEST_STATUS_NAME);
         LOG.trace("Request status name --> " + requestStatusName);
+        if (!isRemoveMethod && !Validator.isValidString(requestStatusName)) {
+            errorFlag = true;
+            errorRequests.append("Invalid status").append("<br/>");
+        }
 
+
+        String requestIdString = request.getParameter(FormRequestParametersNames.REQUEST_ID);
+        LOG.trace("Request id --> " + requestIdString);
+        if (!action.equalsIgnoreCase("add") && !Validator.isValidNumber(requestIdString)) {
+            errorFlag = true;
+            errorRequests.append("Invalid request id").append("<br/>");
+        }
+
+        if (errorFlag) {
+            request.getSession().setAttribute("errorRequests", errorRequests.toString());
+            return forward;
+        }
 
         int requestId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_ID));
-        LOG.trace("Request id --> " + requestId);
-
-
+                Integer.parseInt(requestIdString);
         switch (action) {
             case "add":
+                errorFlag = false;
+                errorRequests = new StringBuilder();
+                
                 RequestDomain newRequestDomain = new RequestDomain();
 
-                int userId = Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_USER_ID));
-                LOG.trace("Request user id --> " + userId);
-                int cityFromId = Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_CITY_FROM_ID));
-                LOG.trace("Request city from id --> " + cityFromId);
-                int cityToId = Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_CITY_TO_ID));
-                LOG.trace("Request city to id --> " + cityToId);
-                double weight = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_WEIGHT));
-                LOG.trace("Request weight --> " + weight);
-                double length = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_LENGTH));
-                LOG.trace("Request length --> " + length);
-                double width = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_WIDTH));
-                LOG.trace("Request width --> " + width);
-                double height = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_HEIGHT));
-                LOG.trace("Request height --> " + height);
+                String userIdString = request.getParameter(FormRequestParametersNames.REQUEST_USER_ID);
+                LOG.trace("Request user id --> " + userIdString);
+                if (!Validator.isValidNumber(userIdString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid user id").append("<br/>");
+                }
+
+                String cityFromIdString = request.getParameter(FormRequestParametersNames.REQUEST_CITY_FROM_ID);
+                LOG.trace("Request city from id --> " + cityFromIdString);
+                if (!Validator.isValidNumber(cityFromIdString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid city from id").append("<br/>");
+                }
+
+                String cityToIdString = request.getParameter(FormRequestParametersNames.REQUEST_CITY_TO_ID);
+                LOG.trace("Request city to id --> " + cityToIdString);
+                if (!Validator.isValidNumber(cityToIdString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid city to id").append("<br/>");
+                }
+
+                String weightString = request.getParameter(FormRequestParametersNames.REQUEST_WEIGHT);
+                LOG.trace("Request weight --> " + weightString);
+                if (!Validator.isValidNumber(weightString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid weight").append("<br/>");
+                }
+
+                String lengthString = request.getParameter(FormRequestParametersNames.REQUEST_LENGTH);
+                LOG.trace("Request length --> " + lengthString);
+                if (!Validator.isValidNumber(lengthString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid length").append("<br/>");
+                }
+
+                String widthString = request.getParameter(FormRequestParametersNames.REQUEST_WIDTH);
+                LOG.trace("Request width --> " + widthString);
+                if (!Validator.isValidNumber(widthString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid width").append("<br/>");
+                }
+
+                String heightString = request.getParameter(FormRequestParametersNames.REQUEST_HEIGHT);
+                LOG.trace("Request height --> " + heightString);
+                if (!Validator.isValidNumber(heightString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid height").append("<br/>");
+                }
+
                 String contentTypeName = request.getParameter(FormRequestParametersNames.REQUEST_CONTENT_TYPE_NAME);
                 LOG.trace("Request content type id --> " + contentTypeName);
+                if (!Validator.isValidString(contentTypeName)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid content type").append("<br/>");
+                }
+
+                String deliveryDateString = request.getParameter(FormRequestParametersNames.REQUEST_DELIVERY_DATE);
+                LOG.trace("Request delivery date string --> " + deliveryDateString);
+                if (!isRemoveMethod && !Validator.isValidString(deliveryDateString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid date").append("<br/>");
+                }
 
                 LocalDateTime deliveryDate = LocalDateTime.parse(deliveryDateString);
                 LOG.trace("Request delivery date --> " + deliveryDate);
+                if (!Validator.isValidDateAfterToday(deliveryDate)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid local date").append("<br/>");
+                }
+
+                if (errorFlag) {
+                    request.getSession().setAttribute("errorRequests", errorRequests.toString());
+                    return forward;
+                }
+
+                int userId = Integer.parseInt(userIdString);
+                int cityFromId = Integer.parseInt(cityFromIdString);
+                int cityToId = Integer.parseInt(cityToIdString);
+                double weight = Double.parseDouble(weightString);
+                double length = Double.parseDouble(lengthString);
+                double width = Double.parseDouble(widthString);
+                double height = Double.parseDouble(heightString);
 
                 newRequestDomain.setCityFromId(cityFromId);
                 newRequestDomain.setCityToId(cityToId);
@@ -158,8 +245,7 @@ public class AdminRequestsPageCommand implements Command {
                 LOG.trace("Removed status --> " + removedFlag);
                 break;
         }
-        forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_REQUESTS_PAGE,
-                page, itemsPerPage);
+
         return forward;
     }
 

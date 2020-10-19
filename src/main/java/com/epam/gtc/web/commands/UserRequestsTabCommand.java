@@ -69,16 +69,20 @@ public class UserRequestsTabCommand implements Command {
     private String handleRequest(final HttpServletRequest request, Object sessionUser) throws AppException {
 
         UserModel userModel = (UserModel) sessionUser;
+
         int requestsNumber = requestService.countUserRequests(userModel.getId());
         LOG.trace("Number of user requests : " + requestsNumber);
         Optional<String> optionalPage = Optional.ofNullable(request.getParameter("page"));
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.isPresent() && Validator.isValidString(optionalPage.get()) ?
-                optionalPage.map(Integer::parseInt).orElse(1) : 1;
-        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidString(optionalPage.get()) ?
+
+        int page = optionalPage.isPresent() && Validator.isValidNumber(optionalPage.get())
+                ? optionalPage.map(Integer::parseInt).orElse(1) : 1;
+
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidNumber(optionalItemsPerPage.get()) ?
                 optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
+
         String forward = Path.PAGE_USER_CABINET;
         if (Method.isPost(request)) {
             forward = doPost(request, requestService, page, itemsPerPage, userModel);
@@ -96,43 +100,133 @@ public class UserRequestsTabCommand implements Command {
     }
 
     private String doPost(HttpServletRequest request, RequestService requestService, int page, int itemsPerPage, UserModel sessionUser) throws ServiceException {
-        String forward;
+        String forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_USER_REQUESTS_TAB,
+                page, itemsPerPage);
+        StringBuilder errorRequests = new StringBuilder();
+        boolean errorFlag = false;
+
         LOG.trace("Method is Post");
+        request.getSession().removeAttribute("errorRequests");
+
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
-        boolean isAddSaveAction = action.equalsIgnoreCase("add") || action.equalsIgnoreCase("save");
+        if (!Validator.isValidString(action)) {
+            errorFlag = true;
+            errorRequests.append("Invalid action").append("<br/>");
+        }
+
+        boolean isSaveMethod = action.equalsIgnoreCase("save");
+
+        String requestStatusName = !isSaveMethod ? "" :
+                request.getParameter(FormRequestParametersNames.REQUEST_STATUS_NAME);
+        LOG.trace("Request status name --> " + requestStatusName);
+        if (isSaveMethod && !Validator.isValidString(requestStatusName)) {
+            errorFlag = true;
+            errorRequests.append("Invalid status").append("<br/>");
+        }
 
         int userId = sessionUser.getId();
         LOG.trace("Request user id --> " + userId);
-        String contentTypeName = !isAddSaveAction ? "" : request.getParameter(FormRequestParametersNames.REQUEST_CONTENT_TYPE_NAME);
-        LOG.trace("Request content type id --> " + contentTypeName);
+
+        String requestIdString = request.getParameter(FormRequestParametersNames.REQUEST_ID);
+        LOG.trace("Request id --> " + requestIdString);
+        if (!action.equalsIgnoreCase("add") && !Validator.isValidNumber(requestIdString)) {
+            errorFlag = true;
+            errorRequests.append("Invalid request id").append("<br/>");
+        }
+
+        if (errorFlag) {
+            request.getSession().setAttribute("errorRequests", errorRequests.toString());
+            return forward;
+        }
 
         int requestId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_ID));
-        LOG.trace("Request id --> " + requestId);
+                Integer.parseInt(requestIdString);
 
 
         switch (action) {
             case "add":
-                int cityFromId = Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_CITY_FROM_ID));
-                LOG.trace("Request city from id --> " + cityFromId);
-                int cityToId = Integer.parseInt(request.getParameter(FormRequestParametersNames.REQUEST_CITY_TO_ID));
-                LOG.trace("Request city to id --> " + cityToId);
-                double weight = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_WEIGHT));
-                LOG.trace("Request weight --> " + weight);
-                double length = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_LENGTH));
-                LOG.trace("Request length --> " + length);
-                double width = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_WIDTH));
-                LOG.trace("Request width --> " + width);
-                double height = Double.parseDouble(request.getParameter(FormRequestParametersNames.REQUEST_HEIGHT));
-                LOG.trace("Request height --> " + height);
+                errorFlag = false;
+                errorRequests = new StringBuilder();
+
+                RequestDomain newRequestDomain = new RequestDomain();
+
+
+                String cityFromIdString = request.getParameter(FormRequestParametersNames.REQUEST_CITY_FROM_ID);
+                LOG.trace("Request city from id --> " + cityFromIdString);
+                if (!Validator.isValidNumber(cityFromIdString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid city from id").append("<br/>");
+                }
+
+                String cityToIdString = request.getParameter(FormRequestParametersNames.REQUEST_CITY_TO_ID);
+                LOG.trace("Request city to id --> " + cityToIdString);
+                if (!Validator.isValidNumber(cityToIdString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid city to id").append("<br/>");
+                }
+
+                String weightString = request.getParameter(FormRequestParametersNames.REQUEST_WEIGHT);
+                LOG.trace("Request weight --> " + weightString);
+                if (!Validator.isValidNumber(weightString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid weight").append("<br/>");
+                }
+
+                String lengthString = request.getParameter(FormRequestParametersNames.REQUEST_LENGTH);
+                LOG.trace("Request length --> " + lengthString);
+                if (!Validator.isValidNumber(lengthString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid length").append("<br/>");
+                }
+
+                String widthString = request.getParameter(FormRequestParametersNames.REQUEST_WIDTH);
+                LOG.trace("Request width --> " + widthString);
+                if (!Validator.isValidNumber(widthString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid width").append("<br/>");
+                }
+
+                String heightString = request.getParameter(FormRequestParametersNames.REQUEST_HEIGHT);
+                LOG.trace("Request height --> " + heightString);
+                if (!Validator.isValidNumber(heightString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid height").append("<br/>");
+                }
+
+                String contentTypeName = request.getParameter(FormRequestParametersNames.REQUEST_CONTENT_TYPE_NAME);
+                LOG.trace("Request content type id --> " + contentTypeName);
+                if (!Validator.isValidString(contentTypeName)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid content type").append("<br/>");
+                }
 
                 String deliveryDateString = request.getParameter(FormRequestParametersNames.REQUEST_DELIVERY_DATE);
                 LOG.trace("Request delivery date string --> " + deliveryDateString);
-                LocalDateTime deliveryDate = Objects.isNull(deliveryDateString) || deliveryDateString.isEmpty() ?
-                        LocalDateTime.now() : LocalDateTime.parse(deliveryDateString);
+                if (!Validator.isValidDate(deliveryDateString)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid date").append("<br/>");
+                }
+
+                LocalDateTime deliveryDate = LocalDateTime.parse(deliveryDateString);
                 LOG.trace("Request delivery date --> " + deliveryDate);
-                RequestDomain newRequestDomain = new RequestDomain();
+                if (!Validator.isValidDateAfterToday(deliveryDate)) {
+                    errorFlag = true;
+                    errorRequests.append("Invalid local date").append("<br/>");
+                }
+
+                if (errorFlag) {
+                    request.getSession().setAttribute("errorRequests", errorRequests.toString());
+                    return forward;
+                }
+
+                int cityFromId = Integer.parseInt(cityFromIdString);
+                int cityToId = Integer.parseInt(cityToIdString);
+                double weight = Double.parseDouble(weightString);
+                double length = Double.parseDouble(lengthString);
+                double width = Double.parseDouble(widthString);
+                double height = Double.parseDouble(heightString);
+
                 newRequestDomain.setCityFromId(cityFromId);
                 newRequestDomain.setCityToId(cityToId);
                 newRequestDomain.setWeight(weight);
@@ -141,25 +235,21 @@ public class UserRequestsTabCommand implements Command {
                 newRequestDomain.setHeight(height);
                 newRequestDomain.setDeliveryDate(deliveryDate);
                 newRequestDomain.setContentType(ContentType.getEnumFromName(contentTypeName));
-                newRequestDomain.setRequestStatus(RequestStatus.WAITING_FOR_MANAGER_REVIEW);
+                newRequestDomain.setRequestStatus(RequestStatus.getEnumFromName(requestStatusName));
                 newRequestDomain.setUserId(userId);
+
                 int newId = requestService.add(newRequestDomain);
                 LOG.trace("Added status(new id) --> " + newId);
                 break;
             case "save":
                 RequestDomain requestDomain = requestService.find(requestId);
-                requestDomain.setContentType(ContentType.getEnumFromName(contentTypeName));
-                String requestStatusName = request.getParameter(FormRequestParametersNames.REQUEST_STATUS_NAME);
-                LOG.trace("Request status name --> " + requestStatusName);
                 requestDomain.setRequestStatus(RequestStatus.getEnumFromName(requestStatusName));
                 boolean savedFlag = requestService.save(requestDomain);
                 LOG.trace("Saved status --> " + savedFlag);
                 break;
-            default:
-                //TODO no action error
+
         }
-        forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_USER_REQUESTS_TAB,
-                page, itemsPerPage);
+
         return forward;
     }
 

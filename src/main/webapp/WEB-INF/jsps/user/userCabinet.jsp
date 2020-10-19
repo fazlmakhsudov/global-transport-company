@@ -14,7 +14,12 @@
     <!-- header -->
     <c:set var="urlForPage" value="/gtc/controller" />
     <!-- user cabinet -->
-
+    <div class='text-center'>
+     <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorRequests} </p>
+      <c:remove var="errorRequests" />
+      <p class="mb-4 text-danger font-weight-bold">${sessionScope.errorUser} </p>
+            <c:remove var="errorUser" />
+    <div>
     <div class="py-sm-5 py-4" style="position:relative;">
         <div class="ml-5 mr-5 py-xl-5 py-lg-3">
             <h3 class="title mb-sm-4 mb-3 text-center">

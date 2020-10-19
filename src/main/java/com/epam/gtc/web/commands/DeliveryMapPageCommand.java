@@ -79,7 +79,7 @@ public class DeliveryMapPageCommand implements Command {
 
         for (String cityName : sortedCitiesNames) {
             int cityId = cities.get(cityName);
-            System.out.println(cityId + "  " + cityName);
+
             List<DistanceModel> distanceModels = distanceModelBuilder.create(distanceService.findAll(cityId));
             deliveryMapDestinations.put(cityName, distanceModels);
             double maxDistance = distanceModels.stream().map(DistanceModel::getDistance).max(Double::compareTo).get();

@@ -54,7 +54,7 @@
                         <label for='requestcityfromid'>${lang.City_from}</label>
                         <select class="form-control requestfield text-center" id='requestcityfromid'
                             name='requestcityfromid'>
-                            <option value=''>${lang.Choose}...</option>
+                            <option value=''>${lang.Choose}</option>
                             <c:forEach var="cityid" items="${citiesMap.keySet()}">
                                 <option value='${cityid}'>${citiesMap.get(cityid)}</option>
                             </c:forEach>
@@ -119,7 +119,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">${lang.Cancel}</button>
                     <c:if test="${user != null}">
-                        <button type="submit" class="btn btn-primary">${lang.Add}</button>
+                        <button type="submit" id='buttonrequest' class="btn btn-primary">${lang.Add}</button>
                     </c:if>
                 </div>
             </form>
@@ -156,3 +156,6 @@
 </a>
 
 <script src="js/main.js"></script>
+<script>
+
+</script>

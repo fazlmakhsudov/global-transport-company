@@ -51,15 +51,31 @@ public class UserProfileTabCommand implements Command {
 
     private String handleRequest(final HttpServletRequest request, Object sessionUser) throws AppException {
         String forward = Path.PAGE_USER_CABINET;
+        StringBuilder errorUser = new StringBuilder();
+        boolean errorFlag = false;
         if (Method.isPost(request)) {
             LOG.trace("Method is Post");
             UserModel userModel = (UserModel) sessionUser;
 
             String name = request.getParameter(FormRequestParametersNames.USER_NAME);
             LOG.trace("User name --> " + name);
-            userModel.setName(name);
+            if (!Validator.isValidString(name)) {
+                errorFlag = true;
+                errorUser.append("Invalid name").append("<br/>");
+            }
             String surname = request.getParameter(FormRequestParametersNames.USER_SURNAME);
             LOG.trace("User surname --> " + surname);
+            if (!Validator.isValidString(surname)) {
+                errorFlag = true;
+                errorUser.append("Invalid surname").append("<br/>");
+            }
+
+            if (errorFlag) {
+                request.getSession().setAttribute("errorUser", errorUser.toString());
+                return Path.COMMAND_USER_CABINET;
+            }
+
+            userModel.setName(name);
             userModel.setSurname(surname);
             String password = request.getParameter(FormRequestParametersNames.USER_PASSWORD);
             LOG.trace("User password --> " + encryptPassword(password));

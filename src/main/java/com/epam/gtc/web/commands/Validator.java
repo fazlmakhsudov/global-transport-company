@@ -94,10 +94,7 @@ public final class Validator {
 		if (date == null || date.isEmpty()) {
 			return false;
 		}
-		Pattern pattern = Pattern.compile(
-				"^(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))$");
-		Matcher matcher = pattern.matcher(date);
-		return matcher.matches();
+		return date.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}T[\\d]{2}:[\\d]{2}");
 	}
 
 	/**
