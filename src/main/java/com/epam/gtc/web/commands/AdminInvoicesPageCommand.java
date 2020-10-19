@@ -3,12 +3,14 @@ package com.epam.gtc.web.commands;
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.InvoiceStatus;
 import com.epam.gtc.exceptions.AppException;
+import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.InvoiceService;
 import com.epam.gtc.services.domains.InvoiceDomain;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.InvoiceModel;
 import com.epam.gtc.web.models.builders.InvoiceModelBuilder;
 import org.apache.log4j.Logger;
+import org.graalvm.compiler.nodes.extended.ValueAnchorNode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,8 +53,13 @@ public class AdminInvoicesPageCommand implements Command {
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.map(Integer::parseInt).orElse(1);
-        int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
+
+        int page = optionalPage.isPresent() && Validator.isValidNumber(optionalPage.get())
+                ? optionalPage.map(Integer::parseInt).orElse(1) : 1;
+
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidNumber(optionalItemsPerPage.get()) ?
+                optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
+
         String forward = Path.PAGE_ADMIN_INVOICES;
         if (Method.isPost(request)) {
             forward = doPost(request, invoiceService, page, itemsPerPage);
@@ -68,20 +75,49 @@ public class AdminInvoicesPageCommand implements Command {
     }
 
     private String doPost(HttpServletRequest request, InvoiceService invoiceService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
-        String forward;
+        String forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_INVOICES_PAGE,
+                page, itemsPerPage);
+        StringBuilder errorInvoices = new StringBuilder();
+        boolean errorFlag = false;
+
         LOG.trace("Method is Post");
         request.getSession().removeAttribute("errorInvoices");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
+        if (!Validator.isValidString(action)) {
+            errorFlag = true;
+            errorInvoices.append("Invalid action").append("<br/>");
+        }
 
-        String invoiceStatusName = action.equalsIgnoreCase("remove") ? "" :
-                request.getParameter(FormRequestParametersNames.INVOICE_STATUS_NAME);
-        LOG.trace("Invoice status name --> " + invoiceStatusName);
+        boolean isRemoveMethod = action.equalsIgnoreCase("remove");
 
-        int invoiceId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParametersNames.INVOICE_ID));
-        LOG.trace("Invoice id --> " + invoiceId);
+        String invoiceStatusNameString = request.getParameter(FormRequestParametersNames.INVOICE_STATUS_NAME);
+        LOG.trace("Invoice status name --> " + invoiceStatusNameString);
+        if (!Validator.isValidString(invoiceStatusNameString) && !isRemoveMethod) {
+            errorFlag = true;
+            errorInvoices.append("Invalid status name").append("<br/>");
+        }
 
+        String invoiceIdString = request.getParameter(FormRequestParametersNames.INVOICE_ID);
+        LOG.trace("Invoice id --> " + invoiceIdString);
+        if (!action.equalsIgnoreCase("add") && !Validator.isValidNumber(invoiceIdString)) {
+            errorFlag = true;
+            errorInvoices.append("Invalid invoice id").append("<br/>");
+        }
+
+        if (errorFlag) {
+            request.getSession().setAttribute("errorInvoices", errorInvoices.toString());
+            return forward;
+        }
+
+        doPostIfAllRight(request, invoiceService, action, isRemoveMethod, invoiceStatusNameString, invoiceIdString);
+
+        return forward;
+    }
+
+    private void doPostIfAllRight(HttpServletRequest request, InvoiceService invoiceService, String action, boolean isRemoveMethod, String invoiceStatusNameString, String invoiceIdString) throws ServiceException {
+        int invoiceId =  action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(invoiceIdString);
+        String invoiceStatusName = isRemoveMethod ? "" : invoiceStatusNameString;
         switch (action) {
             case "add":
                 String requestIdString = request.getParameter(FormRequestParametersNames.INVOICE_REQUEST_ID);
@@ -109,7 +145,6 @@ public class AdminInvoicesPageCommand implements Command {
             case "save":
                 InvoiceDomain invoiceDomain = invoiceService.find(invoiceId);
                 invoiceDomain.setInvoiceStatus(InvoiceStatus.getEnumFromName(invoiceStatusName));
-
                 boolean savedFlag = invoiceService.save(invoiceDomain);
                 LOG.trace("Saved status --> " + savedFlag);
                 break;
@@ -119,10 +154,6 @@ public class AdminInvoicesPageCommand implements Command {
                 break;
 
         }
-
-        forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_INVOICES_PAGE,
-                page, itemsPerPage);
-        return forward;
     }
 
 }

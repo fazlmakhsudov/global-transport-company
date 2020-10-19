@@ -66,8 +66,13 @@ public class AdminRequestsPageCommand implements Command {
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.map(Integer::parseInt).orElse(1);
-        int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
+
+        int page = optionalPage.isPresent() && Validator.isValidNumber(optionalPage.get())
+                ? optionalPage.map(Integer::parseInt).orElse(1) : 1;
+
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidNumber(optionalItemsPerPage.get()) ?
+                optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
+
         String forward = Path.PAGE_ADMIN_REQUESTS;
         if (Method.isPost(request)) {
             forward = doPost(request, requestService, page, itemsPerPage);

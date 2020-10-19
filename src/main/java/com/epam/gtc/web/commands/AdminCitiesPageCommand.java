@@ -50,8 +50,13 @@ public class AdminCitiesPageCommand implements Command {
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.map(Integer::parseInt).orElse(1);
-        int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
+
+        int page = optionalPage.isPresent() && Validator.isValidNumber(optionalPage.get())
+                ? optionalPage.map(Integer::parseInt).orElse(1) : 1;
+
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidNumber(optionalItemsPerPage.get()) ?
+                optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
+
         String forward = Path.PAGE_ADMIN_CITIES;
         if (Method.isPost(request)) {
             request.getSession().removeAttribute("errorCity");
@@ -69,14 +74,40 @@ public class AdminCitiesPageCommand implements Command {
 
     private String doPost(HttpServletRequest request, CityService cityService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
-        LOG.trace("Method is Post");
+        StringBuilder errorCity = new StringBuilder();
+        boolean errorFlag = false;
 
+        LOG.trace("Method is Post");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
-        int cityId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(request.getParameter(FormRequestParametersNames.CITY_ID));
-        LOG.trace("City id --> " + cityId);
+        if (!Validator.isValidString(action)) {
+            errorFlag = true;
+            errorCity.append("Invalid action").append("<br/>");
+        }
+
+        boolean removeFlag = action.equalsIgnoreCase("remove");
+
+        String cityIdString = request.getParameter(FormRequestParametersNames.CITY_ID);
+        LOG.trace("City id --> " + cityIdString);
+        if (!action.equalsIgnoreCase("add") && !Validator.isValidNumber(cityIdString)) {
+            errorFlag = true;
+            errorCity.append("Invalid city id").append("<br/>");
+        }
         String name = request.getParameter(FormRequestParametersNames.CITY_NAME);
         LOG.trace("City name --> " + name);
+        if (!Validator.isValidString(name) && !removeFlag) {
+            errorFlag = true;
+            errorCity.append("Invalid city name").append("<br/>");
+        }
+
+        if (errorFlag) {
+            request.getSession().setAttribute("errorCity", errorCity.toString());
+            return String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_CITIES_PAGE,
+                    page, itemsPerPage);
+        }
+
+        int cityId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(cityIdString);
+
         switch (action) {
             case "add":
                 if (Validator.isValidString(name) && Objects.isNull(cityService.find(name))) {
@@ -85,8 +116,8 @@ public class AdminCitiesPageCommand implements Command {
                     int newId = cityService.add(newCity);
                     LOG.trace("Added status(new id) --> " + newId);
                 } else {
-                   LOG.error("Invalid city name or such city exists already.");
-                   request.getSession().setAttribute("errorCity", "Invalid city name or such city exists already.");
+                    LOG.error("Invalid city name or such city exists already.");
+                    request.getSession().setAttribute("errorCity", "Invalid city name or such city exists already.");
                 }
                 break;
             case "save":

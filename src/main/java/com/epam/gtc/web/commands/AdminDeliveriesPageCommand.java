@@ -49,8 +49,13 @@ public class AdminDeliveriesPageCommand implements Command {
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.map(Integer::parseInt).orElse(1);
-        int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
+
+        int page = optionalPage.isPresent() && Validator.isValidNumber(optionalPage.get())
+                ? optionalPage.map(Integer::parseInt).orElse(1) : 1;
+
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidNumber(optionalItemsPerPage.get()) ?
+                optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
+
         String forward = Path.PAGE_ADMIN_DELIVERIES;
         if (Method.isPost(request)) {
             forward = doPost(request, deliveryService, page, itemsPerPage);
@@ -67,16 +72,40 @@ public class AdminDeliveriesPageCommand implements Command {
 
     private String doPost(HttpServletRequest request, DeliveryService deliveryService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
         String forward;
+        StringBuilder errorDelivery = new StringBuilder();
+        boolean errorFlag = false;
+
         LOG.trace("Method is Post");
         request.getSession().removeAttribute("errorDelivery");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
-        int deliveryId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParametersNames.DELIVERY_ID));
-        LOG.trace("Delivery id --> " + deliveryId);
+        if (!Validator.isValidString(action)) {
+            errorFlag = true;
+            errorDelivery.append("Invalid action").append("<br/>");
+        }
+        String deliveryIdString = request.getParameter(FormRequestParametersNames.DELIVERY_ID);
+        LOG.trace("Delivery id --> " + deliveryIdString);
+        if (!action.equalsIgnoreCase("add") && !Validator.isValidNumber(deliveryIdString)) {
+            errorFlag = true;
+            errorDelivery.append("Invalid delivery id").append("<br/>");
+        }
+
         String deliveryStatusName = action.equalsIgnoreCase("remove") ? "" :
                 request.getParameter(FormRequestParametersNames.DELIVERY_STATUS_NAME);
         LOG.trace("Delivery status name --> " + deliveryStatusName);
+        if (!Validator.isValidString(deliveryStatusName)) {
+            errorFlag = true;
+            errorDelivery.append("Invalid delivery status").append("<br/>");
+        }
+
+        if (errorFlag) {
+            request.getSession().setAttribute("errorDelivery", errorDelivery.toString());
+            forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_DELIVERIES_PAGE,
+                    page, itemsPerPage);
+            return forward;
+        }
+
+        int deliveryId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(deliveryIdString);
 
         switch (action) {
             case "add":

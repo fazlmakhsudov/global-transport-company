@@ -48,8 +48,13 @@ public class AdminRatesPageCommand implements Command {
         LOG.trace("optional page : " + optionalPage);
         Optional<String> optionalItemsPerPage = Optional.ofNullable(request.getParameter("itemsPerPage"));
         LOG.trace("optional items per page : " + optionalItemsPerPage);
-        int page = optionalPage.map(Integer::parseInt).orElse(1);
-        int itemsPerPage = optionalItemsPerPage.map(Integer::parseInt).orElse(5);
+
+        int page = optionalPage.isPresent() && Validator.isValidNumber(optionalPage.get())
+                ? optionalPage.map(Integer::parseInt).orElse(1) : 1;
+
+        int itemsPerPage = optionalItemsPerPage.isPresent() && Validator.isValidNumber(optionalItemsPerPage.get()) ?
+                optionalItemsPerPage.map(Integer::parseInt).orElse(5) : 5;
+
         String forward = Path.PAGE_ADMIN_RATES;
         if (Method.isPost(request)) {
             forward = doPost(request, rateService, page, itemsPerPage);
@@ -65,38 +70,96 @@ public class AdminRatesPageCommand implements Command {
     }
 
     private String doPost(HttpServletRequest request, RateService rateService, int page, int itemsPerPage) throws com.epam.gtc.exceptions.ServiceException {
-        String forward;
+        String forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_RATES_PAGE,
+                page, itemsPerPage);
+        StringBuilder errorRates = new StringBuilder();
+        boolean errorFlag = false;
+
         LOG.trace("Method is Post");
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
+        if (!Validator.isValidString(action)) {
+            errorFlag = true;
+            errorRates.append("Invalid action").append("<br/>");
+        }
 
-        String name = action.equalsIgnoreCase("remove") ? "" :
+        boolean isRemoveMethod = action.equalsIgnoreCase("remove");
+
+        String name = isRemoveMethod ? "" :
                 request.getParameter(FormRequestParametersNames.RATE_NAME);
         LOG.trace("Rate name --> " + name);
-        double maxWeight = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_WEIGHT));
-        LOG.trace("Rate max weight --> " + maxWeight);
-        double maxLength = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_LENGTH));
-        LOG.trace("Rate max length --> " + maxLength);
-        double maxWidth = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_WIDTH));
-        LOG.trace("Rate max width --> " + maxWidth);
-        double maxHeight = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_HEIGHT));
-        LOG.trace("Rate max height --> " + maxHeight);
-        double maxDistance = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_MAX_DISTANCE));
-        LOG.trace("Rate max distance --> " + maxDistance);
-        double cost = action.equalsIgnoreCase("remove") ? -1d :
-                Double.parseDouble(request.getParameter(FormRequestParametersNames.RATE_COST));
-        LOG.trace("Rate cost --> " + cost);
+        if (!isRemoveMethod && !Validator.isValidString(name)) {
+            errorFlag = true;
+            errorRates.append("Invalid name").append("<br/>");
+        }
 
-        int rateId = action.equalsIgnoreCase("add") ? -1 :
-                Integer.parseInt(request.getParameter(FormRequestParametersNames.RATE_ID));
-        LOG.trace("Rate id --> " + rateId);
+        String maxWeightString = request.getParameter(FormRequestParametersNames.RATE_MAX_WEIGHT);
+        LOG.trace("Rate max weight --> " + maxWeightString);
+        if (!isRemoveMethod && !Validator.isValidNumber(maxWeightString)) {
+            errorFlag = true;
+            errorRates.append("Invalid weight").append("<br/>");
+        }
 
+        String maxLengthString = request.getParameter(FormRequestParametersNames.RATE_MAX_LENGTH);
+        LOG.trace("Rate max length --> " + maxLengthString);
+        if (!isRemoveMethod && !Validator.isValidNumber(maxLengthString)) {
+            errorFlag = true;
+            errorRates.append("Invalid length").append("<br/>");
+        }
 
+        String maxWidthString = request.getParameter(FormRequestParametersNames.RATE_MAX_WIDTH);
+        LOG.trace("Rate max width --> " + maxWidthString);
+        if (!isRemoveMethod && !Validator.isValidNumber(maxWidthString)) {
+            errorFlag = true;
+            errorRates.append("Invalid width").append("<br/>");
+        }
+
+        String maxHeightString = request.getParameter(FormRequestParametersNames.RATE_MAX_HEIGHT);
+        LOG.trace("Rate max height --> " + maxHeightString);
+        if (!isRemoveMethod && !Validator.isValidNumber(maxHeightString)) {
+            errorFlag = true;
+            errorRates.append("Invalid height").append("<br/>");
+        }
+
+        String maxDistanceString = request.getParameter(FormRequestParametersNames.RATE_MAX_DISTANCE);
+        LOG.trace("Rate max distance --> " + maxDistanceString);
+        if (!isRemoveMethod && !Validator.isValidNumber(maxDistanceString)) {
+            errorFlag = true;
+            errorRates.append("Invalid distance").append("<br/>");
+        }
+
+        String costString = request.getParameter(FormRequestParametersNames.RATE_COST);
+        LOG.trace("Rate cost --> " + costString);
+        if (!isRemoveMethod && !Validator.isValidNumber(costString)) {
+            errorFlag = true;
+            errorRates.append("Invalid cost").append("<br/>");
+        }
+
+        String rateIdString = request.getParameter(FormRequestParametersNames.RATE_ID);
+        LOG.trace("Rate id --> " + rateIdString);
+        if (!Validator.isValidNumber(rateIdString) && !action.equalsIgnoreCase("add")) {
+            errorFlag = true;
+            errorRates.append("Invalid rate id").append("<br/>");
+        }
+
+        if (errorFlag) {
+            request.getSession().setAttribute("errorRates", errorRates.toString());
+            return  forward;
+        }
+
+        doPostIfAllRight(rateService, action, isRemoveMethod, name, maxWeightString, maxLengthString, maxWidthString, maxHeightString, maxDistanceString, costString, rateIdString);
+
+        return forward;
+    }
+
+    private void doPostIfAllRight(RateService rateService, String action, boolean isRemoveMethod, String name, String maxWeightString, String maxLengthString, String maxWidthString, String maxHeightString, String maxDistanceString, String costString, String rateIdString) throws com.epam.gtc.exceptions.ServiceException {
+        double maxWidth = isRemoveMethod ? -1d : Double.parseDouble(maxWidthString);
+        double maxHeight = isRemoveMethod ? -1d : Double.parseDouble(maxHeightString);
+        double maxLength = isRemoveMethod ? -1d : Double.parseDouble(maxLengthString);
+        double maxWeight = isRemoveMethod ? -1d : Double.parseDouble(maxWeightString);
+        double maxDistance = isRemoveMethod ? -1d : Double.parseDouble(maxDistanceString);
+        double cost = isRemoveMethod ? -1d : Double.parseDouble(costString);
+        int rateId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(rateIdString);
         switch (action) {
             case "add":
                 RateDomain newRateDomain = new RateDomain();
@@ -128,9 +191,6 @@ public class AdminRatesPageCommand implements Command {
                 break;
 
         }
-        forward = String.format("%s&page=%s&itemsPerPage=%s", Path.COMMAND_ADMIN_RATES_PAGE,
-                page, itemsPerPage);
-        return forward;
     }
 
 }

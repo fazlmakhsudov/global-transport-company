@@ -1,6 +1,9 @@
 
 package com.epam.gtc.web.commands;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,7 +78,7 @@ public final class Validator {
 		if (string == null || string.isEmpty()) {
 			return false;
 		}
-		Pattern pattern = Pattern.compile("^[a-zA-Z\u0430-\u044F\u0410-\u042F\u0451\u04010-9.]{3,}$");
+		Pattern pattern = Pattern.compile("^[a-zA-Z\u0430-\u044F\u0410-\u042F\u0451\u04010-9. _]{2,}$");
 		Matcher matcher = pattern.matcher(string);
 		return matcher.matches();
 	}
@@ -112,6 +115,26 @@ public final class Validator {
 		}
 		return string.length() > length;
 	}
+
+	/**
+	 * Checks if out of date
+	 * @param date date
+	 * @return boolean
+	 */
+	public static boolean isValidDateAfterToday(Date date) {
+		return new Date().compareTo(date) < 0;
+	}
+
+	/**
+	 * Checks if out of date
+	 * @param date date
+	 * @return boolean
+	 */
+	public static boolean isValidDateAfterToday(LocalDateTime date) {
+		return LocalDateTime.now().compareTo(date) < 0;
+	}
+
+
 	/**
 	 * Constructor.
 	 */
