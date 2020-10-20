@@ -34,7 +34,7 @@ class ValidatorTest {
 
     @Test
     void isValidDate() {
-        assertTrue(Validator.isValidDate("2020-11-18"));
+        assertTrue(Validator.isValidDate("2020-11-18T11:02"));
         assertFalse(Validator.isValidDate(null));
     }
 
