@@ -1,7 +1,6 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
-import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.BuilderException;
 import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.UserService;
@@ -106,7 +105,7 @@ public class SignupCommand implements Command {
             session.setAttribute("errorSignUp", errors.stream().reduce((error1, error2) -> error1 + "<br/>" + error2).get());
             return Path.COMMAND_SIGNUP;
         }
-        boolean isEmailOccupied = Objects.isNull(userService.find(email)) ? false : true;
+        boolean isEmailOccupied = !Objects.isNull(userService.find(email));
         if (isEmailOccupied) {
             LOG.debug("Email is occupied -");
             session.setAttribute("newUser", newUser);

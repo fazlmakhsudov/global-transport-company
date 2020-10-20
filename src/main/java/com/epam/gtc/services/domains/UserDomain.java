@@ -22,6 +22,7 @@ public class UserDomain {
     private Role role;
     @BuilderField(transferTo = BuilderFieldConstant.TIMESTAMP)
     private LocalDateTime createdDate;
+    private String banned;
 
     public int getId() {
         return id;
@@ -77,5 +78,13 @@ public class UserDomain {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getBanned() {
+        return banned;
+    }
+
+    public void setBanned(String banned) {
+        this.banned = banned;
     }
 }

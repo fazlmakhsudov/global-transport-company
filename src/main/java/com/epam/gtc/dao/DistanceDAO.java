@@ -3,8 +3,6 @@ package com.epam.gtc.dao;
 
 import com.epam.gtc.dao.entities.DistanceEntity;
 import com.epam.gtc.exceptions.DAOException;
-import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.services.domains.DistanceDomain;
 
 import java.util.List;
 

@@ -3,7 +3,6 @@ package com.epam.gtc.web.commands;
 import com.epam.gtc.Path;
 import com.epam.gtc.dao.entities.constants.Role;
 import com.epam.gtc.exceptions.AppException;
-import com.epam.gtc.exceptions.Messages;
 import com.epam.gtc.services.UserService;
 import com.epam.gtc.services.domains.UserDomain;
 import com.epam.gtc.utils.Fields;
@@ -45,7 +44,7 @@ public class LoginCommand implements Command {
         if (Method.isPost(request)) {
             forward = handlePostRequest(request);
         }
-        LOG.debug(String.format("Redirect to page -> %s",forward));
+        LOG.debug(String.format("Redirect to page -> %s", forward));
         LOG.debug("Command finished");
         return forward;
     }
@@ -81,7 +80,7 @@ public class LoginCommand implements Command {
                     forward = Path.COMMAND_ADMIN_MAIN_PAGE;
                 }
                 if (userRole == Role.USER) {
-                    forward = Path.COMMAND_USER_CABINET;;
+                    forward = Path.COMMAND_USER_CABINET;
                 }
                 userModel = new UserModelBuilder().create(userDomain);
                 session.setAttribute("user", userModel);

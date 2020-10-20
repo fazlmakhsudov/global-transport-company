@@ -370,6 +370,7 @@ public class MySQLDeliveryDAOImpl implements DeliveryDAO {
         }
         return deliveryList;
     }
+
     /**
      * Counts deliveries of certain request
      *

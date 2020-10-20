@@ -67,8 +67,10 @@ public interface InvoiceDAO extends BaseDAO<InvoiceEntity> {
 
     /**
      * Counts invoice entities with certain request identifier
+     *
      * @param requestId request identifier
      * @return number of invoice entities
+     *
      * @throws DAOException exception
      */
     int countInvoicesOfRequest(int requestId) throws DAOException;

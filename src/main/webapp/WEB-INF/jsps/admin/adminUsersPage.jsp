@@ -57,6 +57,7 @@
                                             <th>${lang.Surname}</th>
                                             <th>${lang.Email}</th>
                                             <th>${lang.Role}</th>
+                                            <th>Banned status</th>
                                             <th>Created date</th>
                                             <th>${lang.Actions}</th>
                                         </tr>
@@ -69,6 +70,7 @@
                                             <th>${lang.Surname}</th>
                                             <th>${lang.Email}</th>
                                             <th>${lang.Role}</th>
+                                            <th>Banned status</th>
                                             <th>Created date</th>
                                             <th>${lang.Actions}</th>
                                         </tr>
@@ -86,8 +88,8 @@
                                                 <td class='align-middle text-center user${user.id}'>${user.name}</td>
                                                 <td class='align-middle text-center user${user.id}'>${user.surname}</td>
                                                 <td class='align-middle text-center user${user.id}'>${user.email}</td>
-                                                <td class='align-middle text-center user${user.id}'>${user.roleName}
-                                                </td>
+                                                <td class='align-middle text-center user${user.id}'>${user.roleName}</td>
+                                                <td class='align-middle text-center user${user.id}'>${user.banned}</td>
                                                 <td class='align-middle text-center user${user.id}'>${user.createdDate}
                                                 </td>
                                                 <td>
@@ -109,7 +111,8 @@
                                                             <select class="custom-select form-control" name='action'
                                                                 data-userid='${user.id}' data-username='${user.name}'
                                                                 data-usersurname='${user.surname}'
-                                                                data-userrolename='${user.roleName}' }>
+                                                                data-userrolename='${user.roleName}'
+                                                                data-userbanned='${user.banned}'}>
                                                                 <option selected>${lang.Choose}</option>
                                                                 <option value="update">${lang.Update}</option>
 
@@ -188,6 +191,13 @@
                                 <option value='user'>user</option>
                             </select>
                         </div>
+                                                <div class='form-group'>
+                                                    <label for='userbanned'>Banned status</label>
+                                                    <select class="form-control" id='userbanned' name='userbanned'>
+                                                        <option value='false'>Allow</option>
+                                                        <option value='true'>Ban</option>
+                                                    </select>
+                                                </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -208,6 +218,8 @@
             let username = $(this).data('username');
             let usersurname = $(this).data('usersurname');
             let userrolename = $(this).data('userrolename');
+            let userbanned = $(this).data('userbanned');
+
             let rowClass = '.user' + userid;
             let deleteSubmit = '#deleteSubmit' + userid;
             $(deleteSubmit).css('display', 'none');
@@ -217,6 +229,8 @@
                 $("#username").val(username);
                 $("#usersurname").val(usersurname);
                 $("#userrolename").val(userrolename);
+                $("#userbanned").val(userbanned);
+
                 $("#myModal").modal('show');
             } else if ($(this).find(":selected").val() == 'delete') {
 

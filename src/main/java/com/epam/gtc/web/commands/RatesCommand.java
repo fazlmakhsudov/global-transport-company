@@ -7,8 +7,6 @@ import com.epam.gtc.exceptions.ServiceException;
 import com.epam.gtc.services.CityService;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RateService;
-import com.epam.gtc.services.factory.ServiceFactory;
-import com.epam.gtc.services.factory.ServiceType;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
 import com.epam.gtc.web.models.DistanceModel;

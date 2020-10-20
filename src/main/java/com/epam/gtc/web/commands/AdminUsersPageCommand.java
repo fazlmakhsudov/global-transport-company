@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -70,8 +71,13 @@ public class AdminUsersPageCommand implements Command {
                 LOG.trace("User surname --> " + surname);
                 String roleName = request.getParameter(FormRequestParametersNames.USER_ROLE_NAME);
                 LOG.trace("User rolename --> " + roleName);
+                String banned = request.getParameter(FormRequestParametersNames.USER_BANNED);
+                LOG.trace("User banned --> " + banned);
+                banned = !Validator.isValidString(banned) ? "false" : banned;
+
                 userDomain.setRole(Role.getEnumFromName(roleName));
                 userDomain.setSurname(surname);
+                userDomain.setBanned(banned);
                 boolean updatedFlag = userService.save(userDomain);
                 LOG.trace("Updated status --> " + updatedFlag);
             } else {

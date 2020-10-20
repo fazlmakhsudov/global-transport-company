@@ -146,10 +146,12 @@ public class MySQLUserDAOImpl implements UserDAO {
      */
     @Override
     public boolean update(UserEntity user) throws DAOException {
-        final String query = "UPDATE users SET name = ?, surname = ?, email = ?, password=?, role_id = ? WHERE id = ?;";
+        final String query = "UPDATE users SET name = ?, surname = ?, email = ?, password=?, role_id = ?, " +
+                "banned=? WHERE id = ?;";
         DBManager dbm;
         Connection con = null;
         PreparedStatement pstmt = null;
+
         try {
             dbm = DBManager.getInstance();
             con = dbm.getConnection();
@@ -160,6 +162,7 @@ public class MySQLUserDAOImpl implements UserDAO {
             pstmt.setString(k++, user.getEmail());
             pstmt.setString(k++, user.getPassword());
             pstmt.setInt(k++, user.getRoleId());
+            pstmt.setString(k++, user.getBanned());
             pstmt.setInt(k, user.getId());
             pstmt.executeUpdate();
             con.commit();

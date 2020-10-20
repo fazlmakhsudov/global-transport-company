@@ -1,29 +1,25 @@
 package com.epam.gtc.web.commands;
 
 import com.epam.gtc.Path;
-import com.epam.gtc.dao.entities.constants.DeliveryStatus;
 import com.epam.gtc.exceptions.AppException;
 import com.epam.gtc.exceptions.CommandException;
 import com.epam.gtc.services.CityService;
-import com.epam.gtc.services.DeliveryService;
 import com.epam.gtc.services.DistanceService;
 import com.epam.gtc.services.RateService;
-import com.epam.gtc.services.domains.DeliveryDomain;
-import com.epam.gtc.services.domains.DistanceDomain;
 import com.epam.gtc.utils.Method;
 import com.epam.gtc.web.models.CityModel;
-import com.epam.gtc.web.models.DeliveryModel;
 import com.epam.gtc.web.models.DistanceModel;
 import com.epam.gtc.web.models.RateModel;
 import com.epam.gtc.web.models.builders.CityModelBuilder;
-import com.epam.gtc.web.models.builders.DeliveryModelBuilder;
 import com.epam.gtc.web.models.builders.DistanceModelBuilder;
 import com.epam.gtc.web.models.builders.RateModelBuilder;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -83,7 +79,7 @@ public class DeliveryMapPageCommand implements Command {
             List<DistanceModel> distanceModels = distanceModelBuilder.create(distanceService.findAll(cityId));
             deliveryMapDestinations.put(cityName, distanceModels);
             double maxDistance = distanceModels.stream().map(DistanceModel::getDistance).max(Double::compareTo).get();
-            List<RateModel> rateModels = rateModelBuilder.create( rateService.findAll(maxDistance));
+            List<RateModel> rateModels = rateModelBuilder.create(rateService.findAll(maxDistance));
             deliveryMapRates.put(cityName, rateModels);
         }
         LOG.trace(String.format("Delivery map rates -> %s", deliveryMapRates));

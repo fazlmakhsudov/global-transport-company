@@ -149,7 +149,7 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public List<RateDomain> findAll(double distance) throws ServiceException {
-        List<RateEntity> rateList ;
+        List<RateEntity> rateList;
         try {
             rateList = rateDAO.readAll(distance);
             return rateDomainBuilder.create(rateList);

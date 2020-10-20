@@ -18,6 +18,8 @@ public final class Fields {
     public static final String USER_PASSWORD = "password";
     public static final String USER_ROLE_ID = "role_id";
     public static final String USER_ID = "user_id";
+    public static final String USER_BANNED = "banned";
+
 
     public static final String CARGO_MAX_WEIGHT = "max_weight";
     public static final String CARGO_MAX_LENGTH = "max_length";

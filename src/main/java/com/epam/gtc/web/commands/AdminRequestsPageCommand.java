@@ -134,7 +134,7 @@ public class AdminRequestsPageCommand implements Command {
             case "add":
                 errorFlag = false;
                 errorRequests = new StringBuilder();
-                
+
                 RequestDomain newRequestDomain = new RequestDomain();
 
                 String userIdString = request.getParameter(FormRequestParametersNames.REQUEST_USER_ID);

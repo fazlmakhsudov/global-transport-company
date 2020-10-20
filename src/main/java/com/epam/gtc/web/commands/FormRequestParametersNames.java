@@ -12,6 +12,7 @@ public class FormRequestParametersNames {
     public static final String USER_SURNAME = "usersurname";
     public static final String USER_ROLE_NAME = "userrolename";
     public static final String USER_PASSWORD = "userpassword";
+    public static final String USER_BANNED = "userbanned";
     public static final String CITY_ID = "cityid";
     public static final String CITY_NAME = "cityname";
 

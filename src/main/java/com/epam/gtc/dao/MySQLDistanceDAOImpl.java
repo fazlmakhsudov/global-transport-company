@@ -4,8 +4,6 @@ import com.epam.gtc.dao.entities.DistanceEntity;
 import com.epam.gtc.dao.util.DBManager;
 import com.epam.gtc.exceptions.DAOException;
 import com.epam.gtc.exceptions.Messages;
-import com.epam.gtc.exceptions.ServiceException;
-import com.epam.gtc.services.domains.DistanceDomain;
 import org.apache.log4j.Logger;
 
 import java.sql.*;

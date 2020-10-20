@@ -11,7 +11,6 @@ import com.epam.gtc.web.models.InvoiceModel;
 import com.epam.gtc.web.models.builders.InvoiceModelBuilder;
 import org.apache.log4j.Logger;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -116,14 +115,14 @@ public class AdminInvoicesPageCommand implements Command {
     }
 
     private void doPostIfAllRight(HttpServletRequest request, InvoiceService invoiceService, String action, boolean isRemoveMethod, String invoiceStatusNameString, String invoiceIdString) throws ServiceException {
-        int invoiceId =  action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(invoiceIdString);
+        int invoiceId = action.equalsIgnoreCase("add") ? -1 : Integer.parseInt(invoiceIdString);
         String invoiceStatusName = isRemoveMethod ? "" : invoiceStatusNameString;
         switch (action) {
             case "add":
                 String requestIdString = request.getParameter(FormRequestParametersNames.INVOICE_REQUEST_ID);
                 LOG.trace("Request id --> " + requestIdString);
                 if (Validator.isValidNumber(requestIdString) &&
-                    invoiceService.countDeliveriesOfRequest(Integer.parseInt(requestIdString))== 0) {
+                        invoiceService.countDeliveriesOfRequest(Integer.parseInt(requestIdString)) == 0) {
                     InvoiceDomain newInvoiceDomain = new InvoiceDomain();
                     String costString = request.getParameter(FormRequestParametersNames.INVOICE_COST);
                     LOG.trace("invoice cost --> " + costString);

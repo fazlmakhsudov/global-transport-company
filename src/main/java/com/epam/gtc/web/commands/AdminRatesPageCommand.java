@@ -145,7 +145,7 @@ public class AdminRatesPageCommand implements Command {
 
         if (errorFlag) {
             request.getSession().setAttribute("errorRates", errorRates.toString());
-            return  forward;
+            return forward;
         }
 
         doPostIfAllRight(rateService, action, isRemoveMethod, name, maxWeightString, maxLengthString, maxWidthString, maxHeightString, maxDistanceString, costString, rateIdString);

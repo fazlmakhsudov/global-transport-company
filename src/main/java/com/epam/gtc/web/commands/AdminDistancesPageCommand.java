@@ -106,14 +106,14 @@ public class AdminDistancesPageCommand implements Command {
 
         String toCityIdString = request.getParameter(FormRequestParametersNames.DISTANCE_TO_CITY_ID);
         LOG.trace("Distance to city id --> " + toCityIdString);
-        if ( !isRemoveMethod && !Validator.isValidNumber(toCityIdString)) {
+        if (!isRemoveMethod && !Validator.isValidNumber(toCityIdString)) {
             errorFlag = true;
             errorDistances.append("Invalid city to id").append("<br/>");
         }
 
         String distanceIdString = request.getParameter(FormRequestParametersNames.DISTANCE_ID);
         LOG.trace("Distance id --> " + distanceIdString);
-        if ( !action.equalsIgnoreCase("add") && !Validator.isValidNumber(distanceIdString)) {
+        if (!action.equalsIgnoreCase("add") && !Validator.isValidNumber(distanceIdString)) {
             errorFlag = true;
             errorDistances.append("Invalid distance id").append("<br/>");
         }

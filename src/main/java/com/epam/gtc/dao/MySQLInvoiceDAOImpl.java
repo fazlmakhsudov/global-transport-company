@@ -375,8 +375,10 @@ public class MySQLInvoiceDAOImpl implements InvoiceDAO {
 
     /**
      * Counts invoices of certain request
+     *
      * @param requestId request identifier
      * @return number of invoices
+     *
      * @throws DAOException exception
      */
     @Override

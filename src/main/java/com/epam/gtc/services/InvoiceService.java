@@ -67,8 +67,10 @@ public interface InvoiceService extends BaseService<InvoiceDomain> {
 
     /**
      * Counts invoice domains with certain request identifier
+     *
      * @param requestId request identifier
      * @return number of invoice domains
+     *
      * @throws ServiceException exception
      */
     int countDeliveriesOfRequest(int requestId) throws ServiceException;

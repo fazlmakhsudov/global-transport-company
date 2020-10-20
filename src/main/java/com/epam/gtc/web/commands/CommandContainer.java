@@ -67,7 +67,7 @@ public final class CommandContainer {
         commands.put("adminInvoicesPage", new AdminInvoicesPageCommand((InvoiceService) ServiceFactory.createService(ServiceType.INVOICE_SERVICE)));
         commands.put("adminRatesPage", new AdminRatesPageCommand((RateService) ServiceFactory.createService(ServiceType.RATE_SERVICE)));
         commands.put("adminRequestsPage", new AdminRequestsPageCommand((RequestService) ServiceFactory.createService(ServiceType.REQUEST_SERVICE),
-                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE),(DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
+                (CityService) ServiceFactory.createService(ServiceType.CITY_SERVICE), (DistanceService) ServiceFactory.createService(ServiceType.DISTANCE_SERVICE)));
 
         LOG.debug("Command container was successfully initialized");
         LOG.trace("Number of commands --> " + commands.size());

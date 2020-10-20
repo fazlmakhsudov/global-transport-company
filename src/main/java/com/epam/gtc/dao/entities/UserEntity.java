@@ -22,6 +22,7 @@ public class UserEntity implements Serializable {
     private int roleId;
     @BuilderField(transferTo = BuilderFieldConstant.LOCALDATE_FROM_TIMESTAMP)
     private Timestamp createdDate;
+    private String banned;
 
     public int getId() {
         return id;
@@ -85,6 +86,14 @@ public class UserEntity implements Serializable {
 
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getBanned() {
+        return banned;
+    }
+
+    public void setBanned(String banned) {
+        this.banned = banned;
     }
 
     @Override

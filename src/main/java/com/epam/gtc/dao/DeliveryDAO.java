@@ -66,8 +66,10 @@ public interface DeliveryDAO extends BaseDAO<DeliveryEntity> {
 
     /**
      * Counts delivery entities with certain request identifier
+     *
      * @param requestId request identifier
      * @return number of delivery entities
+     *
      * @throws DAOException exception
      */
     int countDeliveriesOfRequest(int requestId) throws DAOException;

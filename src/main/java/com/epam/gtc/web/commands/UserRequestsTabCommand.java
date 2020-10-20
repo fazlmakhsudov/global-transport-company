@@ -108,6 +108,12 @@ public class UserRequestsTabCommand implements Command {
         LOG.trace("Method is Post");
         request.getSession().removeAttribute("errorRequests");
 
+        LOG.trace("User banned status --> " + sessionUser.getBanned());
+        if ("true".equalsIgnoreCase(sessionUser.getBanned())) {
+            errorFlag = true;
+            errorRequests.append("Dear customer, you are annoying. Try be polite to our service").append("<br/>");
+        }
+
         String action = request.getParameter(FormRequestParametersNames.ACTION);
         LOG.trace("Action --> " + action);
         if (!Validator.isValidString(action)) {

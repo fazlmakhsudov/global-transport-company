@@ -20,6 +20,7 @@ public class UserModel {
     private String roleName;
     @BuilderField(transferTo = BuilderFieldConstant.LOCALDATE_FROM_DATE)
     private Date createdDate;
+    private String banned;
 
     public int getId() {
         return id;
@@ -88,5 +89,13 @@ public class UserModel {
                 ", roleName='" + roleName + '\'' +
                 ", createdDate=" + createdDate +
                 '}';
+    }
+
+    public String getBanned() {
+        return banned;
+    }
+
+    public void setBanned(String banned) {
+        this.banned = banned;
     }
 }

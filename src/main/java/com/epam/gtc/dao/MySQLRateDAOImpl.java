@@ -314,8 +314,10 @@ public class MySQLRateDAOImpl implements RateDAO {
 
     /**
      * Reads all rates with distance less given
+     *
      * @param maxDistance distance
      * @return list of rate entities
+     *
      * @throws DAOException exception
      */
     @Override
